@@ -1,0 +1,259 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.carregamento.Carregamento &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.carregamento.Carregamento</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:author: Rafael</span>
+<span class="sd">:data: 06/12/2019</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">src.contexto.Contexto</span> <span class="k">import</span> <span class="n">Contexto</span>
+<span class="kn">from</span> <span class="nn">src.contexto.EnumAtributo</span> <span class="k">import</span> <span class="n">EnumAtributo</span>
+<span class="kn">from</span> <span class="nn">src.modulo_padrao.ModuloPadrao</span> <span class="k">import</span> <span class="n">EnumModulo</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Loggin</span> <span class="k">import</span> <span class="n">Loggin</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Enum</span> <span class="k">import</span> <span class="n">EnumLogStatus</span>
+<span class="kn">from</span> <span class="nn">src.inout.TXT</span> <span class="k">import</span> <span class="n">TXT</span>
+<span class="kn">from</span> <span class="nn">src.inout.InOut</span> <span class="k">import</span> <span class="n">InOut</span>
+<span class="kn">from</span> <span class="nn">src.inicializacao.Inicializacao</span> <span class="k">import</span> <span class="n">Inicializacao</span>
+<span class="kn">from</span> <span class="nn">src.otimizacao.Otimizacao</span> <span class="k">import</span> <span class="n">Otimizacao</span>
+<span class="kn">from</span> <span class="nn">src.avaliacao.Avaliacao</span> <span class="k">import</span> <span class="n">Avaliacao</span>
+<span class="kn">from</span> <span class="nn">src.reducao.Reducao</span> <span class="k">import</span> <span class="n">Reducao</span>
+<span class="kn">from</span> <span class="nn">src.otimizacao.criterio_parada.CriterioParada</span> <span class="k">import</span> <span class="n">CriterioParada</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span> <span class="k">as</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">src.sorteio.Sorteio</span> <span class="k">import</span> <span class="n">Sorteio</span>
+
+
+<div class="viewcode-block" id="Carregamento"><a class="viewcode-back" href="../../../src.carregamento.html#src.carregamento.Carregamento.Carregamento">[docs]</a><span class="k">class</span> <span class="nc">Carregamento</span><span class="p">(</span><span class="n">Loggin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Classe destinada a ler o arquivo de configuracao e salvar em uma estrutura interna.</span>
+<span class="sd">        Onde sera possivel buscar, e editar.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_projeto</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">arquivo_config</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Chama a função de leitura das informações nor arquivo de configura no caminho path_configuracao</span>
+
+<span class="sd">        :param str path_projeto: O caminho referente a raiz do projeto</span>
+<span class="sd">        :param str arquivo_config: Caminho para o arquivo de configuracao</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="vm">__name__</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel com o nome do arquivo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span> <span class="o">=</span> <span class="n">Contexto</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        variavel que contem toda a informação do arquivo, na classe contexto</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tem_erro</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Informar se apareceu algum erro na inicializacao dos modulos</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_modules</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">caminho_configuracao</span> <span class="o">=</span> <span class="n">TXT</span><span class="p">()</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{path_projeto}</span><span class="s1">/</span><span class="si">{arquivo_config}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">caminho_log</span> <span class="o">=</span> <span class="n">TXT</span><span class="p">()</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{path_projeto}</span><span class="s1">/log.out&#39;</span><span class="p">)</span>
+        <span class="n">Loggin</span><span class="o">.</span><span class="n">set_arquivo_log</span><span class="p">(</span><span class="n">caminho_log</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">PATH_PROJETO</span><span class="p">,</span> <span class="p">[</span><span class="n">TXT</span><span class="p">()</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{path_projeto}</span><span class="s1">&#39;</span><span class="p">)])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">PATH_CONFIGURACAO</span><span class="p">,</span> <span class="p">[</span><span class="n">caminho_configuracao</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">PATH_LOG</span><span class="p">,</span> <span class="p">[</span><span class="n">caminho_log</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_tem_erro</span><span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carregar_informacao</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_defaults</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_carregar_informacao</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ler o arquivo carrega toda informação e adiciona na variavel _configuracao</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">linha</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">contexto</span> <span class="o">=</span> <span class="n">TXT</span><span class="p">()</span><span class="o">.</span><span class="n">ler</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">PATH_CONFIGURACAO</span><span class="p">)))</span>
+            <span class="k">for</span> <span class="n">linha</span> <span class="ow">in</span> <span class="n">contexto</span><span class="p">:</span>
+                <span class="n">linha</span> <span class="o">=</span> <span class="n">linha</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">linha</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">linha</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;*&quot;</span><span class="p">):</span>
+                    <span class="n">sp</span> <span class="o">=</span> <span class="n">linha</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="n">chave</span> <span class="o">=</span> <span class="n">sp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="n">valor</span> <span class="o">=</span> <span class="n">sp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sp</span><span class="p">)):</span>
+                            <span class="n">sp</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">sp</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sp</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                                <span class="n">valor</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{valor}</span><span class="s1"> </span><span class="si">{sp[ii]}</span><span class="s1">&#39;</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">chave</span><span class="p">,</span> <span class="p">[</span><span class="n">InOut</span><span class="o">.</span><span class="n">ajusta_entrada</span><span class="p">(</span><span class="n">valor</span><span class="p">)])</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;Erro ao carregar arquivos. Linha [</span><span class="si">{linha}</span><span class="s2">]&quot;</span><span class="p">,</span>
+                     <span class="n">info_ex</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;ex[{str(ex)}]&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Carregamento.run"><a class="viewcode-back" href="../../../src.carregamento.html#src.carregamento.Carregamento.Carregamento.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Contexto</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Executando o </span><span class="si">{self._name}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checa_necessidades</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO_FATAL</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="s1">&#39;Erro ao efetuar o carregamento.&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_checa_necessidades</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verificar as necessidades que cada módulo precisa. Devemos chamar as necessidades os módulos</span>
+
+<span class="sd">        :return: retorna se tudo ocorreu bem ou não</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">modulos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">MODULE</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">EnumModulo</span><span class="o">.</span><span class="n">INICIALIZACAO</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">modulos</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_modules</span><span class="p">[</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">INICIALIZACAO</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carrega_modulo</span><span class="p">(</span><span class="n">Inicializacao</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">INICIALIZACAO</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">INICIALIZACAO</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">EnumModulo</span><span class="o">.</span><span class="n">OTIMIZACAO</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">modulos</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_modules</span><span class="p">[</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">OTIMIZACAO</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carrega_modulo</span><span class="p">(</span><span class="n">Otimizacao</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">OTIMIZACAO</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">OTIMIZACAO</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">EnumModulo</span><span class="o">.</span><span class="n">AVALIACAO</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">modulos</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_modules</span><span class="p">[</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">AVALIACAO</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carrega_modulo</span><span class="p">(</span><span class="n">Avaliacao</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">AVALIACAO</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">AVALIACAO</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">EnumModulo</span><span class="o">.</span><span class="n">REDUCAO</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">modulos</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_modules</span><span class="p">[</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">REDUCAO</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carrega_modulo</span><span class="p">(</span><span class="n">Reducao</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">REDUCAO</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">REDUCAO</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">EnumModulo</span><span class="o">.</span><span class="n">CRITERIOPARADA</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">modulos</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_modules</span><span class="p">[</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">CRITERIOPARADA</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carrega_modulo</span><span class="p">(</span><span class="n">CriterioParada</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">CRITERIOPARADA</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">CRITERIOPARADA</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">EnumModulo</span><span class="o">.</span><span class="n">SORTEIO</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">modulos</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_modules</span><span class="p">[</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">SORTEIO</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carrega_modulo</span><span class="p">(</span><span class="n">Sorteio</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">SORTEIO</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">SORTEIO</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tem_erro</span>
+
+<div class="viewcode-block" id="Carregamento.get_modulo"><a class="viewcode-back" href="../../../src.carregamento.html#src.carregamento.Carregamento.Carregamento.get_modulo">[docs]</a>    <span class="k">def</span> <span class="nf">get_modulo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modulo</span><span class="p">:</span> <span class="n">EnumModulo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Método para obter o modulo selecionado</span>
+
+<span class="sd">        :param EnumModulo modulo: Enum referente aos módulos existentes</span>
+<span class="sd">        :return: retorna o objeto do modulo</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modules</span><span class="p">[</span><span class="n">modulo</span><span class="o">.</span><span class="n">name</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_tem_erro</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">erro</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tem_erro</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tem_erro</span> <span class="o">=</span> <span class="n">erro</span>
+
+    <span class="k">def</span> <span class="nf">_carrega_modulo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modulo</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">modulo</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">modulo</span><span class="o">.</span><span class="n">set_contexto</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="p">)</span>
+        <span class="n">modulo</span> <span class="o">=</span> <span class="n">modulo</span><span class="o">.</span><span class="n">get_modulo</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">modulo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_tem_erro</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Erro ao carregar modulo </span><span class="si">{name}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">modulo</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,30 @@
+src.contexto package
+====================
+
+Submodules
+----------
+
+src.contexto.Contexto module
+----------------------------
+
+.. automodule:: src.contexto.Contexto
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.contexto.EnumAtributo module
+--------------------------------
+
+.. automodule:: src.contexto.EnumAtributo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.contexto
+   :members:
+   :undoc-members:
+   :show-inheritance:

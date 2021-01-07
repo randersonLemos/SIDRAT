@@ -1,0 +1,22 @@
+src.sorteio.HLDG package
+========================
+
+Submodules
+----------
+
+src.sorteio.HLDG.HLDG module
+----------------------------
+
+.. automodule:: src.sorteio.HLDG.HLDG
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.sorteio.HLDG
+   :members:
+   :undoc-members:
+   :show-inheritance:

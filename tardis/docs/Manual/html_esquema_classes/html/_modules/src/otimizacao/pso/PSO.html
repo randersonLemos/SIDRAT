@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.otimizacao.pso.PSO &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.otimizacao.pso.PSO</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:author: Nome_do_autor</span>
+<span class="sd">:data: dd/mm/aaaa</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">src.dominio.Estrategia</span> <span class="k">import</span> <span class="n">Estrategia</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Enum</span> <span class="k">import</span> <span class="n">EnumLogStatus</span>
+<span class="kn">from</span> <span class="nn">src.modulo_padrao.ModuloPadrao</span> <span class="k">import</span> <span class="n">ModuloPadrao</span>
+<span class="kn">from</span> <span class="nn">src.modulo_padrao.EnumModulo</span> <span class="k">import</span> <span class="n">EnumModulo</span>
+<span class="kn">from</span> <span class="nn">src.contexto.Contexto</span> <span class="k">import</span> <span class="n">Contexto</span><span class="p">,</span> <span class="n">EnumAtributo</span>
+
+<span class="kn">from</span> <span class="nn">src.dominio.Estrategia</span> <span class="k">import</span> <span class="n">Estrategia</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Enum</span> <span class="k">import</span> <span class="n">EnumLogStatus</span>
+<span class="kn">from</span> <span class="nn">src.modulo_padrao.ModuloPadrao</span> <span class="k">import</span> <span class="n">ModuloPadrao</span>
+<span class="kn">from</span> <span class="nn">src.modulo_padrao.EnumModulo</span> <span class="k">import</span> <span class="n">EnumModulo</span>
+<span class="kn">from</span> <span class="nn">src.contexto.Contexto</span> <span class="k">import</span> <span class="n">Contexto</span><span class="p">,</span> <span class="n">EnumAtributo</span>
+<span class="kn">from</span> <span class="nn">src.inout.Exportacao</span> <span class="k">import</span> <span class="n">Exportacao</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+
+
+<div class="viewcode-block" id="PSO"><a class="viewcode-back" href="../../../../src.otimizacao.pso.html#src.otimizacao.pso.PSO.PSO">[docs]</a><span class="k">class</span> <span class="nc">PSO</span><span class="p">(</span><span class="n">ModuloPadrao</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Isto é um comentário da classe MyClass</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cp</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">cg</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">wdamp</span><span class="o">=</span><span class="mf">0.995</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construtor da classe do PSO</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="vm">__name__</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel com o nome do arquivo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_necessidade</span> <span class="o">=</span> <span class="p">[</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_PSO_QTD_POPULACAO</span><span class="p">]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Contem a lista de todos os atributos necessários para o módulo ser executado.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_estrategia_base</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iteracao</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quantidade_populacao</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gbest</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;posicao&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;of&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="s1">&#39;variavel_nome&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_w</span> <span class="o">=</span> <span class="n">w</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cp</span> <span class="o">=</span> <span class="n">cp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cg</span> <span class="o">=</span> <span class="n">cg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wdamp</span> <span class="o">=</span> <span class="n">wdamp</span>
+
+<div class="viewcode-block" id="PSO.run"><a class="viewcode-back" href="../../../../src.otimizacao.pso.html#src.otimizacao.pso.PSO.PSO.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contexto</span><span class="p">:</span> <span class="n">Contexto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Contexto</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executa o PSO</span>
+
+<span class="sd">        :param Contexto contexto: contexto com todas as informações necessárias</span>
+<span class="sd">        :return: Devolve o contexto atualizado</span>
+<span class="sd">        :rtype: Contexto</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">contexto</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_necessidades</span><span class="p">()</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_estrategia_base</span><span class="p">:</span> <span class="n">Estrategia</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">ESTRATEGIA_BASE</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estrategia_base</span><span class="o">.</span><span class="n">get_variavies_by_tipo</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">ESTRATEGIAS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iteracao</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span><span class="o">.</span><span class="n">estrategias</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span><span class="o">.</span><span class="n">estrategias</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_iteracao</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_quantidade_populacao</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_PSO_QTD_POPULACAO</span><span class="p">)</span>
+        <span class="n">avaliacao</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">AVALIACAO</span><span class="p">)</span>
+        <span class="n">exportacao</span> <span class="o">=</span> <span class="n">Exportacao</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_inicializa_populacao</span><span class="p">()</span>
+
+        <span class="n">criterio</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">CRITERIOPARADA</span><span class="p">)</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">criterio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="p">):</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_gerar_estrategias_avalia</span><span class="p">(</span><span class="n">avaliacao</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_quantidade_populacao</span><span class="p">):</span>
+                <span class="c1"># if self._populacao[ii][&#39;id&#39;] &lt; 0:</span>
+                <span class="c1">#     continue</span>
+                <span class="n">rp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">rg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">ld</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="p">))</span>
+                <span class="n">lu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="p">)):</span>
+                    <span class="n">ld</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">lu</span><span class="p">[</span><span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;variavel&#39;</span><span class="p">][</span><span class="n">jj</span><span class="p">][</span><span class="s1">&#39;lu&#39;</span><span class="p">]</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;velocidade&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;velocidade&#39;</span><span class="p">]</span> <span class="o">+</span> \
+                                                  <span class="bp">self</span><span class="o">.</span><span class="n">_cp</span> <span class="o">*</span> <span class="n">rp</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;best_posicao&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">])</span> <span class="o">+</span> \
+                                                  <span class="bp">self</span><span class="o">.</span><span class="n">_cg</span> <span class="o">*</span> <span class="n">rg</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gbest</span><span class="p">[</span><span class="s1">&#39;posicao&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">])</span>
+
+                <span class="n">posicao_atualizada</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;velocidade&#39;</span><span class="p">]</span>
+                <span class="n">posicao_atualizada</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">posicao_atualizada</span><span class="p">,</span> <span class="n">ld</span><span class="p">)</span>
+                <span class="n">posicao_atualizada</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">posicao_atualizada</span><span class="p">,</span> <span class="n">lu</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">posicao_atualizada</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">vv</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;variavel&#39;</span><span class="p">])):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;variavel&#39;</span><span class="p">][</span><span class="n">vv</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">][</span><span class="n">vv</span><span class="p">]</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_w</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wdamp</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_PSO_POPULACAO</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_PSO_W</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_w</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">exportacao</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="p">)</span>
+            <span class="n">exportacao</span><span class="o">.</span><span class="n">obejto</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span></div>
+
+    <span class="k">def</span> <span class="nf">_inicializa_populacao</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">empty_particle</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;posicao&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;velocidade&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;of&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;best_posicao&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;best_of&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+            <span class="s1">&#39;variavel&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">tem_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_PSO_POPULACAO</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_PSO_POPULACAO</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">tem_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_PSO_W</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_PSO_W</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_quantidade_populacao</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">empty_particle</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;of&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>  <span class="c1"># ofFunction(self._populacao[ii][&#39;posicao&#39;])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;velocidade&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;variavel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="p">))</span>
+
+            <span class="n">pp</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">nome</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="p">:</span>
+                <span class="n">lu</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="p">[</span><span class="n">nome</span><span class="p">]</span><span class="o">.</span><span class="n">parametro</span><span class="o">.</span><span class="n">dominio</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+                <span class="n">rand_posicao</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="n">lu</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">][</span><span class="n">pp</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rand_posicao</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;variavel&#39;</span><span class="p">][</span><span class="n">pp</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;nome&#39;</span><span class="p">:</span> <span class="n">nome</span><span class="p">,</span> <span class="s1">&#39;lu&#39;</span><span class="p">:</span> <span class="n">lu</span><span class="p">,</span> <span class="s1">&#39;posicao&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">rand_posicao</span><span class="p">[</span><span class="mi">0</span><span class="p">])}</span>
+
+                <span class="n">pp</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;best_posicao&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;best_of&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;of&#39;</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">_gerar_estrategias_avalia</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">avaliacao</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iteracao</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_quantidade_populacao</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
+            <span class="n">estrategia</span> <span class="o">=</span> <span class="n">Estrategia</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">iteracao</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_iteracao</span><span class="p">,</span> <span class="n">estrategia</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_estrategia_base</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">jj</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">])):</span>
+                <span class="n">nome</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;variavel&#39;</span><span class="p">][</span><span class="n">jj</span><span class="p">][</span><span class="s1">&#39;nome&#39;</span><span class="p">]</span>
+                <span class="n">posicao</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;variavel&#39;</span><span class="p">][</span><span class="n">jj</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">]</span>
+                <span class="n">lu</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;variavel&#39;</span><span class="p">][</span><span class="n">jj</span><span class="p">][</span><span class="s1">&#39;lu&#39;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">lu</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">int</span><span class="p">(</span><span class="n">posicao</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;Posicao da varivael </span><span class="si">{nome}</span><span class="s2"> esta fora dos limites.&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">posicao</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">][</span><span class="n">jj</span><span class="p">]):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="s2">&quot;Erro posicoes diferentes&quot;</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">estrategia</span><span class="o">.</span><span class="n">variaveis</span><span class="o">.</span><span class="n">set_variavel_posicao_by_nome</span><span class="p">(</span><span class="n">nome</span><span class="p">,</span> <span class="n">posicao</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="s2">&quot;Erro ao setar variavel&quot;</span><span class="p">,</span> <span class="n">info_ex</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">][</span><span class="n">jj</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                    <span class="n">estrategia</span><span class="o">.</span><span class="n">variaveis</span><span class="o">.</span><span class="n">set_variavel_posicao_by_nome</span><span class="p">(</span><span class="n">nome</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span><span class="o">.</span><span class="n">existe_estrategia</span><span class="p">(</span><span class="n">estrategia</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span><span class="o">.</span><span class="n">add_in_estrategias</span><span class="p">(</span><span class="n">estrategia</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">ESTRATEGIAS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_ITERACAO_AVALIAR</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_iteracao</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span> <span class="o">=</span> <span class="n">avaliacao</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">ESTRATEGIAS</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">)):</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">id</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">estrategia</span><span class="p">:</span> <span class="n">Estrategia</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span><span class="o">.</span><span class="n">get_estrategia_by_iteracao_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iteracao</span><span class="p">,</span> <span class="nb">id</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">estrategia</span><span class="o">.</span><span class="n">of</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">estrategia</span><span class="o">.</span><span class="n">has_erro</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;of&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;of&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">estrategia</span><span class="o">.</span><span class="n">of</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;of&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;best_of&#39;</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;</span><span class="se">\t\t</span><span class="s2">+[LOCAL] [</span><span class="si">{self._iteracao:3}</span><span class="s2">][</span><span class="si">{id:4}</span><span class="s2">]: of </span><span class="si">{self._populacao[ii][&#39;best_of&#39;]:3}</span><span class="s2"> &gt; </span><span class="si">{self._populacao[ii][&#39;of&#39;]:15}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;best_posicao&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;best_of&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;of&#39;</span><span class="p">])</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;of&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gbest</span><span class="p">[</span><span class="s1">&#39;of&#39;</span><span class="p">]:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">+[GLOBAL] [</span><span class="si">{self._iteracao:3}</span><span class="s2">][</span><span class="si">{id:4}</span><span class="s2">]: of </span><span class="si">{self._gbest[&#39;of&#39;]:3}</span><span class="s2"> &gt; </span><span class="si">{self._populacao[ii][&#39;of&#39;]:15}</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_gbest</span><span class="p">[</span><span class="s1">&#39;posicao&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;posicao&#39;</span><span class="p">])</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_gbest</span><span class="p">[</span><span class="s1">&#39;variavel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;variavel&#39;</span><span class="p">])</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_gbest</span><span class="p">[</span><span class="s1">&#39;of&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_populacao</span><span class="p">[</span><span class="n">ii</span><span class="p">][</span><span class="s1">&#39;of&#39;</span><span class="p">])</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

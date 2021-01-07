@@ -1,0 +1,22 @@
+src.otimizacao.idlhc package
+============================
+
+Submodules
+----------
+
+src.otimizacao.idlhc.IDLHC module
+---------------------------------
+
+.. automodule:: src.otimizacao.idlhc.IDLHC
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.otimizacao.idlhc
+   :members:
+   :undoc-members:
+   :show-inheritance:

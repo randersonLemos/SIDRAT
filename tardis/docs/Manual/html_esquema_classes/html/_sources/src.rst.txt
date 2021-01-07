@@ -1,0 +1,55 @@
+src package
+===========
+
+Subpackages
+-----------
+
+.. toctree::
+
+   src.avaliacao
+   src.carregamento
+   src.contexto
+   src.dominio
+   src.inicializacao
+   src.inout
+   src.loggin
+   src.modulo_padrao
+   src.otimizacao
+   src.reducao
+   src.sorteio
+
+Submodules
+----------
+
+src.main module
+---------------
+
+.. automodule:: src.main
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.main\_lua module
+--------------------
+
+.. automodule:: src.main_lua
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.main\_test module
+---------------------
+
+.. automodule:: src.main_test
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src
+   :members:
+   :undoc-members:
+   :show-inheritance:

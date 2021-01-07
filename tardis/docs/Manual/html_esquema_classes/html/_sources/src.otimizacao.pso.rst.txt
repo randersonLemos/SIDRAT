@@ -1,0 +1,22 @@
+src.otimizacao.pso package
+==========================
+
+Submodules
+----------
+
+src.otimizacao.pso.PSO module
+-----------------------------
+
+.. automodule:: src.otimizacao.pso.PSO
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.otimizacao.pso
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,51 @@
+productiavel; range [ ] ou conjunto{}; default nao obrigatorio 
+product1 ; {0 1};1
+product2 ; {0 1};0
+product3 ; {0 1};1
+product4 ; {0 1};0
+product5 ; {0 1};0
+product6 ; {0 1};1
+product7 ; {0 1};1
+product8 ; {0 1};1
+product9 ; {0 1};1
+product10; {0 1};1
+product11; {0 1};0
+product12; {0 1};1
+product13; {0 1};0
+product14; {0 1};0
+product15; {0 1};1
+product16; {0 1};1
+product17; {0 1};1
+product18; {0 1};1
+product19; {0 1};1
+product20; {0 1};0
+product21; {0 1};1
+product22; {0 1};0
+product23; {0 1};1
+product24; {0 1};1
+product25; {0 1};1
+product26; {0 1};0
+product27; {0 1};1
+product28; {0 1};1
+product29; {0 1};1
+product30; {0 1};1
+product31; {0 1};1
+product32; {0 1};0
+product33; {0 1};0
+product34; {0 1};0
+product35; {0 1};0
+product36; {0 1};1
+product37; {0 1};0
+product38; {0 1};1
+product39; {0 1};0
+product40; {0 1};0
+product41; {0 1};1
+product42; {0 1};0
+product43; {0 1};1
+product44; {0 1};0
+product45; {0 1};0
+product46; {0 1};0
+product47; {0 1};1
+product48; {0 1};1
+product49; {0 1};0
+product50; {0 1};1

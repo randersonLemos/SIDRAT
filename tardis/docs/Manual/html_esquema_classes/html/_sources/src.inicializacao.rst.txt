@@ -1,0 +1,30 @@
+src.inicializacao package
+=========================
+
+Subpackages
+-----------
+
+.. toctree::
+
+   src.inicializacao.default
+   src.inicializacao.reestart
+
+Submodules
+----------
+
+src.inicializacao.Inicializacao module
+--------------------------------------
+
+.. automodule:: src.inicializacao.Inicializacao
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.inicializacao
+   :members:
+   :undoc-members:
+   :show-inheritance:

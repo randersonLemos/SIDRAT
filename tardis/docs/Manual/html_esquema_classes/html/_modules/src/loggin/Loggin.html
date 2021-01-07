@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.loggin.Loggin &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.loggin.Loggin</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:author: Rafael</span>
+<span class="sd">:date: 09/12/2019</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Enum</span> <span class="k">import</span> <span class="n">EnumLogStatus</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">_horario</span><span class="p">():</span>
+    <span class="n">agora</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">h</span><span class="si">{}</span><span class="s2">m&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">agora</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">agora</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">agora</span><span class="o">.</span><span class="n">day</span><span class="p">,</span> <span class="n">agora</span><span class="o">.</span><span class="n">hour</span><span class="p">,</span> <span class="n">agora</span><span class="o">.</span><span class="n">minute</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Loggin"><a class="viewcode-back" href="../../../src.loggin.html#src.loggin.Loggin.Loggin">[docs]</a><span class="k">class</span> <span class="nc">Loggin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">global</span> <span class="n">arquivo_log</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel global para definir o caminho para o arquivo de loggin.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="s1">&#39;arquivo_log&#39;</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_arquivo_log</span> <span class="o">=</span> <span class="n">arquivo_log</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_arquivo_log</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="vm">__name__</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel com o nome do arquivo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Loggin.set_arquivo_log"><a class="viewcode-back" href="../../../src.loggin.html#src.loggin.Loggin.Loggin.set_arquivo_log">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">set_arquivo_log</span><span class="p">(</span><span class="n">path_arquivo_log</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Seta o caminho do arquivo de log</span>
+
+<span class="sd">        :param str path_arquivo_log: caminho do arquivo de log</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">global</span> <span class="n">arquivo_log</span>
+        <span class="n">arquivo_log</span> <span class="o">=</span> <span class="n">path_arquivo_log</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">arquivo_log</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtem o caminho do arquivo de log</span>
+
+<span class="sd">        :return: caminho de log</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arquivo_log</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arquivo_log</span>
+
+        <span class="k">global</span> <span class="n">arquivo_log</span>
+        <span class="k">if</span> <span class="s1">&#39;arquivo_log&#39;</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_arquivo_log</span> <span class="o">=</span> <span class="n">arquivo_log</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_arquivo_log</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_arquivo_log</span>
+
+<div class="viewcode-block" id="Loggin.log"><a class="viewcode-back" href="../../../src.loggin.html#src.loggin.Loggin.Loggin.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arquivo</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tipo</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span> <span class="n">texto</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">info_ex</span><span class="p">:</span> <span class="nb">object</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Log as informações vindas</span>
+
+<span class="sd">        :param str arquivo: nome do arquivo que aconteceu a msg</span>
+<span class="sd">        :param EnumLogStatus tipo: tipo do log se o enum LogStatus</span>
+<span class="sd">        :param str texto: texto da mensagem</span>
+<span class="sd">        :param st info_ex: texto caso a mensagem venha de uma exceção</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">arquivo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">arquivo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">tipo</span><span class="o">.</span><span class="n">value</span> <span class="o">&lt;=</span> <span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">INFO</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="n">tipo</span> <span class="o">=</span> <span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">WARN</span>
+
+            <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">exc_traceback</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">info_ex</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">info_ex</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{exc_traceback.tb_frame.f_code.co_name}</span><span class="s2">:</span><span class="si">{exc_traceback.tb_lineno}</span><span class="s2">&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">info_ex</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;</span><span class="si">{exc_traceback.tb_frame.f_code.co_name}</span><span class="s2">:</span><span class="si">{exc_traceback.tb_lineno}</span><span class="s2">:</span><span class="si">{info_ex}</span><span class="s2">&quot;</span>
+
+        <span class="k">if</span> <span class="n">info_ex</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;[{_horario()}][</span><span class="si">{tipo.name}</span><span class="s1">][</span><span class="si">{arquivo}</span><span class="s1">]</span><span class="se">\t</span><span class="s1">- </span><span class="si">{texto}</span><span class="s1">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;[{_horario()}][</span><span class="si">{tipo.name}</span><span class="s1">][</span><span class="si">{arquivo}</span><span class="s1">]</span><span class="se">\t</span><span class="s1">- </span><span class="si">{texto}</span><span class="se">\n\t\t\t</span><span class="s1">[</span><span class="si">{info_ex}</span><span class="s1">]&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__log_terminal</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__log_arquivo</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO_FATAL</span> <span class="o">==</span> <span class="n">tipo</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__log_terminal</span><span class="p">(</span><span class="s2">&quot;FIM DA EXECUÇÃO, ERRO&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__log_arquivo</span><span class="p">(</span><span class="s2">&quot;FIM DA EXECUÇÃO, ERRO&quot;</span><span class="p">)</span>
+            <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__log_arquivo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="n">tentar</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">arquivo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arquivo_log</span>
+        <span class="k">if</span> <span class="n">arquivo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="n">tentar</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">arq</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">arq</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">arquivo</span><span class="p">,</span> <span class="s1">&#39;a+&#39;</span><span class="p">)</span>
+                <span class="n">arq</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{msg}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">tentar</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__log_terminal</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;[{_horario()}][</span><span class="si">{EnumLogStatus.ERRO_FATAL.name}</span><span class="s1">][</span><span class="si">{__name__}</span><span class="s1">]</span><span class="se">\t</span><span class="s1">- Arquivo [</span><span class="si">{self.arquivo_log}</span><span class="s1">] não encontrado, tentaremos daqui 10 minutos.&#39;</span><span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">10</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">PermissionError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__log_terminal</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;[{_horario()}][</span><span class="si">{EnumLogStatus.ERRO_FATAL.name}</span><span class="s1">][</span><span class="si">{__name__}</span><span class="s1">]</span><span class="se">\t</span><span class="s1">- Não tem permissão para abrir o arquivo [</span><span class="si">{self.arquivo_log}</span><span class="s1">]&#39;</span><span class="p">)</span>
+                <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__log_terminal</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;[{_horario()}][</span><span class="si">{EnumLogStatus.ERRO_FATA.nameL}</span><span class="s1">][</span><span class="si">{__name__}</span><span class="s1">]</span><span class="se">\t</span><span class="s1">- Erro ao abrir arquivo </span><span class="si">{self.arquivo_log}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__log_terminal</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;[{_horario()}][</span><span class="si">{EnumLogStatus.ERRO_FATAL.name}</span><span class="s1">][</span><span class="si">{__name__}</span><span class="s1">]</span><span class="se">\t</span><span class="s1">- Erro ao abrir arquivo </span><span class="si">{self.arquivo_log}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">arq</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">arq</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">__log_terminal</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

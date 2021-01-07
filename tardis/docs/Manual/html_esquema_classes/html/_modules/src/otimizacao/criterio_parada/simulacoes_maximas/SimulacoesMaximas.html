@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.otimizacao.criterio_parada.simulacoes_maximas.SimulacoesMaximas &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../../" src="../../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.otimizacao.criterio_parada.simulacoes_maximas.SimulacoesMaximas</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">src.contexto</span> <span class="k">import</span> <span class="n">Contexto</span>
+<span class="kn">from</span> <span class="nn">src.contexto.EnumAtributo</span> <span class="k">import</span> <span class="n">EnumAtributo</span>
+<span class="kn">from</span> <span class="nn">src.modulo_padrao.ModuloPadrao</span> <span class="k">import</span> <span class="n">ModuloPadrao</span>
+
+
+<div class="viewcode-block" id="SimulacoesMaximas"><a class="viewcode-back" href="../../../../../src.otimizacao.criterio_parada.simulacoes_maximas.html#src.otimizacao.criterio_parada.simulacoes_maximas.SimulacoesMaximas.SimulacoesMaximas">[docs]</a><span class="k">class</span> <span class="nc">SimulacoesMaximas</span><span class="p">(</span><span class="n">ModuloPadrao</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Classe destinada para avaliar criterio de parada de simulacoes maximas</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel de armazenagem do contexto.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="vm">__name__</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel com o nome do arquivo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_necessidade</span> <span class="o">=</span> <span class="p">[</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">CRITERIO_PARADA_SIMULACOES_MAX</span><span class="p">]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Contem a lista de todos os atributos necessários para o módulo ser executado.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SimulacoesMaximas.run"><a class="viewcode-back" href="../../../../../src.otimizacao.criterio_parada.simulacoes_maximas.html#src.otimizacao.criterio_parada.simulacoes_maximas.SimulacoesMaximas.SimulacoesMaximas.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contexto</span><span class="p">:</span> <span class="n">Contexto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executa a o criterio de parada para verificar se foi atigindo o número maximo de simulacoes</span>
+
+<span class="sd">        :param Contexto contexto: contexto com todas as informações necessárias</span>
+<span class="sd">        :return: Devolve o bool [TRUE = excedeu o número máximo de simulações. FALSE = não excedeu o número máximo de simulações]</span>
+<span class="sd">        :rtype: Bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">contexto</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_necessidades</span><span class="p">()</span>
+
+        <span class="n">n_estrategias</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">estrategias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">ESTRATEGIAS</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">estrategias_id</span> <span class="ow">in</span> <span class="n">estrategias</span><span class="o">.</span><span class="n">estrategias</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">n_estrategias</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">estrategias_id</span><span class="p">)</span>
+
+        <span class="n">max_avaliacoes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">CRITERIO_PARADA_SIMULACOES_MAX</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Criterio de numero máximo de avaliacoes = </span><span class="si">{max_avaliacoes}</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">f</span><span class="s1">&#39;variacao de FOmax  encontrada = </span><span class="si">{n_estrategias}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">n_estrategias</span> <span class="o">&gt;=</span> <span class="n">max_avaliacoes</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../../index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

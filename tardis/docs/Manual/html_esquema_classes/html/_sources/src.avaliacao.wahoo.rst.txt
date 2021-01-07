@@ -1,0 +1,22 @@
+src.avaliacao.wahoo package
+===========================
+
+Submodules
+----------
+
+src.avaliacao.wahoo.Wahoo module
+--------------------------------
+
+.. automodule:: src.avaliacao.wahoo.Wahoo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.avaliacao.wahoo
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,344 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.dominio.Estrategia &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.dominio.Estrategia</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:author: Rafael</span>
+<span class="sd">:data: 10/12/2019</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+<span class="kn">from</span> <span class="nn">src.dominio.Enum</span> <span class="k">import</span> <span class="n">EnumTipoParamentro</span>
+<span class="kn">from</span> <span class="nn">src.dominio.Variaveis</span> <span class="k">import</span> <span class="n">Variaveis</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Loggin</span> <span class="k">import</span> <span class="n">Loggin</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Enum</span> <span class="k">import</span> <span class="n">EnumLogStatus</span>
+
+
+<div class="viewcode-block" id="Estrategia"><a class="viewcode-back" href="../../../src.dominio.html#src.dominio.Estrategia.Estrategia">[docs]</a><span class="k">class</span> <span class="nc">Estrategia</span><span class="p">(</span><span class="n">Loggin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">iteracao</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">estrategia</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construtor da estrategia</span>
+
+<span class="sd">        :param int id: número único que identifica a estratégia, frente todas as estratégias</span>
+<span class="sd">        :param int iteracao: qual o passo do otimizador</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">estrategia</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">estrategia</span><span class="o">.</span><span class="n">variaveis</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span> <span class="o">=</span> <span class="n">Variaveis</span><span class="p">()</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Conjunto de todas as variáveis</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="vm">__name__</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel com o nome do arquivo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Identificardo da estrategia</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iteracao</span> <span class="o">=</span> <span class="n">iteracao</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Iteração é um conjunto de estratégias, em otimizador seria o passo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_of</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Valor avaliado da of definida</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_has_erro</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Informa se houve algum erro em alguma parte do processo.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_economico</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Armazena os dados economicos, dados obtidos por uma ferramenta externa.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_geral</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">geral</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Campo destinado a colocar qualquer informação de interece</span>
+<span class="sd">        :return: Retorna o que estiver gravado em geral, preferencialmente str</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geral</span>
+
+    <span class="nd">@geral</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">geral</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geral</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_geral</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{geral}</span><span class="s1">&#39;</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="s1">&#39;Não é possivel gravar o tipo [{type(geral}] no campo geral, será atribuido vazio ao campo.&#39;</span><span class="p">,</span> <span class="n">info_ex</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">),</span> <span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retorna o id da estrategia</span>
+<span class="sd">        :return: Retorna o id</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">iteracao</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retorna a intereacao da estrategia</span>
+<span class="sd">        :return: Retorna a estrategia</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iteracao</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">of</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retorna o valor da of da estrategi</span>
+<span class="sd">        :return: Valor da of</span>
+<span class="sd">        :rtype: float</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_of</span>
+
+    <span class="nd">@of</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">of</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">of</span><span class="p">:</span> <span class="nb">float</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        seta o valor da of na estrategia</span>
+<span class="sd">        :param float of: Valora da of</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_of</span> <span class="o">=</span> <span class="n">of</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">has_erro</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Informa o erro da estrategia</span>
+<span class="sd">        :return: Retorna o erro na estrategia</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_erro</span>
+
+    <span class="nd">@has_erro</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">has_erro</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">erro</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Seta o erro da estrategia. Se ja existir um erro o novo erro é adcionado.</span>
+<span class="sd">        :param str erro: Erro encontrado na estrategia</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_erro</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_has_erro</span> <span class="o">=</span> <span class="n">erro</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_has_erro</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{self._has_erro}</span><span class="s1">&gt;</span><span class="si">{erro}</span><span class="s1">&#39;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">economico</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retorna os dados economicos obtidos.</span>
+<span class="sd">        :return: dados economico</span>
+<span class="sd">        :rtype: pd.DataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_economico</span>
+
+    <span class="nd">@economico</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">economico</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">economico</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Seta os dados economicos obtidos.</span>
+<span class="sd">        :param pd.DataFrame economico: Dados economicos</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_economico</span> <span class="o">=</span> <span class="n">economico</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">variaveis</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Variaveis</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retorna o objeto com todas as variaveis</span>
+<span class="sd">        :return: retorna todas as variaveis</span>
+<span class="sd">        :rtype: Variaveis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span>
+
+<div class="viewcode-block" id="Estrategia.add_in_variaveis"><a class="viewcode-back" href="../../../src.dominio.html#src.dominio.Estrategia.Estrategia.add_in_variaveis">[docs]</a>    <span class="k">def</span> <span class="nf">add_in_variaveis</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variaveis</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adicionar uma variavel um lista de variaveis em variaveis</span>
+<span class="sd">        :param list variaveis: Uma ou uma lista de variaveis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">variaveis</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">type</span><span class="p">([]):</span>
+            <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">variaveis</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="o">.</span><span class="n">add_in_variaveis</span><span class="p">(</span><span class="n">variaveis</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="o">.</span><span class="n">add_in_variaveis</span><span class="p">(</span><span class="n">variaveis</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Estrategia.get_variavies_by_tipo"><a class="viewcode-back" href="../../../src.dominio.html#src.dominio.Estrategia.Estrategia.get_variavies_by_tipo">[docs]</a>    <span class="k">def</span> <span class="nf">get_variavies_by_tipo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tipo</span><span class="o">=</span><span class="n">EnumTipoParamentro</span><span class="o">.</span><span class="n">VARIAVEL</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retorna as variaveis</span>
+
+<span class="sd">        :param EnumTipoParametro.VARIAVEL tipo: qual o tipo de variavel que deseja buscar.</span>
+<span class="sd">        :return: As variaveis do tipo selecionado</span>
+<span class="sd">        :rtype: Variaveis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="o">.</span><span class="n">get_variaveis_by_tipo</span><span class="p">(</span><span class="n">tipo</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Estrategia.data_frame"><a class="viewcode-back" href="../../../src.dominio.html#src.dominio.Estrategia.Estrategia.data_frame">[docs]</a>    <span class="k">def</span> <span class="nf">data_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">],</span>
+                           <span class="s1">&#39;iteracao&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_iteracao</span><span class="p">],</span>
+                           <span class="s1">&#39;has_erro&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_has_erro</span><span class="p">],</span>
+                           <span class="s1">&#39;OF&#39;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">of</span><span class="p">],</span>
+                           <span class="s1">&#39;serializado&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">serializacao</span><span class="p">()</span>
+                           <span class="p">},</span>
+                          <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">])</span>
+
+        <span class="n">dfv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="o">.</span><span class="n">data_frame</span><span class="p">()</span>
+        <span class="n">dfv</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">dfv</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="Estrategia.to_string"><a class="viewcode-back" href="../../../src.dominio.html#src.dominio.Estrategia.Estrategia.to_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converte o objeto em string</span>
+<span class="sd">        :return: o objeto convertido em string</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;Id: </span><span class="si">{self._id}</span><span class="s2">;</span><span class="se">\t</span><span class="s2">Iteracao: </span><span class="si">{self._iteracao}</span><span class="s2">;</span><span class="se">\t</span><span class="s2">{self._variaveis.to_string()};</span><span class="se">\t</span><span class="s2">Geral: </span><span class="si">{self._geral}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">string</span></div>
+
+<div class="viewcode-block" id="Estrategia.serializacao"><a class="viewcode-back" href="../../../src.dominio.html#src.dominio.Estrategia.Estrategia.serializacao">[docs]</a>    <span class="k">def</span> <span class="nf">serializacao</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Serializa o objecto</span>
+<span class="sd">        :return: objeto serializado</span>
+<span class="sd">        :rtype: str</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">string</span> <span class="o">=</span> <span class="n">f</span><span class="s2">&quot;{self._variaveis.serializacao()}&quot;</span>
+        <span class="k">return</span> <span class="n">string</span></div>
+
+<div class="viewcode-block" id="Estrategia.to_save"><a class="viewcode-back" href="../../../src.dominio.html#src.dominio.Estrategia.Estrategia.to_save">[docs]</a>    <span class="k">def</span> <span class="nf">to_save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retorna um lista de dicionarios com a ordenação para salvar, e no dicionario com o nome da coluna e valor.</span>
+<span class="sd">        As colunas são id, iteracao, has_erro_of + as variaveis</span>
+<span class="sd">        :return: uma lista de dicionarios.</span>
+<span class="sd">        :rtype: list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">has_erro</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_erro</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_erro</span>
+        <span class="n">est</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;iteracao&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iteracao</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;has_erro&#39;</span><span class="p">:</span> <span class="n">has_erro</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;of&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_of</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;geral&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_geral</span><span class="p">}]</span>
+
+        <span class="n">est</span> <span class="o">=</span> <span class="n">est</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_variaveis</span><span class="o">.</span><span class="n">to_save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">est</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

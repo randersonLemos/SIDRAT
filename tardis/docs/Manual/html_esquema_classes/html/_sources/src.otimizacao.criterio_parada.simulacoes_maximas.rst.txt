@@ -1,0 +1,22 @@
+src.otimizacao.criterio\_parada.simulacoes\_maximas package
+===========================================================
+
+Submodules
+----------
+
+src.otimizacao.criterio\_parada.simulacoes\_maximas.SimulacoesMaximas module
+----------------------------------------------------------------------------
+
+.. automodule:: src.otimizacao.criterio_parada.simulacoes_maximas.SimulacoesMaximas
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.otimizacao.criterio_parada.simulacoes_maximas
+   :members:
+   :undoc-members:
+   :show-inheritance:

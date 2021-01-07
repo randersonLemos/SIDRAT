@@ -1,0 +1,638 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.dominio package &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.inicializacao package" href="src.inicializacao.html" />
+    <link rel="prev" title="src.contexto package" href="src.contexto.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="src-dominio-package">
+<h1>src.dominio package<a class="headerlink" href="#src-dominio-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.dominio.Enum">
+<span id="src-dominio-enum-module"></span><h2>src.dominio.Enum module<a class="headerlink" href="#module-src.dominio.Enum" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Rafael</p>
+</dd>
+<dt class="field-even">data</dt>
+<dd class="field-even"><p>10/12/2019</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.dominio.Enum.EnumTipoParamentro">
+<em class="property">class </em><code class="sig-prename descclassname">src.dominio.Enum.</code><code class="sig-name descname">EnumTipoParamentro</code><a class="reference internal" href="_modules/src/dominio/Enum.html#EnumTipoParamentro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Enum.EnumTipoParamentro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Descreve os timpo de parametros</p>
+<dl class="attribute">
+<dt id="src.dominio.Enum.EnumTipoParamentro.CONSTANTE">
+<code class="sig-name descname">CONSTANTE</code><em class="property"> = 3</em><a class="headerlink" href="#src.dominio.Enum.EnumTipoParamentro.CONSTANTE" title="Permalink to this definition">¶</a></dt>
+<dd><p>É um paramentro constante, que o valor sera sempre o valor default</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.dominio.Enum.EnumTipoParamentro.VARIAVEL">
+<code class="sig-name descname">VARIAVEL</code><em class="property"> = 2</em><a class="headerlink" href="#src.dominio.Enum.EnumTipoParamentro.VARIAVEL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reflete em uma variavel padrão</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.dominio.Estrategia">
+<span id="src-dominio-estrategia-module"></span><h2>src.dominio.Estrategia module<a class="headerlink" href="#module-src.dominio.Estrategia" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Rafael</p>
+</dd>
+<dt class="field-even">data</dt>
+<dd class="field-even"><p>10/12/2019</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.dominio.Estrategia.Estrategia">
+<em class="property">class </em><code class="sig-prename descclassname">src.dominio.Estrategia.</code><code class="sig-name descname">Estrategia</code><span class="sig-paren">(</span><em class="sig-param">id: int</em>, <em class="sig-param">iteracao: int</em>, <em class="sig-param">estrategia=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Estrategia.html#Estrategia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategia.Estrategia" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="src.loggin.html#src.loggin.Loggin.Loggin" title="src.loggin.Loggin.Loggin"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.loggin.Loggin.Loggin</span></code></a></p>
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.add_in_variaveis">
+<code class="sig-name descname">add_in_variaveis</code><span class="sig-paren">(</span><em class="sig-param">variaveis: list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Estrategia.html#Estrategia.add_in_variaveis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.add_in_variaveis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adicionar uma variavel um lista de variaveis em variaveis
+:param list variaveis: Uma ou uma lista de variaveis</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.data_frame">
+<code class="sig-name descname">data_frame</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Estrategia.html#Estrategia.data_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.data_frame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.economico">
+<em class="property">property </em><code class="sig-name descname">economico</code><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.economico" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna os dados economicos obtidos.
+:return: dados economico
+:rtype: pd.DataFrame</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.geral">
+<em class="property">property </em><code class="sig-name descname">geral</code><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.geral" title="Permalink to this definition">¶</a></dt>
+<dd><p>Campo destinado a colocar qualquer informação de interece
+:return: Retorna o que estiver gravado em geral, preferencialmente str
+:rtype: str</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.get_variavies_by_tipo">
+<code class="sig-name descname">get_variavies_by_tipo</code><span class="sig-paren">(</span><em class="sig-param">tipo=&lt;EnumTipoParamentro.VARIAVEL: 2&gt;</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/src/dominio/Estrategia.html#Estrategia.get_variavies_by_tipo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.get_variavies_by_tipo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna as variaveis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>tipo</strong> (<em>EnumTipoParametro.VARIAVEL</em>) – qual o tipo de variavel que deseja buscar.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>As variaveis do tipo selecionado</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#src.dominio.Variaveis.Variaveis" title="src.dominio.Variaveis.Variaveis">Variaveis</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.has_erro">
+<em class="property">property </em><code class="sig-name descname">has_erro</code><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.has_erro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Informa o erro da estrategia
+:return: Retorna o erro na estrategia
+:rtype: str</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.id">
+<em class="property">property </em><code class="sig-name descname">id</code><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna o id da estrategia
+:return: Retorna o id
+:rtype: int</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.iteracao">
+<em class="property">property </em><code class="sig-name descname">iteracao</code><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.iteracao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna a intereacao da estrategia
+:return: Retorna a estrategia
+:rtype: int</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.of">
+<em class="property">property </em><code class="sig-name descname">of</code><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.of" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna o valor da of da estrategi
+:return: Valor da of
+:rtype: float</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.serializacao">
+<code class="sig-name descname">serializacao</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/src/dominio/Estrategia.html#Estrategia.serializacao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.serializacao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serializa o objecto
+:return: objeto serializado
+:rtype: str</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.to_save">
+<code class="sig-name descname">to_save</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/src/dominio/Estrategia.html#Estrategia.to_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.to_save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna um lista de dicionarios com a ordenação para salvar, e no dicionario com o nome da coluna e valor.
+As colunas são id, iteracao, has_erro_of + as variaveis
+:return: uma lista de dicionarios.
+:rtype: list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.to_string">
+<code class="sig-name descname">to_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/src/dominio/Estrategia.html#Estrategia.to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converte o objeto em string
+:return: o objeto convertido em string
+:rtype: str</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategia.Estrategia.variaveis">
+<em class="property">property </em><code class="sig-name descname">variaveis</code><a class="headerlink" href="#src.dominio.Estrategia.Estrategia.variaveis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna o objeto com todas as variaveis
+:return: retorna todas as variaveis
+:rtype: Variaveis</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.dominio.Estrategias">
+<span id="src-dominio-estrategias-module"></span><h2>src.dominio.Estrategias module<a class="headerlink" href="#module-src.dominio.Estrategias" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Rafael</p>
+</dd>
+<dt class="field-even">data</dt>
+<dd class="field-even"><p>10/12/2019</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.dominio.Estrategias.Estrategias">
+<em class="property">class </em><code class="sig-prename descclassname">src.dominio.Estrategias.</code><code class="sig-name descname">Estrategias</code><a class="reference internal" href="_modules/src/dominio/Estrategias.html#Estrategias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategias.Estrategias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="src.loggin.html#src.loggin.Loggin.Loggin" title="src.loggin.Loggin.Loggin"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.loggin.Loggin.Loggin</span></code></a></p>
+<dl class="method">
+<dt id="src.dominio.Estrategias.Estrategias.add_in_estrategias">
+<code class="sig-name descname">add_in_estrategias</code><span class="sig-paren">(</span><em class="sig-param">estrategia: src.dominio.Estrategia.Estrategia</em>, <em class="sig-param">sobrescreve: bool = False</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/src/dominio/Estrategias.html#Estrategias.add_in_estrategias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategias.Estrategias.add_in_estrategias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Método que adiciona estrategia a lista, e verifica se já existe igual</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>estrategia</strong> (<a class="reference internal" href="#src.dominio.Estrategia.Estrategia" title="src.dominio.Estrategia.Estrategia"><em>Estrategia</em></a>) – É a estrategia para ser adcionada</p></li>
+<li><p><strong>sobrescreve</strong> (<em>bool</em>) – Se quando encontrar uma estrategia igual, deve sobrescrever. Padrão é não</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Retorna True ou False, para verificar se a adição ocorreu corretamente.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategias.Estrategias.data_frame">
+<code class="sig-name descname">data_frame</code><span class="sig-paren">(</span><em class="sig-param">iteracao: [&lt;class 'int'&gt;] = None</em>, <em class="sig-param">identificador: int = None</em>, <em class="sig-param">com_erro: bool = False</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/src/dominio/Estrategias.html#Estrategias.data_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategias.Estrategias.data_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converte as estrategias em um dataFrame. Seguindo a regra: Se identificar = None, retorna todas as estratégias da iteracao definida, Se iteração nao definida retorna todas as estratégias.</p>
+<p>TODO :param [int] iteracao: Número que identifica a iteração
+:param int identificador: Número do identificador
+TODO :param bool com_erro: Se igual a True retorna todas com erro, Se igual False retorna todas sem erro. Se igual None retorna tudo.
+:return: Retorna o data frame da opção selecionada
+:rtype: pd.DataFrame</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategias.Estrategias.estrategias">
+<em class="property">property </em><code class="sig-name descname">estrategias</code><a class="headerlink" href="#src.dominio.Estrategias.Estrategias.estrategias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna o dicionario com todas as estrategias
+:return: Retorna as estrategias
+:rtype: dict</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategias.Estrategias.estrategias_it_para_menos1">
+<code class="sig-name descname">estrategias_it_para_menos1</code><span class="sig-paren">(</span><em class="sig-param">it</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Estrategias.html#Estrategias.estrategias_it_para_menos1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategias.Estrategias.estrategias_it_para_menos1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategias.Estrategias.existe_estrategia">
+<code class="sig-name descname">existe_estrategia</code><span class="sig-paren">(</span><em class="sig-param">estrategia: src.dominio.Estrategia.Estrategia</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Estrategias.html#Estrategias.existe_estrategia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategias.Estrategias.existe_estrategia" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategias.Estrategias.get_estrategia_by_iteracao_id">
+<code class="sig-name descname">get_estrategia_by_iteracao_id</code><span class="sig-paren">(</span><em class="sig-param">iteracao: int</em>, <em class="sig-param">id: int</em><span class="sig-paren">)</span> &#x2192; src.dominio.Estrategia.Estrategia<a class="reference internal" href="_modules/src/dominio/Estrategias.html#Estrategias.get_estrategia_by_iteracao_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategias.Estrategias.get_estrategia_by_iteracao_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Método para obter as estrategia com iteracao e id.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iteracao</strong> (<em>int</em>) – Número que identifica a iteração</p></li>
+<li><p><strong>id</strong> (<em>int</em>) – Número do identificador</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Retorna a estrategia que atendem ao critério de busca</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#src.dominio.Estrategia.Estrategia" title="src.dominio.Estrategia.Estrategia">Estrategia</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategias.Estrategias.get_estrategias_by_iteracao">
+<code class="sig-name descname">get_estrategias_by_iteracao</code><span class="sig-paren">(</span><em class="sig-param">iteracao: [&lt;class 'int'&gt;], com_erro: bool = False</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/src/dominio/Estrategias.html#Estrategias.get_estrategias_by_iteracao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategias.Estrategias.get_estrategias_by_iteracao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Método para obter as estrategias, atravez da iteracao.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>iteracao</strong> (<em>[</em><em>int</em><em>]</em>) – Número que identifica a iteração</p></li>
+<li><p><strong>com_erro</strong> (<em>bool</em>) – Se igual False retorna todas sem erro.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Retorna as estrategias que atendem ao critério de busca</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategias.Estrategias.melhor_estrategia">
+<code class="sig-name descname">melhor_estrategia</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Estrategias.html#Estrategias.melhor_estrategia"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategias.Estrategias.melhor_estrategia" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategias.Estrategias.melhores_estrategias">
+<code class="sig-name descname">melhores_estrategias</code><span class="sig-paren">(</span><em class="sig-param">quantidade=10</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Estrategias.html#Estrategias.melhores_estrategias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategias.Estrategias.melhores_estrategias" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategias.Estrategias.remove_iteracao">
+<code class="sig-name descname">remove_iteracao</code><span class="sig-paren">(</span><em class="sig-param">it</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Estrategias.html#Estrategias.remove_iteracao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategias.Estrategias.remove_iteracao" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategias.Estrategias.serializacao">
+<code class="sig-name descname">serializacao</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Estrategias.html#Estrategias.serializacao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategias.Estrategias.serializacao" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Estrategias.Estrategias.to_save">
+<code class="sig-name descname">to_save</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/src/dominio/Estrategias.html#Estrategias.to_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Estrategias.Estrategias.to_save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna um lista de dicionarios com a ordenação para salvar, e no dicionario com o nome da coluna e valor.
+:return: uma lista de dicionarios.
+:rtype: list</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.dominio.Parametro">
+<span id="src-dominio-parametro-module"></span><h2>src.dominio.Parametro module<a class="headerlink" href="#module-src.dominio.Parametro" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Rafael</p>
+</dd>
+<dt class="field-even">data</dt>
+<dd class="field-even"><p>10/12/2019</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.dominio.Parametro.Parametro">
+<em class="property">class </em><code class="sig-prename descclassname">src.dominio.Parametro.</code><code class="sig-name descname">Parametro</code><span class="sig-paren">(</span><em class="sig-param">nome</em>, <em class="sig-param">dominio</em>, <em class="sig-param">probabilidade</em>, <em class="sig-param">default</em>, <em class="sig-param">tipo=&lt;EnumTipoParamentro.VARIAVEL: 2&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Parametro.html#Parametro"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Parametro.Parametro" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="src.loggin.html#src.loggin.Loggin.Loggin" title="src.loggin.Loggin.Loggin"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.loggin.Loggin.Loggin</span></code></a></p>
+<dl class="method">
+<dt id="src.dominio.Parametro.Parametro.default">
+<em class="property">property </em><code class="sig-name descname">default</code><a class="headerlink" href="#src.dominio.Parametro.Parametro.default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Parametro.Parametro.dominio">
+<em class="property">property </em><code class="sig-name descname">dominio</code><a class="headerlink" href="#src.dominio.Parametro.Parametro.dominio" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Parametro.Parametro.get_posicao">
+<code class="sig-name descname">get_posicao</code><span class="sig-paren">(</span><em class="sig-param">posicao: int</em><span class="sig-paren">)</span> &#x2192; tuple<a class="reference internal" href="_modules/src/dominio/Parametro.html#Parametro.get_posicao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Parametro.Parametro.get_posicao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verificar se a posicao esta dentro dos limites do dominio, retorna a posicao assim com o valor.
+:param posicao: o valor da posicao no array
+:type posicao: int
+:return: Posicao, Valor
+:rtype: int, object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Parametro.Parametro.get_valor">
+<code class="sig-name descname">get_valor</code><span class="sig-paren">(</span><em class="sig-param">valor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Parametro.html#Parametro.get_valor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Parametro.Parametro.get_valor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verificar se o valor esta na lista de dominio e retornar o valor assim como a posicao.
+:param valor: valor da lista
+:type valor: object
+:return: Valor e posicao
+:rtype: object, int(None)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Parametro.Parametro.nome">
+<em class="property">property </em><code class="sig-name descname">nome</code><a class="headerlink" href="#src.dominio.Parametro.Parametro.nome" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Parametro.Parametro.probabilidade">
+<em class="property">property </em><code class="sig-name descname">probabilidade</code><a class="headerlink" href="#src.dominio.Parametro.Parametro.probabilidade" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Parametro.Parametro.tipo">
+<em class="property">property </em><code class="sig-name descname">tipo</code><a class="headerlink" href="#src.dominio.Parametro.Parametro.tipo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Parametro.Parametro.to_string">
+<code class="sig-name descname">to_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Parametro.html#Parametro.to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Parametro.Parametro.to_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.dominio.Variaveis">
+<span id="src-dominio-variaveis-module"></span><h2>src.dominio.Variaveis module<a class="headerlink" href="#module-src.dominio.Variaveis" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Rafael</p>
+</dd>
+<dt class="field-even">data</dt>
+<dd class="field-even"><p>11/12/2019</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.dominio.Variaveis.Variaveis">
+<em class="property">class </em><code class="sig-prename descclassname">src.dominio.Variaveis.</code><code class="sig-name descname">Variaveis</code><a class="reference internal" href="_modules/src/dominio/Variaveis.html#Variaveis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variaveis.Variaveis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="src.loggin.html#src.loggin.Loggin.Loggin" title="src.loggin.Loggin.Loggin"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.loggin.Loggin.Loggin</span></code></a></p>
+<dl class="method">
+<dt id="src.dominio.Variaveis.Variaveis.add_in_variaveis">
+<code class="sig-name descname">add_in_variaveis</code><span class="sig-paren">(</span><em class="sig-param">variavel: src.dominio.Variavel.Variavel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Variaveis.html#Variaveis.add_in_variaveis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variaveis.Variaveis.add_in_variaveis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adicionar uma nova variavel a lista de variaveis
+:param Variavel variavel: variavel</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variaveis.Variaveis.data_frame">
+<code class="sig-name descname">data_frame</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Variaveis.html#Variaveis.data_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variaveis.Variaveis.data_frame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variaveis.Variaveis.get_variaveis_by_tipo">
+<code class="sig-name descname">get_variaveis_by_tipo</code><span class="sig-paren">(</span><em class="sig-param">tipo: src.dominio.Enum.EnumTipoParamentro = &lt;EnumTipoParamentro.VARIAVEL: 2&gt;</em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/src/dominio/Variaveis.html#Variaveis.get_variaveis_by_tipo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variaveis.Variaveis.get_variaveis_by_tipo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna as variaveis do tipo infomado
+:param EnumTipoParamentro tipo: tipo desejado.
+:return: Variaveis encontradas
+:rtype: dict</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variaveis.Variaveis.get_variavel_by_nome">
+<code class="sig-name descname">get_variavel_by_nome</code><span class="sig-paren">(</span><em class="sig-param">nome: str</em><span class="sig-paren">)</span> &#x2192; src.dominio.Variavel.Variavel<a class="reference internal" href="_modules/src/dominio/Variaveis.html#Variaveis.get_variavel_by_nome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variaveis.Variaveis.get_variavel_by_nome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtem a variavel com o nome informado
+:param str nome: Nome da variavel informado
+:return: variavel encontrada
+:rtype: Variavel</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variaveis.Variaveis.serializacao">
+<code class="sig-name descname">serializacao</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Variaveis.html#Variaveis.serializacao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variaveis.Variaveis.serializacao" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variaveis.Variaveis.set_variavel_posicao_by_nome">
+<code class="sig-name descname">set_variavel_posicao_by_nome</code><span class="sig-paren">(</span><em class="sig-param">nome: str</em>, <em class="sig-param">posicao: int</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Variaveis.html#Variaveis.set_variavel_posicao_by_nome"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variaveis.Variaveis.set_variavel_posicao_by_nome" title="Permalink to this definition">¶</a></dt>
+<dd><p>Seta o novo valor da variavel cujo novo foi informado
+:param str nome: Nome da variavel
+:param int posicao: Posicao no vetor da variavel</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variaveis.Variaveis.to_save">
+<code class="sig-name descname">to_save</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/src/dominio/Variaveis.html#Variaveis.to_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variaveis.Variaveis.to_save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna um lista de dicionarios com a ordenação para salvar, e no dicionario com o nome da coluna e valor.
+:return: uma lista de dicionarios.
+:rtype: list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variaveis.Variaveis.to_string">
+<code class="sig-name descname">to_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Variaveis.html#Variaveis.to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variaveis.Variaveis.to_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.dominio.Variavel">
+<span id="src-dominio-variavel-module"></span><h2>src.dominio.Variavel module<a class="headerlink" href="#module-src.dominio.Variavel" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Rafael</p>
+</dd>
+<dt class="field-even">data</dt>
+<dd class="field-even"><p>11/12/2019</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.dominio.Variavel.Variavel">
+<em class="property">class </em><code class="sig-prename descclassname">src.dominio.Variavel.</code><code class="sig-name descname">Variavel</code><span class="sig-paren">(</span><em class="sig-param">parametro: src.dominio.Parametro.Parametro</em>, <em class="sig-param">valor=None</em>, <em class="sig-param">posicao=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Variavel.html#Variavel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variavel.Variavel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="src.loggin.html#src.loggin.Loggin.Loggin" title="src.loggin.Loggin.Loggin"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.loggin.Loggin.Loggin</span></code></a></p>
+<dl class="method">
+<dt id="src.dominio.Variavel.Variavel.data_frame">
+<code class="sig-name descname">data_frame</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Variavel.html#Variavel.data_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variavel.Variavel.data_frame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variavel.Variavel.nome">
+<em class="property">property </em><code class="sig-name descname">nome</code><a class="headerlink" href="#src.dominio.Variavel.Variavel.nome" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variavel.Variavel.parametro">
+<em class="property">property </em><code class="sig-name descname">parametro</code><a class="headerlink" href="#src.dominio.Variavel.Variavel.parametro" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variavel.Variavel.posicao">
+<em class="property">property </em><code class="sig-name descname">posicao</code><a class="headerlink" href="#src.dominio.Variavel.Variavel.posicao" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variavel.Variavel.serializacao">
+<code class="sig-name descname">serializacao</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Variavel.html#Variavel.serializacao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variavel.Variavel.serializacao" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variavel.Variavel.to_save">
+<code class="sig-name descname">to_save</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="_modules/src/dominio/Variavel.html#Variavel.to_save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variavel.Variavel.to_save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retorna um dicionários contendo nome : valor
+:return: um dicionario.
+:rtype: dict</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variavel.Variavel.to_string">
+<code class="sig-name descname">to_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/dominio/Variavel.html#Variavel.to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.dominio.Variavel.Variavel.to_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.dominio.Variavel.Variavel.valor">
+<em class="property">property </em><code class="sig-name descname">valor</code><a class="headerlink" href="#src.dominio.Variavel.Variavel.valor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.dominio">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.dominio" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="src.html">src package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="src.avaliacao.html">src.avaliacao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.carregamento.html">src.carregamento package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.contexto.html">src.contexto package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">src.dominio package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.dominio.Enum">src.dominio.Enum module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.dominio.Estrategia">src.dominio.Estrategia module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.dominio.Estrategias">src.dominio.Estrategias module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.dominio.Parametro">src.dominio.Parametro module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.dominio.Variaveis">src.dominio.Variaveis module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.dominio.Variavel">src.dominio.Variavel module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.dominio">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.inicializacao.html">src.inicializacao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.inout.html">src.inout package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.loggin.html">src.loggin package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.modulo_padrao.html">src.modulo_padrao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.otimizacao.html">src.otimizacao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.reducao.html">src.reducao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.sorteio.html">src.sorteio package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#src-main-module">src.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#src-main-lua-module">src.main_lua module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#src-main-test-module">src.main_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="src.html">src package</a><ul>
+      <li>Previous: <a href="src.contexto.html" title="previous chapter">src.contexto package</a></li>
+      <li>Next: <a href="src.inicializacao.html" title="next chapter">src.inicializacao package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/src.dominio.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

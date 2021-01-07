@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<unieco version="2.0">
+	<taxes>
+		<ircs value="0.34"/>
+		<pisCofins value="0.0925"/>
+		<royalty value="0.1"/>
+	</taxes>
+	<market>
+		<discountRate value="0.09"/>
+        <abandonmentRate value="0.082"/>
+		<priceList>
+			<price phase="oil" value="314.5"  time="0"/>
+			<price phase="gas" value="0.0"    time="0"/>
+		</priceList>
+	</market>
+	<referenceDate date="2015-10-31 00:00:00"/>
+	<field type="offshore">
+		<oil type="brent"/>
+		<fieldCostList>
+			<fieldCost type="investment"  value="0"  name="Field"/>
+<!--			<fieldCost type="abandonment" value=""   name="Field"/> -->
+		</fieldCostList>
+		<platformCostList>
+			<platformCost type="cpg"      value="0.0000"    name="Plataforma"/>
+			<platformCost type="cpl"      value="0.0032"    name="Plataforma"/>
+			<platformCost type="cpo"      value="0.0132"    name="Plataforma"/>
+			<platformCost type="cpw"      value="0.00315"   name="Plataforma"/>
+			<platformCost type="ciw"      value="0.00315"   name="Plataforma"/>
+			<platformCost type="fixed"    value="417.0"     name="Plataforma"/>
+			<platformCost type="wellUnit" value="0.1"       name="Plataforma"/>
+			<platformCost type="slotUnit" value="0.1"       name="Plataforma"/>
+<!--			<platformCost type="installation" value=""      name="Plataforma"/> -->
+			<platformCost type="maintenance"  value="0.0"   name="Producao"/>
+		</platformCostList>
+		<manifoldCostList>
+			<manifoldCost type="installation" value="0.0"   name="Producao"/>
+			<manifoldCost type="installation" value="0.0"   name="Injecao"/>
+		</manifoldCostList>
+		<wellCostList>
+			<wellCost type="unit"          name="*"		orientation="*"	        value="0.0"/>
+			
+			<wellCost type="drilling"      name="PI*"         orientation="vertical"     value="1.0835E7"/>
+			<wellCost type="completion"    name="PI*"         orientation="vertical"     value="1.0835E7"/>
+			<wellCost type="connection"    name="PI*"         orientation="vertical"     value="1.333E7"/>
+			<wellCost type="recompletion"  name="PI*"         orientation="vertical"     value="8.0E6"/>
+			<wellCost type="workover"      name="PI*"         orientation="vertical"     value="0"/>
+			<wellCost type="drilling"      name="PI*"         orientation="horizontal"   value="45877.5"/> <!-- 3.0585E4 x 1.5 -->
+			<wellCost type="completion"    name="PI*"         orientation="horizontal"   value="45877.5"/>
+			<wellCost type="connection"    name="PI*"         orientation="horizontal"   value="1.333E7"/>
+			<wellCost type="recompletion"  name="PI*"         orientation="horizontal"   value="1.0E7"/>
+			<wellCost type="workover"      name="PI*"         orientation="horizontal"   value="0"/>
+			
+			<wellCost type="drilling"      name="PP*"         orientation="vertical"     value="1.0835E7"/>
+			<wellCost type="completion"    name="PP*"         orientation="vertical"     value="1.0835E7"/>
+			<wellCost type="connection"    name="PP*"         orientation="vertical"     value="1.333E7"/>
+			<wellCost type="recompletion"  name="PP*"         orientation="vertical"     value="8.0E6"/>
+			<wellCost type="workover"      name="PP*"         orientation="vertical"     value="0"/>
+			<wellCost type="drilling"      name="PP*"         orientation="horizontal"   value="45877.5"/> <!-- 3.0585E4 x 1.5 -->
+			<wellCost type="completion"    name="PP*"         orientation="horizontal"   value="45877.5"/>
+			<wellCost type="connection"    name="PP*"         orientation="horizontal"   value="1.333E7"/>
+			<wellCost type="recompletion"  name="PP*"         orientation="horizontal"   value="1.0E7"/>
+			<wellCost type="workover"      name="PP*"         orientation="horizontal"   value="0"/>
+
+			<wellCost type="drilling"      name="PROD00*"       orientation="*"            value="0.0"/>
+			<wellCost type="completion"    name="PROD00*"       orientation="*"            value="0.0"/>
+			<wellCost type="connection"    name="PROD00*"       orientation="*"            value="1.333E7"/>
+			
+		</wellCostList>
+		<costList>
+			<cost phase="oil"     type="production"   value="62.9"     time="0"/>
+			<cost phase="water"   type="production"   value="6.29"     time="0"/>
+			<cost phase="gas"     type="production"   value="0.0"      time="0"/>
+			<cost phase="pol"     type="production"   value="0.0"      time="0"/>
+			<cost phase="water"   type="injection"    value="6.29"     time="0"/>
+			<cost phase="gas"     type="injection"    value="0.0"      time="0"/>
+			<cost phase="pol"     type="injection"    value="0.0"      time="0"/>
+		</costList>
+	</field>
+</unieco>

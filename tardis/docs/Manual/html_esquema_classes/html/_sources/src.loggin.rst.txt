@@ -1,0 +1,30 @@
+src.loggin package
+==================
+
+Submodules
+----------
+
+src.loggin.Enum module
+----------------------
+
+.. automodule:: src.loggin.Enum
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.loggin.Loggin module
+------------------------
+
+.. automodule:: src.loggin.Loggin
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.loggin
+   :members:
+   :undoc-members:
+   :show-inheritance:

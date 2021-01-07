@@ -1,0 +1,759 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.contexto package &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.dominio package" href="src.dominio.html" />
+    <link rel="prev" title="src.carregamento package" href="src.carregamento.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="src-contexto-package">
+<h1>src.contexto package<a class="headerlink" href="#src-contexto-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.contexto.Contexto">
+<span id="src-contexto-contexto-module"></span><h2>src.contexto.Contexto module<a class="headerlink" href="#module-src.contexto.Contexto" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Rafael</p>
+</dd>
+<dt class="field-even">data</dt>
+<dd class="field-even"><p>06/12/2019</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.contexto.Contexto.Contexto">
+<em class="property">class </em><code class="sig-prename descclassname">src.contexto.Contexto.</code><code class="sig-name descname">Contexto</code><a class="reference internal" href="_modules/src/contexto/Contexto.html#Contexto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.contexto.Contexto.Contexto" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="src.loggin.html#src.loggin.Loggin.Loggin" title="src.loggin.Loggin.Loggin"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.loggin.Loggin.Loggin</span></code></a></p>
+<p>Classe que contem todas as informações de configuracao</p>
+<dl class="method">
+<dt id="src.contexto.Contexto.Contexto.get_atributo">
+<code class="sig-name descname">get_atributo</code><span class="sig-paren">(</span><em class="sig-param">atributo: src.contexto.EnumAtributo.EnumAtributo</em>, <em class="sig-param">valor_unico_list: bool = False</em><span class="sig-paren">)</span> &#x2192; object<a class="reference internal" href="_modules/src/contexto/Contexto.html#Contexto.get_atributo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.contexto.Contexto.Contexto.get_atributo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Obtem o valor do atributo selecionado</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atributo</strong> (<a class="reference internal" href="#src.contexto.EnumAtributo.EnumAtributo" title="src.contexto.EnumAtributo.EnumAtributo"><em>EnumAtributo</em></a>) – Chave da configuracao</p></li>
+<li><p><strong>valor_unico_list</strong> (<em>bool</em>) – Se só tiver um valor devemos retornar uma lista de um valor ou o valor</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Devolve o valor do atributo selecionado</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.contexto.Contexto.Contexto.get_gevts_templates">
+<code class="sig-name descname">get_gevts_templates</code><span class="sig-paren">(</span><em class="sig-param">gevts_templates</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/contexto/Contexto.html#Contexto.get_gevts_templates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.contexto.Contexto.Contexto.get_gevts_templates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.contexto.Contexto.Contexto.get_modulo">
+<code class="sig-name descname">get_modulo</code><span class="sig-paren">(</span><em class="sig-param">enum_modulo: src.modulo_padrao.EnumModulo.EnumModulo</em><span class="sig-paren">)</span> &#x2192; object<a class="reference internal" href="_modules/src/contexto/Contexto.html#Contexto.get_modulo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.contexto.Contexto.Contexto.get_modulo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Buscar o modulo informado pelo enum
+:param EnumModulo enum_modulo: Enum com todos os modulos informados
+:return: Modulo desejado
+:rtype: object</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.contexto.Contexto.Contexto.set_atributo">
+<code class="sig-name descname">set_atributo</code><span class="sig-paren">(</span><em class="sig-param">atributo: src.contexto.EnumAtributo.EnumAtributo</em>, <em class="sig-param">valor: list</em>, <em class="sig-param">sobrescreve: bool = False</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/src/contexto/Contexto.html#Contexto.set_atributo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.contexto.Contexto.Contexto.set_atributo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Método para escrever no contexto. Ele não sobrescreve o que esta escrito, a menos que se definido.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atributo</strong> (<a class="reference internal" href="#src.contexto.EnumAtributo.EnumAtributo" title="src.contexto.EnumAtributo.EnumAtributo"><em>EnumAtributo</em></a>) – Chave da configuracao</p></li>
+<li><p><strong>valor</strong> (<em>object</em>) – Valor da configuracao</p></li>
+<li><p><strong>sobrescreve</strong> (<em>bool</em>) – Se deve ou não sobrescrever o valor a adicionar.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.contexto.Contexto.Contexto.set_defaults">
+<code class="sig-name descname">set_defaults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/contexto/Contexto.html#Contexto.set_defaults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.contexto.Contexto.Contexto.set_defaults" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.contexto.Contexto.Contexto.set_modulo">
+<code class="sig-name descname">set_modulo</code><span class="sig-paren">(</span><em class="sig-param">enum_modulo: src.modulo_padrao.EnumModulo.EnumModulo</em>, <em class="sig-param">modulo</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/contexto/Contexto.html#Contexto.set_modulo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.contexto.Contexto.Contexto.set_modulo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setar os modulos da aplicação
+:param EnumModulo enum_modulo: Enum que contem todos os tipo de modulos
+:param Object modulo: O modulo para setar</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.contexto.Contexto.Contexto.tem_atributo">
+<code class="sig-name descname">tem_atributo</code><span class="sig-paren">(</span><em class="sig-param">chave: src.contexto.EnumAtributo.EnumAtributo</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/src/contexto/Contexto.html#Contexto.tem_atributo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.contexto.Contexto.Contexto.tem_atributo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verificar se existe a chave no contexto</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>chave</strong> (<a class="reference internal" href="#src.contexto.EnumAtributo.EnumAtributo" title="src.contexto.EnumAtributo.EnumAtributo"><em>EnumAtributo</em></a>) – Atributo de busca</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True se existir, False se nao existir</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.contexto.EnumAtributo">
+<span id="src-contexto-enumatributo-module"></span><h2>src.contexto.EnumAtributo module<a class="headerlink" href="#module-src.contexto.EnumAtributo" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Rafael</p>
+</dd>
+<dt class="field-even">data</dt>
+<dd class="field-even"><p>06/12/2019</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.contexto.EnumAtributo.EnumAtributo">
+<em class="property">class </em><code class="sig-prename descclassname">src.contexto.EnumAtributo.</code><code class="sig-name descname">EnumAtributo</code><a class="reference internal" href="_modules/src/contexto/EnumAtributo.html#EnumAtributo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>Enum com todos os atributos existentes</p>
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.ARQUIVO_LOG">
+<code class="sig-name descname">ARQUIVO_LOG</code><em class="property"> = 3</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.ARQUIVO_LOG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Qual o caminho do arquivo de log, partindo do PATH_PROJETO</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_ITERACAO_AVALIAR">
+<code class="sig-name descname">AVALIACAO_ITERACAO_AVALIAR</code><em class="property"> = 12</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_ITERACAO_AVALIAR" title="Permalink to this definition">¶</a></dt>
+<dd><p>É uma lista de quais serão as iterações que deveram ser avaliadas, ou seja, simuladas.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_ECO_REFERENCE_DATE">
+<code class="sig-name descname">AVALIACAO_MERO_ECO_REFERENCE_DATE</code><em class="property"> = 22</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_ECO_REFERENCE_DATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data para inicio do calculo economico</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_EXECUTAVEL">
+<code class="sig-name descname">AVALIACAO_MERO_EXECUTAVEL</code><em class="property"> = 15</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_EXECUTAVEL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defini o caminho do executavel do mero</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_FOP_MULTI_THREAD">
+<code class="sig-name descname">AVALIACAO_MERO_FOP_MULTI_THREAD</code><em class="property"> = 56</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_FOP_MULTI_THREAD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Booleano que especifica o uso de multi_thread pelo fop</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_GEP_INCLUDE_PATH">
+<code class="sig-name descname">AVALIACAO_MERO_GEP_INCLUDE_PATH</code><em class="property"> = 18</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_GEP_INCLUDE_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Atributo para definir se será adicionado um include no GEP</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_GEVTS_TEMPLATES_EXECUTAR">
+<code class="sig-name descname">AVALIACAO_MERO_GEVTS_TEMPLATES_EXECUTAR</code><em class="property"> = 44</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_GEVTS_TEMPLATES_EXECUTAR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Arquivo do gevt contendo todas as variaveis e sera o efetivamente executado</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_GEVT_TEMPLATE">
+<code class="sig-name descname">AVALIACAO_MERO_GEVT_TEMPLATE</code><em class="property"> = 19</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_GEVT_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caminho do arquivo de template</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_TEMPO_MAX_SIM">
+<code class="sig-name descname">AVALIACAO_MERO_TEMPO_MAX_SIM</code><em class="property"> = 49</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_TEMPO_MAX_SIM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define tempo em horas maximo para simulacoes na mesma iteracao</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_UNIECOS_EXECUTAR">
+<code class="sig-name descname">AVALIACAO_MERO_UNIECOS_EXECUTAR</code><em class="property"> = 52</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_UNIECOS_EXECUTAR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Arquivo do unieco para execução</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_UNIECO_PATH">
+<code class="sig-name descname">AVALIACAO_MERO_UNIECO_PATH</code><em class="property"> = 21</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_UNIECO_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caminho para o Unieco</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_UNIMAP_PATH">
+<code class="sig-name descname">AVALIACAO_MERO_UNIMAP_PATH</code><em class="property"> = 20</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_MERO_UNIMAP_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caminho para o arquivo de UNIMAP</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_QUALIFICADOR">
+<code class="sig-name descname">AVALIACAO_QUALIFICADOR</code><em class="property"> = 13</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_QUALIFICADOR" title="Permalink to this definition">¶</a></dt>
+<dd><p>É um texto usado para definir um qualificador para colocar nos arquivos de configuracao</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_QUANTIDADE_SIMULACAO">
+<code class="sig-name descname">AVALIACAO_QUANTIDADE_SIMULACAO</code><em class="property"> = 27</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_QUANTIDADE_SIMULACAO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define numero maximo de avaliacoes por otimizacao</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_RESGATAR_N_MELHORES">
+<code class="sig-name descname">AVALIACAO_RESGATAR_N_MELHORES</code><em class="property"> = 57</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_RESGATAR_N_MELHORES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define numero das melhores avaliacoes a serem salvas</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_RESGATAR_PATH_MELHORES_RESULTADOS">
+<code class="sig-name descname">AVALIACAO_RESGATAR_PATH_MELHORES_RESULTADOS</code><em class="property"> = 54</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_RESGATAR_PATH_MELHORES_RESULTADOS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define caminho relativo ao path do projeto da pasta que acumula os n melhores resultados</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_TYPE">
+<code class="sig-name descname">AVALIACAO_TYPE</code><em class="property"> = 9</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Defini qual o timpo de avaliador</dt><dd><p>Values.MERO =&gt; envia cada estrategia para o Mero para efetuar a avaliacao da OF</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_WAHOO_PATH">
+<code class="sig-name descname">AVALIACAO_WAHOO_PATH</code><em class="property"> = 51</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.AVALIACAO_WAHOO_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definir o campinho do arquivo de entrada do WAHOO</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.CRITERIO_PARADA">
+<code class="sig-name descname">CRITERIO_PARADA</code><em class="property"> = 42</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.CRITERIO_PARADA" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Defini o critério de parada a ser utilizado e parametro necessário para sua utilização</dt><dd><p>SIMULACOES_MAX
+VARIACAO_OF
+ITERACOES_MAX</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.CRITERIO_PARADA_ITERACOES">
+<code class="sig-name descname">CRITERIO_PARADA_ITERACOES</code><em class="property"> = 29</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.CRITERIO_PARADA_ITERACOES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define número de iteracoes ate convergencia</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.CRITERIO_PARADA_SIMULACOES_MAX">
+<code class="sig-name descname">CRITERIO_PARADA_SIMULACOES_MAX</code><em class="property"> = 41</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.CRITERIO_PARADA_SIMULACOES_MAX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defini número máximo de simulações permitidas</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.CRITERIO_PARADA_VARIACAO_FO">
+<code class="sig-name descname">CRITERIO_PARADA_VARIACAO_FO</code><em class="property"> = 31</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.CRITERIO_PARADA_VARIACAO_FO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define variacao minima esperada em porcentagem entre maximos de 3 iteracoes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.ESTRATEGIAS">
+<code class="sig-name descname">ESTRATEGIAS</code><em class="property"> = 10</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.ESTRATEGIAS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contem o objeto da estrategia que percorrerá todo programa</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.ESTRATEGIA_BASE">
+<code class="sig-name descname">ESTRATEGIA_BASE</code><em class="property"> = 23</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.ESTRATEGIA_BASE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estrategia base, que contém a estrategia refletida pelo arquivo de dominio ou a melhor salva e recuperada</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.INICIALIZACAO_DOMINIO">
+<code class="sig-name descname">INICIALIZACAO_DOMINIO</code><em class="property"> = 8</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.INICIALIZACAO_DOMINIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caminho onde esta especificado o dominio dos parametros</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.INICIALIZACAO_REESTART_PATH">
+<code class="sig-name descname">INICIALIZACAO_REESTART_PATH</code><em class="property"> = 26</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.INICIALIZACAO_REESTART_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define caminho relativo ao projeto do objeto para reestart</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.INICIALIZACAO_SIMULA_BASE">
+<code class="sig-name descname">INICIALIZACAO_SIMULA_BASE</code><em class="property"> = 33</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.INICIALIZACAO_SIMULA_BASE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define simulacao ou nao do caso base no inicio da otimizacao</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.INICIALIZACAO_TYPE">
+<code class="sig-name descname">INICIALIZACAO_TYPE</code><em class="property"> = 5</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.INICIALIZACAO_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Defini qual o timpo de inicializacao, </dt><dd><p>Values.DEFAULT =&gt; usar os valores setados com default, 
+Values.RANDOM =&gt; usar valores aleatórios dentro do intervalor, 
+Values.REESTART =&gt; ler dos arquivos de rodaddas anteriores</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.MODULE">
+<code class="sig-name descname">MODULE</code><em class="property"> = 4</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.MODULE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quais são os módulos possiveis</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_IDLHC_AMOSTRAS_ITERACAO">
+<code class="sig-name descname">OTIMIZACAO_IDLHC_AMOSTRAS_ITERACAO</code><em class="property"> = 28</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_IDLHC_AMOSTRAS_ITERACAO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define número de amostras utilizadas por iteração pelo metodo de otimização idlhc</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_IDLHC_AMOSTRAS_PDF">
+<code class="sig-name descname">OTIMIZACAO_IDLHC_AMOSTRAS_PDF</code><em class="property"> = 30</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_IDLHC_AMOSTRAS_PDF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define número de amostras utilizadas para atualização das pdfs</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_MCC_DIC_NIVEIS_VARIAVEIS_SEM_MELHORA">
+<code class="sig-name descname">OTIMIZACAO_MCC_DIC_NIVEIS_VARIAVEIS_SEM_MELHORA</code><em class="property"> = 50</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_MCC_DIC_NIVEIS_VARIAVEIS_SEM_MELHORA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quantidade de variaveis sem melhoras no processo de busca do mcc</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_MCC_ELIMINA_NIVEIS">
+<code class="sig-name descname">OTIMIZACAO_MCC_ELIMINA_NIVEIS</code><em class="property"> = 11</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_MCC_ELIMINA_NIVEIS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Habilitar a eliminação de variaveis cujos níveis não evoluem</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_MCC_ELIMINA_NIVEIS_QUANTIDADE">
+<code class="sig-name descname">OTIMIZACAO_MCC_ELIMINA_NIVEIS_QUANTIDADE</code><em class="property"> = 100</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_MCC_ELIMINA_NIVEIS_QUANTIDADE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define a quantidade de nives que devem ser eliminados</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_MCC_VARIAVEIS_ITERACAO">
+<code class="sig-name descname">OTIMIZACAO_MCC_VARIAVEIS_ITERACAO</code><em class="property"> = 24</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_MCC_VARIAVEIS_ITERACAO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quantas avaliações sendo avaliadas por iteracao</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_PSO_POPULACAO">
+<code class="sig-name descname">OTIMIZACAO_PSO_POPULACAO</code><em class="property"> = 47</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_PSO_POPULACAO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guarda a populacao para reestart</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_PSO_QTD_POPULACAO">
+<code class="sig-name descname">OTIMIZACAO_PSO_QTD_POPULACAO</code><em class="property"> = 46</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_PSO_QTD_POPULACAO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defini o tamnho da populacao no pso</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_PSO_W">
+<code class="sig-name descname">OTIMIZACAO_PSO_W</code><em class="property"> = 48</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_PSO_W" title="Permalink to this definition">¶</a></dt>
+<dd><p>Guarda a o decrescimo de w</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_PYMOO_POPULATON">
+<code class="sig-name descname">OTIMIZACAO_PYMOO_POPULATON</code><em class="property"> = 32</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_PYMOO_POPULATON" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tamanho da populacao para os algoritmos que são baseados em populacao da biblioteca pymoo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_TYPE">
+<code class="sig-name descname">OTIMIZACAO_TYPE</code><em class="property"> = 7</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.OTIMIZACAO_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>Qual o algoritmo de otimizacao escolhid, tenho ate agora:</dt><dd><p>Values.MCC
+Values.HLDG</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.PATH_CONFIGURACAO">
+<code class="sig-name descname">PATH_CONFIGURACAO</code><em class="property"> = 1</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.PATH_CONFIGURACAO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Onde é o carminho do arquivo de configuracao, arquivo absoluto</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.PATH_LOG">
+<code class="sig-name descname">PATH_LOG</code><em class="property"> = 6</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.PATH_LOG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caminho para o arquivo de log. Predefinido como PATH_CONFIGURACAO.log
+Nao deve ser definico no configuracao</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.PATH_PROJETO">
+<code class="sig-name descname">PATH_PROJETO</code><em class="property"> = 2</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.PATH_PROJETO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Atributo que informa o caminho absoluto do projeto</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.PATH_RESULTADO">
+<code class="sig-name descname">PATH_RESULTADO</code><em class="property"> = 25</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.PATH_RESULTADO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define nome dos arquivos de exportacao</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.PATH_SIMULACAO">
+<code class="sig-name descname">PATH_SIMULACAO</code><em class="property"> = 14</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.PATH_SIMULACAO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caminho da pasta que esta toda simulacao</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.PATH_TESTES_UNITARIOS">
+<code class="sig-name descname">PATH_TESTES_UNITARIOS</code><em class="property"> = 55</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.PATH_TESTES_UNITARIOS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define caminho em que simulacoes de testes serao feitas</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.REDUCAO_DATA_INICIAL_SIMULACAO">
+<code class="sig-name descname">REDUCAO_DATA_INICIAL_SIMULACAO</code><em class="property"> = 34</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.REDUCAO_DATA_INICIAL_SIMULACAO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define primeira data de simulacao</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.REDUCAO_GEVT_DATA_FINAL">
+<code class="sig-name descname">REDUCAO_GEVT_DATA_FINAL</code><em class="property"> = 35</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.REDUCAO_GEVT_DATA_FINAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define ultima data da simulacao com tempo otimo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.REDUCAO_GEVT_DIA_FINAL">
+<code class="sig-name descname">REDUCAO_GEVT_DIA_FINAL</code><em class="property"> = 36</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.REDUCAO_GEVT_DIA_FINAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define ultimo dia da simulacao com tempo otimo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.REDUCAO_GEVT_TIME_LIST">
+<code class="sig-name descname">REDUCAO_GEVT_TIME_LIST</code><em class="property"> = 37</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.REDUCAO_GEVT_TIME_LIST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define dias de previsao com o tempo otimo</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.REDUCAO_MERO_GEVT_MARCAS_PATH">
+<code class="sig-name descname">REDUCAO_MERO_GEVT_MARCAS_PATH</code><em class="property"> = 45</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.REDUCAO_MERO_GEVT_MARCAS_PATH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contem o path do arquivo gevt do mero com as marcas para o redutor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.REDUCAO_PRECISAO">
+<code class="sig-name descname">REDUCAO_PRECISAO</code><em class="property"> = 40</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.REDUCAO_PRECISAO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defini a precisao aceitavel para acertos do rank, variando de 0 a 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.REDUCAO_QUANTIDADE_SIMULACAO_TOTAL">
+<code class="sig-name descname">REDUCAO_QUANTIDADE_SIMULACAO_TOTAL</code><em class="property"> = 38</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.REDUCAO_QUANTIDADE_SIMULACAO_TOTAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defini numero de amostras simuladas totais utilizadas para o estudo de reducao</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.REDUCAO_RANK_ANALISE">
+<code class="sig-name descname">REDUCAO_RANK_ANALISE</code><em class="property"> = 39</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.REDUCAO_RANK_ANALISE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defini o numero de rank utilizado para o estudo de reducao</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.REDUCAO_TYPE">
+<code class="sig-name descname">REDUCAO_TYPE</code><em class="property"> = 43</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.REDUCAO_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Qual o algoritmo de reducao utilizado:
+SIMULACAO_PARCIAL</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.SIMULADOR_NOME">
+<code class="sig-name descname">SIMULADOR_NOME</code><em class="property"> = 16</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.SIMULADOR_NOME" title="Permalink to this definition">¶</a></dt>
+<dd><p>Qual o simulador que será usado</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.SIMULADOR_VERSAO">
+<code class="sig-name descname">SIMULADOR_VERSAO</code><em class="property"> = 17</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.SIMULADOR_VERSAO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Qual será a versão do simulador</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumAtributo.SORTEIO_TYPE">
+<code class="sig-name descname">SORTEIO_TYPE</code><em class="property"> = 53</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumAtributo.SORTEIO_TYPE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Define sorteio a ser usado
+-HLDG</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="src.contexto.EnumAtributo.EnumValues">
+<em class="property">class </em><code class="sig-prename descclassname">src.contexto.EnumAtributo.</code><code class="sig-name descname">EnumValues</code><a class="reference internal" href="_modules/src/contexto/EnumAtributo.html#EnumValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration.</p>
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.DATA_FINAL">
+<code class="sig-name descname">DATA_FINAL</code><em class="property"> = 15</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.DATA_FINAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variavel para o gevt mero</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.DEFAULT">
+<code class="sig-name descname">DEFAULT</code><em class="property"> = 1</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.DEFAULT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Usando para definir valores padroes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.DIA_FINAL">
+<code class="sig-name descname">DIA_FINAL</code><em class="property"> = 16</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.DIA_FINAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variavel para o gevt mero</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.HLDG">
+<code class="sig-name descname">HLDG</code><em class="property"> = 21</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.HLDG" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.IDLHC">
+<code class="sig-name descname">IDLHC</code><em class="property"> = 5</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.IDLHC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Metodo de otimizacao chamado hiper cubo latino</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.ITERACOES_MAX">
+<code class="sig-name descname">ITERACOES_MAX</code><em class="property"> = 19</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.ITERACOES_MAX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Especifica o uso do criterio de parada de numero maximo de iteracoes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.MCC">
+<code class="sig-name descname">MCC</code><em class="property"> = 4</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.MCC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Metodo de otimizacao chamado metodo das coordenadas ciclicas</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.MERO">
+<code class="sig-name descname">MERO</code><em class="property"> = 6</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.MERO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defini o mero como valor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.PARCIAL">
+<code class="sig-name descname">PARCIAL</code><em class="property"> = 14</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.PARCIAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Valor parcial do usado no qualificador</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.PSO">
+<code class="sig-name descname">PSO</code><em class="property"> = 18</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.PSO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Otimizado PSO</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.PYMOO_DE">
+<code class="sig-name descname">PYMOO_DE</code><em class="property"> = 7</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.PYMOO_DE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Especifica qual algoritimo do Pymoo será usando, nesse caso será usado o DE - Differential Evolution <a class="reference external" href="https://pymoo.org/algorithms/differential_evolution.html">https://pymoo.org/algorithms/differential_evolution.html</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.PYMOO_GA">
+<code class="sig-name descname">PYMOO_GA</code><em class="property"> = 8</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.PYMOO_GA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Especifica qual algoritimo do Pymoo será usando, nesse caso será usado o GA - Genetic Algorithm <a class="reference external" href="https://pymoo.org/algorithms/genetic_algorithm.html">https://pymoo.org/algorithms/genetic_algorithm.html</a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.PYMOO_NSGA2">
+<code class="sig-name descname">PYMOO_NSGA2</code><em class="property"> = 9</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.PYMOO_NSGA2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Especifica qual algoritimo do Pymoo será usando, nesse caso será usado o <a class="reference external" href="https://pymoo.org/algorithms/nsga2.html">https://pymoo.org/algorithms/nsga2.html</a> 
+K. Deb, A. Pratap, S. Agarwal, and T. Meyarivan. A fast and elitist multiobjective genetic algorithm: nsga-II. Trans. Evol. Comp, 6(2):182–197, April 2002. URL: <a class="reference external" href="http://dx.doi.org/10.1109/4235.996017">http://dx.doi.org/10.1109/4235.996017</a>, doi:10.1109/4235.996017</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.RANDOM">
+<code class="sig-name descname">RANDOM</code><em class="property"> = 2</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.RANDOM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Usaodo para definir valores aleatorios</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.REESTART">
+<code class="sig-name descname">REESTART</code><em class="property"> = 3</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.REESTART" title="Permalink to this definition">¶</a></dt>
+<dd><p>Usando para definir quando executaremos um reestart</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.SIMULACAO_PARCIAL">
+<code class="sig-name descname">SIMULACAO_PARCIAL</code><em class="property"> = 12</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.SIMULACAO_PARCIAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Especifica o uso de simulacoes parciais para reducao</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.SIMULACOES_MAX">
+<code class="sig-name descname">SIMULACOES_MAX</code><em class="property"> = 10</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.SIMULACOES_MAX" title="Permalink to this definition">¶</a></dt>
+<dd><p>Especifica o uso do criterio de parada de simulacoes maximas</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.TIME_LIST">
+<code class="sig-name descname">TIME_LIST</code><em class="property"> = 17</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.TIME_LIST" title="Permalink to this definition">¶</a></dt>
+<dd><p>Variavel para TIME_LIST dentro do gevt</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.TOTAL">
+<code class="sig-name descname">TOTAL</code><em class="property"> = 13</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.TOTAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Valor total usando no qualificador</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.VARIACAO_OF">
+<code class="sig-name descname">VARIACAO_OF</code><em class="property"> = 11</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.VARIACAO_OF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Especifica o uso do criterio de parada de variacao minima entre maximos encontrados entre 3 ultimas iteracoes</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="src.contexto.EnumAtributo.EnumValues.WAHOO">
+<code class="sig-name descname">WAHOO</code><em class="property"> = 20</em><a class="headerlink" href="#src.contexto.EnumAtributo.EnumValues.WAHOO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Definindo valor WAHOO usado para escolha do avaliador</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.contexto">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.contexto" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="src.html">src package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="src.avaliacao.html">src.avaliacao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.carregamento.html">src.carregamento package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">src.contexto package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.contexto.Contexto">src.contexto.Contexto module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.contexto.EnumAtributo">src.contexto.EnumAtributo module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.contexto">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.dominio.html">src.dominio package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.inicializacao.html">src.inicializacao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.inout.html">src.inout package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.loggin.html">src.loggin package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.modulo_padrao.html">src.modulo_padrao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.otimizacao.html">src.otimizacao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.reducao.html">src.reducao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.sorteio.html">src.sorteio package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#src-main-module">src.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#src-main-lua-module">src.main_lua module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#src-main-test-module">src.main_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="src.html">src package</a><ul>
+      <li>Previous: <a href="src.carregamento.html" title="previous chapter">src.carregamento package</a></li>
+      <li>Next: <a href="src.dominio.html" title="next chapter">src.dominio package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/src.contexto.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

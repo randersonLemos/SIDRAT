@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.dominio.Variavel &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.dominio.Variavel</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:author: Rafael</span>
+<span class="sd">:data: 11/12/2019</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Enum</span> <span class="k">import</span> <span class="n">EnumLogStatus</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Loggin</span> <span class="k">import</span> <span class="n">Loggin</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">src.dominio.Parametro</span> <span class="k">import</span> <span class="n">Parametro</span>
+
+
+<div class="viewcode-block" id="Variavel"><a class="viewcode-back" href="../../../src.dominio.html#src.dominio.Variavel.Variavel">[docs]</a><span class="k">class</span> <span class="nc">Variavel</span><span class="p">(</span><span class="n">Loggin</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parametro</span><span class="p">:</span> <span class="n">Parametro</span><span class="p">,</span> <span class="n">valor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">posicao</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="vm">__name__</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variável com o nome do arquivo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parametro</span> <span class="o">=</span> <span class="n">parametro</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        O parametro que representa essa variavel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_valor</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Valor da variavel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_posicao</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        posicao da variavel no vector de domínio</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">v_valor</span><span class="p">,</span> <span class="n">v_posicao</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parametro</span><span class="o">.</span><span class="n">get_valor</span><span class="p">(</span><span class="n">valor</span><span class="p">)</span>
+        <span class="n">p_posicao</span><span class="p">,</span> <span class="n">p_valor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parametro</span><span class="o">.</span><span class="n">get_posicao</span><span class="p">(</span><span class="n">posicao</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">v_valor</span> <span class="o">==</span> <span class="n">p_valor</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">v_posicao</span> <span class="o">==</span> <span class="n">p_posicao</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_valor</span> <span class="o">=</span> <span class="n">v_valor</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_posicao</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v_posicao</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_valor</span> <span class="o">=</span> <span class="n">v_valor</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_posicao</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v_posicao</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">WARN</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;A relação entre valor[</span><span class="si">{valor}</span><span class="s1">] e posição[</span><span class="si">{posicao}</span><span class="s1">] no domínio[</span><span class="si">{self._parametro.dominio}</span><span class="s1">] esta errada. Assim foi gravado valor[</span><span class="si">{self._valor}</span><span class="s1">] e posicao[</span><span class="si">{self._posicao}</span><span class="s1">].&#39;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nome</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parametro</span><span class="o">.</span><span class="n">nome</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">valor</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_valor</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">posicao</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_posicao</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parametro</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parametro</span>
+
+    <span class="nd">@valor</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">valor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">valor</span><span class="p">):</span>
+        <span class="n">valor</span><span class="p">,</span> <span class="n">posicao</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parametro</span><span class="o">.</span><span class="n">get_valor</span><span class="p">(</span><span class="n">valor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_valor</span> <span class="o">=</span> <span class="n">valor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_posicao</span> <span class="o">=</span> <span class="n">posicao</span>
+        <span class="c1"># TODO print aumenta o tempo de processamento no idlhc</span>
+        <span class="c1">#self.log(texto=f&#39;Foi gravado valor[{self._valor}] e posicao[{self._posicao}].&#39;)</span>
+
+    <span class="nd">@posicao</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">posicao</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">posicao</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">posicao</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Não foi gravado nova posicao, pois é menor que zero.&#39;</span><span class="p">,</span> <span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">WARN</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        <span class="k">if</span> <span class="n">posicao</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_parametro</span><span class="o">.</span><span class="n">dominio</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Não foi gravado nova posicao da variavel [</span><span class="si">{self.nome}</span><span class="s1">], pois é maior que dominio [{len(self._parametro.dominio)}].&#39;</span><span class="p">,</span> <span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">WARN</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Tamanho maximo {len(self._parametro.dominio)}&#39;</span><span class="p">)</span>
+        <span class="n">posicao</span><span class="p">,</span> <span class="n">valor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parametro</span><span class="o">.</span><span class="n">get_posicao</span><span class="p">(</span><span class="n">posicao</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_valor</span> <span class="o">=</span> <span class="n">valor</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_posicao</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">posicao</span><span class="p">)</span>
+        <span class="c1"># TODO print aumenta o tempo de processamento no idlhc</span>
+        <span class="c1">#self.log(texto=f&#39;Foi gravado valor[{self._valor}] e posicao[{self.posicao}].&#39;)</span>
+
+<div class="viewcode-block" id="Variavel.data_frame"><a class="viewcode-back" href="../../../src.dominio.html#src.dominio.Variavel.Variavel.data_frame">[docs]</a>    <span class="k">def</span> <span class="nf">data_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">():</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;nome&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nome</span><span class="p">,</span> <span class="s1">&#39;valor&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">valor</span><span class="p">,</span> <span class="s1">&#39;posicao&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">posicao</span><span class="p">},</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">nome</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="Variavel.to_string"><a class="viewcode-back" href="../../../src.dominio.html#src.dominio.Variavel.Variavel.to_string">[docs]</a>    <span class="k">def</span> <span class="nf">to_string</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;Nome: </span><span class="si">{self._parametro.nome}</span><span class="s1">;</span><span class="se">\t</span><span class="s1">Valor: </span><span class="si">{self._valor}</span><span class="s1">;</span><span class="se">\t</span><span class="s1">Posicao: </span><span class="si">{self.posicao}</span><span class="s1">;</span><span class="se">\t</span><span class="s1">Parametro: {self._parametro.to_string()}&#39;</span></div>
+
+<div class="viewcode-block" id="Variavel.serializacao"><a class="viewcode-back" href="../../../src.dominio.html#src.dominio.Variavel.Variavel.serializacao">[docs]</a>    <span class="k">def</span> <span class="nf">serializacao</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;[</span><span class="si">{self.nome}</span><span class="s1">&gt;</span><span class="si">{self._valor}</span><span class="s1">&gt;</span><span class="si">{self.posicao}</span><span class="s1">]&#39;</span></div>
+
+<div class="viewcode-block" id="Variavel.to_save"><a class="viewcode-back" href="../../../src.dominio.html#src.dominio.Variavel.Variavel.to_save">[docs]</a>    <span class="k">def</span> <span class="nf">to_save</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retorna um dicionários contendo nome : valor</span>
+<span class="sd">        :return: um dicionario.</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">nome</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">valor</span><span class="p">}</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

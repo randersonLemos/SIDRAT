@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.otimizacao.pymoo.Pymoo &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.otimizacao.pymoo.Pymoo</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:author: Nome_do_autor</span>
+<span class="sd">:data: dd/mm/aaaa</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">src.contexto.EnumAtributo</span> <span class="k">import</span> <span class="n">EnumValues</span>
+<span class="kn">from</span> <span class="nn">src.modulo_padrao.ModuloPadrao</span> <span class="k">import</span> <span class="n">ModuloPadrao</span>
+<span class="kn">from</span> <span class="nn">src.contexto.Contexto</span> <span class="k">import</span> <span class="n">Contexto</span><span class="p">,</span> <span class="n">EnumAtributo</span>
+<span class="kn">from</span> <span class="nn">src.otimizacao.pymoo.Problema_Estrategia</span> <span class="k">import</span> <span class="n">Problema_Estrategia</span>
+<span class="c1"># from src.otimizacao.pymoo.Problema_Estrategia import my_callback</span>
+<span class="c1"># from src.otimizacao.pymoo.Problema_Estrategia import MyRepair</span>
+<span class="kn">from</span> <span class="nn">pymoo.algorithms.so_de</span> <span class="k">import</span> <span class="n">DE</span>
+<span class="kn">from</span> <span class="nn">pymoo.factory</span> <span class="k">import</span> <span class="n">get_algorithm</span>
+<span class="kn">from</span> <span class="nn">pymoo.algorithms.nsga2</span> <span class="k">import</span> <span class="n">NSGA2</span>
+<span class="kn">from</span> <span class="nn">pymoo.factory</span> <span class="k">import</span> <span class="n">get_sampling</span><span class="p">,</span> <span class="n">get_crossover</span><span class="p">,</span> <span class="n">get_mutation</span>
+<span class="kn">from</span> <span class="nn">pymoo.optimize</span> <span class="k">import</span> <span class="n">minimize</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">pymoo.configuration</span> <span class="k">import</span> <span class="n">Configuration</span>
+<span class="n">Configuration</span><span class="o">.</span><span class="n">show_compile_hint</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="Pymoo"><a class="viewcode-back" href="../../../../src.otimizacao.pymoo.html#src.otimizacao.pymoo.Pymoo.Pymoo">[docs]</a><span class="k">class</span> <span class="nc">Pymoo</span><span class="p">(</span><span class="n">ModuloPadrao</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Isto é um comentário da classe MyClass</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enum_otimizador</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="vm">__name__</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel com o nome do arquivo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_necessidade</span> <span class="o">=</span> <span class="p">[</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">INICIALIZACAO_DOMINIO</span><span class="p">,</span>
+                             <span class="n">EnumAtributo</span><span class="o">.</span><span class="n">PATH_RESULTADO</span><span class="p">,</span>
+                             <span class="n">EnumAtributo</span><span class="o">.</span><span class="n">CRITERIO_PARADA_SIMULACOES_MAX</span><span class="p">,</span>
+                             <span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_PYMOO_POPULATON</span><span class="p">]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Contem a lista de todos os atributos necessários para o módulo ser executado.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_algoritmo_tipo</span> <span class="o">=</span> <span class="n">enum_otimizador</span>
+
+<div class="viewcode-block" id="Pymoo.run"><a class="viewcode-back" href="../../../../src.otimizacao.pymoo.html#src.otimizacao.pymoo.Pymoo.Pymoo.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contexto</span><span class="p">:</span> <span class="n">Contexto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Contexto</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executa a otimizacao usando o método MCC.</span>
+
+<span class="sd">        :param Contexto contexto: contexto com todas as informações necessárias</span>
+<span class="sd">        :return: Devolve o contexto atualizado</span>
+<span class="sd">        :rtype: Contexto</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">contexto</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_necessidades</span><span class="p">()</span>
+
+        <span class="n">estrategia_base</span><span class="p">:</span> <span class="n">Estrategia</span> <span class="o">=</span> <span class="n">contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">ESTRATEGIA_BASE</span><span class="p">)</span>
+        <span class="n">populacao</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_PYMOO_POPULATON</span><span class="p">))</span>
+        <span class="n">variaveis</span> <span class="o">=</span> <span class="n">estrategia_base</span><span class="o">.</span><span class="n">get_variavies_by_tipo</span><span class="p">()</span>
+        <span class="n">qtd_maxima_simulacao</span> <span class="o">=</span> <span class="n">contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">CRITERIO_PARADA_SIMULACOES_MAX</span><span class="p">)</span>
+
+        <span class="n">xu</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">n_var</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">variaveis</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">variavel</span> <span class="ow">in</span> <span class="n">variaveis</span><span class="p">:</span>
+            <span class="n">xu</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">variaveis</span><span class="p">[</span><span class="n">variavel</span><span class="p">]</span><span class="o">.</span><span class="n">parametro</span><span class="o">.</span><span class="n">dominio</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">problem</span> <span class="o">=</span> <span class="n">Problema_Estrategia</span><span class="p">(</span><span class="n">n_var</span><span class="o">=</span><span class="n">n_var</span><span class="p">,</span> <span class="n">xl</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">xu</span><span class="o">=</span><span class="n">xu</span><span class="p">,</span> <span class="n">contexto</span><span class="o">=</span><span class="n">contexto</span><span class="p">)</span>
+
+        <span class="kn">from</span> <span class="nn">pymoo.factory</span> <span class="k">import</span> <span class="n">get_problem</span><span class="p">,</span> <span class="n">get_termination</span>
+        <span class="n">termination</span> <span class="o">=</span> <span class="n">get_termination</span><span class="p">(</span><span class="s2">&quot;n_eval&quot;</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+
+        <span class="n">algorithm</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_algoritmo_tipo</span> <span class="o">==</span> <span class="n">EnumValues</span><span class="o">.</span><span class="n">PYMOO_DE</span><span class="p">:</span>
+            <span class="n">sampling</span> <span class="o">=</span> <span class="n">get_sampling</span><span class="p">(</span><span class="s2">&quot;int_random&quot;</span><span class="p">)</span>
+
+            <span class="n">algorithm</span> <span class="o">=</span> <span class="n">DE</span><span class="p">(</span>
+                <span class="n">pop_size</span><span class="o">=</span><span class="n">populacao</span><span class="p">,</span>
+                <span class="n">sampling</span><span class="o">=</span><span class="n">sampling</span><span class="p">,</span>
+                <span class="n">variant</span><span class="o">=</span><span class="s2">&quot;DE/rand/1/bin&quot;</span><span class="p">,</span>
+                <span class="n">CR</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">F</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+                <span class="n">dither</span><span class="o">=</span><span class="s2">&quot;vector&quot;</span><span class="p">,</span>
+                <span class="n">jitter</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_algoritmo_tipo</span> <span class="o">==</span> <span class="n">EnumValues</span><span class="o">.</span><span class="n">PYMOO_GA</span><span class="p">:</span>
+            <span class="n">sampling</span> <span class="o">=</span> <span class="n">get_sampling</span><span class="p">(</span><span class="s2">&quot;int_random&quot;</span><span class="p">)</span>
+            <span class="n">crossover</span> <span class="o">=</span> <span class="n">get_crossover</span><span class="p">(</span><span class="s2">&quot;int_sbx&quot;</span><span class="p">)</span>
+            <span class="n">mutation</span> <span class="o">=</span> <span class="n">get_mutation</span><span class="p">(</span><span class="s2">&quot;int_pm&quot;</span><span class="p">)</span>
+
+            <span class="n">algorithm</span> <span class="o">=</span> <span class="n">get_algorithm</span><span class="p">(</span><span class="s2">&quot;ga&quot;</span><span class="p">,</span>
+                                      <span class="n">pop_size</span><span class="o">=</span><span class="n">populacao</span><span class="p">,</span>
+                                      <span class="n">sampling</span><span class="o">=</span><span class="n">sampling</span><span class="p">,</span>
+                                      <span class="n">crossover</span><span class="o">=</span><span class="n">crossover</span><span class="p">,</span>
+                                      <span class="n">mutation</span><span class="o">=</span><span class="n">mutation</span><span class="p">,</span>
+                                      <span class="n">eliminate_duplicates</span><span class="o">=</span><span class="kc">True</span>
+                                      <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_algoritmo_tipo</span> <span class="o">==</span> <span class="n">EnumValues</span><span class="o">.</span><span class="n">PYMOO_NSGA2</span><span class="p">:</span>
+            <span class="n">sampling</span> <span class="o">=</span> <span class="n">get_sampling</span><span class="p">(</span><span class="s2">&quot;int_random&quot;</span><span class="p">)</span>
+            <span class="n">crossover</span> <span class="o">=</span> <span class="n">get_crossover</span><span class="p">(</span><span class="s2">&quot;int_sbx&quot;</span><span class="p">)</span>
+            <span class="n">mutation</span> <span class="o">=</span> <span class="n">get_mutation</span><span class="p">(</span><span class="s2">&quot;int_pm&quot;</span><span class="p">)</span>
+
+            <span class="n">algorithm</span> <span class="o">=</span> <span class="n">NSGA2</span><span class="p">(</span><span class="n">pop_size</span><span class="o">=</span><span class="n">populacao</span><span class="p">,</span>
+                              <span class="n">sampling</span><span class="o">=</span><span class="n">sampling</span><span class="p">,</span>
+                              <span class="n">crossover</span><span class="o">=</span><span class="n">crossover</span><span class="p">,</span>
+                              <span class="n">mutation</span><span class="o">=</span><span class="n">mutation</span><span class="p">,</span>
+                              <span class="n">eliminate_duplicates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">problem</span><span class="p">,</span>
+                       <span class="n">algorithm</span><span class="p">,</span>
+                       <span class="n">termination</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;n_gen&#39;</span><span class="p">,</span> <span class="n">qtd_maxima_simulacao</span><span class="p">),</span>
+                       <span class="n">seed</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()),</span>
+                       <span class="n">save_history</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                       <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span>
+                       <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">problem</span><span class="o">.</span><span class="n">contexto</span></div></div>
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

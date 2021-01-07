@@ -1,0 +1,343 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.contexto.Contexto &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.contexto.Contexto</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:author: Rafael</span>
+<span class="sd">:data: 06/12/2019</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">src.contexto.EnumAtributo</span> <span class="k">import</span> <span class="n">EnumAtributo</span><span class="p">,</span> <span class="n">EnumValues</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Loggin</span> <span class="k">import</span> <span class="n">Loggin</span><span class="p">,</span> <span class="n">EnumLogStatus</span>
+<span class="kn">from</span> <span class="nn">src.modulo_padrao.EnumModulo</span> <span class="k">import</span> <span class="n">EnumModulo</span>
+<span class="kn">from</span> <span class="nn">src.inout.InOut</span> <span class="k">import</span> <span class="n">InOut</span>
+
+
+<span class="k">def</span> <span class="nf">_get_chave</span><span class="p">(</span><span class="n">atributo</span><span class="p">:</span> <span class="n">EnumAtributo</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    retorna o valor correto para salvar no contexto</span>
+
+<span class="sd">    :param EnumAtributo atributo: Atributo para salvar</span>
+<span class="sd">    :return: chave correta</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">chave</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">EnumAtributo</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">atributo</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="n">atributo</span><span class="o">.</span><span class="n">upper</span><span class="p">():</span>
+                <span class="n">chave</span> <span class="o">=</span> <span class="n">atributo</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="n">atributo</span><span class="p">:</span>
+                <span class="n">chave</span> <span class="o">=</span> <span class="n">atributo</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+                <span class="k">break</span>
+    <span class="k">return</span> <span class="n">chave</span>
+
+
+<div class="viewcode-block" id="Contexto"><a class="viewcode-back" href="../../../src.contexto.html#src.contexto.Contexto.Contexto">[docs]</a><span class="k">class</span> <span class="nc">Contexto</span><span class="p">(</span><span class="n">Loggin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Classe que contem todas as informações de configuracao</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_configuracao</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variável responsável por armazenar toda informacao</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="vm">__name__</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel com o nome do arquivo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_modulo</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="Contexto.set_modulo"><a class="viewcode-back" href="../../../src.contexto.html#src.contexto.Contexto.Contexto.set_modulo">[docs]</a>    <span class="k">def</span> <span class="nf">set_modulo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enum_modulo</span><span class="p">:</span> <span class="n">EnumModulo</span><span class="p">,</span> <span class="n">modulo</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Setar os modulos da aplicação</span>
+<span class="sd">        :param EnumModulo enum_modulo: Enum que contem todos os tipo de modulos</span>
+<span class="sd">        :param Object modulo: O modulo para setar</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_modulo</span><span class="p">[</span><span class="n">enum_modulo</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">modulo</span></div>
+
+<div class="viewcode-block" id="Contexto.get_modulo"><a class="viewcode-back" href="../../../src.contexto.html#src.contexto.Contexto.Contexto.get_modulo">[docs]</a>    <span class="k">def</span> <span class="nf">get_modulo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">enum_modulo</span><span class="p">:</span> <span class="n">EnumModulo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Buscar o modulo informado pelo enum</span>
+<span class="sd">        :param EnumModulo enum_modulo: Enum com todos os modulos informados</span>
+<span class="sd">        :return: Modulo desejado</span>
+<span class="sd">        :rtype: object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">enum_modulo</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modulo</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_modulo</span><span class="p">[</span><span class="n">enum_modulo</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Contexto.set_atributo"><a class="viewcode-back" href="../../../src.contexto.html#src.contexto.Contexto.Contexto.set_atributo">[docs]</a>    <span class="k">def</span> <span class="nf">set_atributo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atributo</span><span class="p">:</span> <span class="n">EnumAtributo</span><span class="p">,</span> <span class="n">valor</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">sobrescreve</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Método para escrever no contexto. Ele não sobrescreve o que esta escrito, a menos que se definido.</span>
+
+<span class="sd">        :param EnumAtributo atributo: Chave da configuracao</span>
+<span class="sd">        :param object valor: Valor da configuracao</span>
+<span class="sd">        :param bool sobrescreve: Se deve ou não sobrescrever o valor a adicionar.</span>
+<span class="sd">        :type valor: object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">aux_valor</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">valor</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="n">aux_valor</span> <span class="o">=</span> <span class="n">valor</span>
+        <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">valor</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">:</span>
+            <span class="n">aux_valor</span> <span class="o">=</span> <span class="n">valor</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">aux_valor</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">valor</span><span class="p">)</span>
+
+        <span class="n">chave</span> <span class="o">=</span> <span class="n">_get_chave</span><span class="p">(</span><span class="n">atributo</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">chave</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">chave</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuracao</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sobrescreve</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_configuracao</span><span class="p">[</span><span class="n">chave</span><span class="p">]</span> <span class="o">=</span> <span class="n">aux_valor</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_configuracao</span><span class="p">[</span><span class="n">chave</span><span class="p">]</span> <span class="o">+=</span> <span class="n">aux_valor</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_configuracao</span><span class="p">[</span><span class="n">chave</span><span class="p">]</span> <span class="o">=</span> <span class="n">aux_valor</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;Gravado no contexto chave[</span><span class="si">{chave}</span><span class="s2">]</span><span class="se">\t</span><span class="s2">valor[</span><span class="si">{self._configuracao[chave]}</span><span class="s2">]&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;A chave </span><span class="si">{atributo}</span><span class="s2">, não é um atributo valido&quot;</span><span class="p">,</span> <span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">WARN</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Contexto.get_atributo"><a class="viewcode-back" href="../../../src.contexto.html#src.contexto.Contexto.Contexto.get_atributo">[docs]</a>    <span class="k">def</span> <span class="nf">get_atributo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">atributo</span><span class="p">:</span> <span class="n">EnumAtributo</span><span class="p">,</span> <span class="n">valor_unico_list</span><span class="p">:</span><span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">object</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Obtem o valor do atributo selecionado</span>
+
+<span class="sd">        :param EnumAtributo atributo: Chave da configuracao</span>
+<span class="sd">        :param bool valor_unico_list: Se só tiver um valor devemos retornar uma lista de um valor ou o valor</span>
+<span class="sd">        :return: Devolve o valor do atributo selecionado</span>
+<span class="sd">        :rtype: object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">chave</span> <span class="o">=</span> <span class="n">_get_chave</span><span class="p">(</span><span class="n">atributo</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">chave</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configuracao</span><span class="p">[</span><span class="n">chave</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">valor_unico_list</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuracao</span><span class="p">[</span><span class="n">chave</span><span class="p">]</span>
+                    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_configuracao</span><span class="p">[</span><span class="n">chave</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">dict</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuracao</span><span class="p">[</span><span class="n">chave</span><span class="p">]</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuracao</span><span class="p">[</span><span class="n">chave</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuracao</span><span class="p">[</span><span class="n">chave</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;A chave </span><span class="si">{atributo}</span><span class="s2">, não é um atributo valido&quot;</span><span class="p">,</span> <span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">WARN</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;O atributo </span><span class="si">{atributo}</span><span class="s1"> não esta no contexto&#39;</span><span class="p">,</span> <span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">WARN</span><span class="p">,</span> <span class="n">info_ex</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Contexto.tem_atributo"><a class="viewcode-back" href="../../../src.contexto.html#src.contexto.Contexto.Contexto.tem_atributo">[docs]</a>    <span class="k">def</span> <span class="nf">tem_atributo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chave</span><span class="p">:</span> <span class="n">EnumAtributo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Verificar se existe a chave no contexto</span>
+
+<span class="sd">        :param EnumAtributo chave: Atributo de busca</span>
+<span class="sd">        :return: True se existir, False se nao existir</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">_get_chave</span><span class="p">(</span><span class="n">chave</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_configuracao</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Contexto.get_gevts_templates"><a class="viewcode-back" href="../../../src.contexto.html#src.contexto.Contexto.Contexto.get_gevts_templates">[docs]</a>    <span class="k">def</span> <span class="nf">get_gevts_templates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gevts_templates</span><span class="p">):</span>
+        <span class="n">gevts_templantes_executar</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">gevts_templates</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">gevt_template</span> <span class="ow">in</span> <span class="n">gevts_templates</span><span class="p">:</span>
+                <span class="n">separacao</span> <span class="o">=</span> <span class="n">gevt_template</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span>
+                <span class="n">gevt_path</span> <span class="o">=</span> <span class="n">InOut</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="n">separacao</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">gevt_file_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">gevt_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">InOut</span><span class="o">.</span><span class="n">barra</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">separacao</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO_FATAL</span><span class="p">,</span>
+                             <span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;Precisa ser informado o template para o GEVT [</span><span class="si">{gevt_template}</span><span class="s2">]&quot;</span><span class="p">)</span>
+                <span class="n">template_path</span> <span class="o">=</span> <span class="n">InOut</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="n">separacao</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">template_file_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">template_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">InOut</span><span class="o">.</span><span class="n">barra</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">template_prob</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">gevts_templates</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">separacao</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">template_prob</span> <span class="o">=</span> <span class="n">separacao</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+                    <span class="n">gevts_templantes_executar</span><span class="p">[</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{gevt_file_name}</span><span class="s1">_</span><span class="si">{template_file_name}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;gevt_path&#39;</span><span class="p">:</span> <span class="n">gevt_path</span><span class="p">,</span>
+                                                                                           <span class="s1">&#39;gevt_file_name&#39;</span><span class="p">:</span> <span class="n">gevt_file_name</span><span class="p">,</span>
+                                                                                           <span class="s1">&#39;template_path&#39;</span><span class="p">:</span> <span class="n">template_path</span><span class="p">,</span>
+                                                                                           <span class="s1">&#39;template_file_name&#39;</span><span class="p">:</span> <span class="n">template_file_name</span><span class="p">,</span>
+                                                                                           <span class="s1">&#39;template_prob&#39;</span><span class="p">:</span> <span class="n">template_prob</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">separacao</span> <span class="o">=</span> <span class="n">gevts_templates</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="p">)</span>
+            <span class="n">gevt_path</span> <span class="o">=</span> <span class="n">InOut</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="n">separacao</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">gevt_file_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">gevt_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">InOut</span><span class="o">.</span><span class="n">barra</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">separacao</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO_FATAL</span><span class="p">,</span>
+                         <span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;Precisa ser informado o TPL para o GEVT [</span><span class="si">{gevt_template}</span><span class="s2">]&quot;</span><span class="p">)</span>
+            <span class="n">template_path</span> <span class="o">=</span> <span class="n">InOut</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="n">separacao</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">template_file_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">template_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">InOut</span><span class="o">.</span><span class="n">barra</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">template_prob</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">separacao</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;Não faz sentido probabilidade diferente de 1 quando há somente um template.&quot;</span><span class="p">)</span>
+
+            <span class="n">gevts_templantes_executar</span><span class="p">[</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{gevt_file_name}</span><span class="s1">_</span><span class="si">{template_file_name}</span><span class="s1">&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;gevt_path&#39;</span><span class="p">:</span> <span class="n">gevt_path</span><span class="p">,</span>
+                                                                                   <span class="s1">&#39;gevt_file_name&#39;</span><span class="p">:</span> <span class="n">gevt_file_name</span><span class="p">,</span>
+                                                                                   <span class="s1">&#39;template_path&#39;</span><span class="p">:</span> <span class="n">template_path</span><span class="p">,</span>
+                                                                                   <span class="s1">&#39;template_file_name&#39;</span><span class="p">:</span> <span class="n">template_file_name</span><span class="p">,</span>
+                                                                                   <span class="s1">&#39;template_prob&#39;</span><span class="p">:</span> <span class="n">template_prob</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">gevts_templantes_executar</span></div>
+
+<div class="viewcode-block" id="Contexto.set_defaults"><a class="viewcode-back" href="../../../src.contexto.html#src.contexto.Contexto.Contexto.set_defaults">[docs]</a>    <span class="k">def</span> <span class="nf">set_defaults</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tem_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_QUALIFICADOR</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_QUALIFICADOR</span><span class="p">,</span> <span class="p">[</span><span class="n">EnumValues</span><span class="o">.</span><span class="n">TOTAL</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tem_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">INICIALIZACAO_SIMULA_BASE</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">INICIALIZACAO_SIMULA_BASE</span><span class="p">,</span> <span class="p">[</span><span class="kc">True</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tem_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_MCC_ELIMINA_NIVEIS</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_MCC_ELIMINA_NIVEIS</span><span class="p">,</span> <span class="p">[</span><span class="kc">False</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tem_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_MCC_ELIMINA_NIVEIS_QUANTIDADE</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">OTIMIZACAO_MCC_ELIMINA_NIVEIS_QUANTIDADE</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tem_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_MERO_GEVTS_TEMPLATES_EXECUTAR</span><span class="p">):</span>
+            <span class="n">gevts_templates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gevts_templates</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_MERO_GEVT_TEMPLATE</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_MERO_GEVTS_TEMPLATES_EXECUTAR</span><span class="p">,</span> <span class="n">gevts_templates</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tem_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_MERO_UNIECOS_EXECUTAR</span><span class="p">):</span>
+            <span class="n">uniecos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_MERO_UNIECO_PATH</span><span class="p">)</span>
+            <span class="n">uniecos_executar</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">uniecos</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">unieco</span> <span class="ow">in</span> <span class="n">uniecos</span><span class="p">:</span>
+                    <span class="n">uni_separado</span> <span class="o">=</span> <span class="n">unieco</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+                    <span class="n">unieco_path</span> <span class="o">=</span> <span class="n">InOut</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="n">uni_separado</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                    <span class="n">unieco_prob</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">uniecos</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">uni_separado</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">unieco_path</span> <span class="o">=</span> <span class="n">uni_separado</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">unieco_prob</span> <span class="o">=</span> <span class="n">uni_separado</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+                    <span class="n">unieco_file_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">unieco_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">InOut</span><span class="p">()</span><span class="o">.</span><span class="n">barra</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">uniecos_executar</span><span class="p">[</span><span class="n">unieco</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;unieco_path&#39;</span><span class="p">:</span> <span class="n">unieco_path</span><span class="p">,</span>
+                                                <span class="s1">&#39;unieco_file_name&#39;</span><span class="p">:</span> <span class="n">unieco_file_name</span><span class="p">,</span>
+                                                <span class="s1">&#39;unieco_prob&#39;</span><span class="p">:</span> <span class="n">unieco_prob</span><span class="p">}</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">uni_separado</span> <span class="o">=</span> <span class="n">uniecos</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+                <span class="n">unieco_path</span> <span class="o">=</span> <span class="n">InOut</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="n">uni_separado</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">unieco_prob</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">uni_separado</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">unieco_path</span> <span class="o">=</span> <span class="n">uni_separado</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">unieco_prob</span> <span class="o">=</span> <span class="n">uni_separado</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="n">unieco_file_name</span> <span class="o">=</span> <span class="p">(</span><span class="n">unieco_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">InOut</span><span class="p">()</span><span class="o">.</span><span class="n">barra</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">uniecos_executar</span><span class="p">[</span><span class="n">uniecos</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;unieco_path&#39;</span><span class="p">:</span> <span class="n">unieco_path</span><span class="p">,</span>
+                                             <span class="s1">&#39;unieco_file_name&#39;</span><span class="p">:</span> <span class="n">unieco_file_name</span><span class="p">,</span>
+                                             <span class="s1">&#39;unieco_prob&#39;</span><span class="p">:</span> <span class="n">unieco_prob</span><span class="p">}</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_MERO_UNIECOS_EXECUTAR</span><span class="p">,</span> <span class="n">uniecos_executar</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tem_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_MERO_TEMPO_MAX_SIM</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_MERO_TEMPO_MAX_SIM</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">sobrescreve</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tem_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">SORTEIO_TYPE</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">SORTEIO_TYPE</span><span class="p">,</span> <span class="p">[</span><span class="n">EnumValues</span><span class="o">.</span><span class="n">HLDG</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tem_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_RESGATAR_N_MELHORES</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_RESGATAR_N_MELHORES</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">sobrescreve</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">tem_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_RESGATAR_PATH_MELHORES_RESULTADOS</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_RESGATAR_PATH_MELHORES_RESULTADOS</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;melhores&#39;</span><span class="p">],</span> <span class="n">sobrescreve</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

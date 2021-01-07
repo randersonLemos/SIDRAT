@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<unieco version="2.0">
+   <taxes>
+     <ircs value="0.34"/>
+     <pisCofins value="0.0925"/>
+     <royalty value="0.10"/>
+   </taxes>
+
+   <market>
+     <discountRate value="0.09"/>
+	   <!-- <abandonmentRate value="0.082"/> -->
+     <priceList>
+       <price phase="oil" value="257.9"  time="0"/>
+       <price phase="gas" value="0.0"    time="0"/>
+     </priceList>
+   </market>
+
+   <field type="offshore">
+
+     <fieldCostList>
+       <fieldCost type="abandonment" value="7710434.099827550" name="FIELD"/>
+     </fieldCostList>
+
+    <oil type="brent"/>
+
+    <platformCostList>
+		  <platformCost type="fixed"    value="417.000000" name="PLATFORM"/>
+		  <platformCost type="cpl"      value="0.00315000" name="PLATFORM"/>
+		  <platformCost type="cpo"      value="0.01220000" name="PLATFORM"/>
+		  <platformCost type="cpw"      value="0.00315000" name="PLATFORM"/>
+		  <platformCost type="ciw"      value="0.00315000" name="PLATFORM"/>
+		  <platformCost type="cpg"      value="0.00000961" name="PLATFORM"/>
+      <!-- <platformCost type="cig"      value="0.0000000"  name="PLATFORM"/> -->
+		  <platformCost type="slotUnit"	value="0.10000000" name="PLATFORM"/>
+    </platformCostList>
+
+     <manifoldCostList>
+       <manifoldCost type="installation" value="0" name="PRODUCTION"/>
+       <manifoldCost type="installation" value="0" name="INJECTION"/>
+     </manifoldCostList>
+
+     <wellCostList>
+       <wellCost type="drilling" name="*" value="2.340E7"/>
+	     <wellCost type="completion" name="*" value="2.694E7"/>
+	     <wellCost type="connection" name="*" value="1.330E7"/>
+	     <wellCost type="2icv" name="*" value="1.300E6"/>
+	     <wellCost type="3icv" name="*" value="1.600E6"/>
+     </wellCostList>
+
+     <costList>
+		   <cost phase="oil"     type="production"   value="48.57"     time="0"/>
+		   <cost phase="water"   type="production"   value="4.86"      time="0"/>
+		   <cost phase="gas"     type="production"   value="0.013"     time="0"/>
+		   <cost phase="water"   type="injection"    value="4.86"      time="0"/>
+		   <cost phase="gas"     type="injection"    value="0.014"     time="0"/>
+     </costList>
+   </field>
+</unieco>

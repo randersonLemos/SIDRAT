@@ -1,0 +1,70 @@
+src.inout package
+=================
+
+Submodules
+----------
+
+src.inout.CSV module
+--------------------
+
+.. automodule:: src.inout.CSV
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.inout.Copy module
+---------------------
+
+.. automodule:: src.inout.Copy
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.inout.Exportacao module
+---------------------------
+
+.. automodule:: src.inout.Exportacao
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.inout.InOut module
+----------------------
+
+.. automodule:: src.inout.InOut
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.inout.Remocao module
+------------------------
+
+.. automodule:: src.inout.Remocao
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.inout.TXT module
+--------------------
+
+.. automodule:: src.inout.TXT
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.inout.Terminal module
+-------------------------
+
+.. automodule:: src.inout.Terminal
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.inout
+   :members:
+   :undoc-members:
+   :show-inheritance:

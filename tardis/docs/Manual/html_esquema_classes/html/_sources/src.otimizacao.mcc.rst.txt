@@ -1,0 +1,22 @@
+src.otimizacao.mcc package
+==========================
+
+Submodules
+----------
+
+src.otimizacao.mcc.MCC module
+-----------------------------
+
+.. automodule:: src.otimizacao.mcc.MCC
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.otimizacao.mcc
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,216 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.avaliacao.Resgate &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.avaliacao.Resgate</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:author: Luis</span>
+<span class="sd">:data: 03/03/2020</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">src.contexto</span> <span class="k">import</span> <span class="n">Contexto</span>
+<span class="kn">from</span> <span class="nn">src.contexto.EnumAtributo</span> <span class="k">import</span> <span class="n">EnumAtributo</span>
+<span class="kn">from</span> <span class="nn">src.inout.InOut</span> <span class="k">import</span> <span class="n">InOut</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Enum</span> <span class="k">import</span> <span class="n">EnumLogStatus</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Loggin</span> <span class="k">import</span> <span class="n">Loggin</span>
+<span class="kn">from</span> <span class="nn">src.inout.Copy</span> <span class="k">import</span> <span class="n">Copy</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+
+
+<div class="viewcode-block" id="Resgate"><a class="viewcode-back" href="../../../src.avaliacao.html#src.avaliacao.Resgate.Resgate">[docs]</a><span class="k">class</span> <span class="nc">Resgate</span><span class="p">(</span><span class="n">Loggin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Classe destinada para a efetuar o salvamento dos dados de simulação por algum critério</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel de armazenagem do contexto.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="vm">__name__</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel com o nome do arquivo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_qualificador</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel com o nome do qualificador</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resgatar</span> <span class="o">=</span> <span class="mi">10</span>
+
+<div class="viewcode-block" id="Resgate.melhores"><a class="viewcode-back" href="../../../src.avaliacao.html#src.avaliacao.Resgate.Resgate.melhores">[docs]</a>    <span class="k">def</span> <span class="nf">melhores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contexto</span><span class="p">:</span> <span class="n">Contexto</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Metodo responsavel por salvar as melhores simulacoes dentro de uma pasta definida na configuracao.</span>
+<span class="sd">        Caso melhores simulacoes ocorram, as piores dentro da pasta são apagadas</span>
+
+<span class="sd">        :param contexto:</span>
+<span class="sd">        :return bool: True caso o metodo tenha funcionado corretamente</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO colocar na configuracao qtd melhores para resgatar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="p">:</span> <span class="n">Contexto</span> <span class="o">=</span> <span class="n">contexto</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resgatar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_RESGATAR_N_MELHORES</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_qualificador</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_QUALIFICADOR</span><span class="p">)</span>
+
+        <span class="n">estrategias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">ESTRATEGIAS</span><span class="p">)</span>
+        <span class="n">melhores_estrategias</span> <span class="o">=</span> <span class="n">estrategias</span><span class="o">.</span><span class="n">melhores_estrategias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_resgatar</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">dados_copiar_origem</span><span class="p">,</span> <span class="n">dados_copiar_destino</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gera_paths_origem_e_destino</span><span class="p">(</span><span class="n">melhores_estrategias</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_salvar</span><span class="p">(</span><span class="n">dados_copiar_origem</span><span class="p">,</span> <span class="n">dados_copiar_destino</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_remover</span><span class="p">(</span><span class="n">dados_copiar_destino</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="ne">Warning</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Houve erro ao salvar melhores solucoes [</span><span class="si">{ex}</span><span class="s1">]&#39;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_salvar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dados_copiar_origem</span><span class="p">,</span> <span class="n">dados_copiar_destino</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">dado_copiar_origem</span><span class="p">,</span> <span class="n">dado_copiar_destino</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dados_copiar_origem</span><span class="p">,</span> <span class="n">dados_copiar_destino</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;copiando dados {os.path.basename(dado_copiar_origem)}&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">Copy</span><span class="o">.</span><span class="n">copy_file</span><span class="p">(</span><span class="n">dado_copiar_origem</span><span class="p">,</span> <span class="n">dado_copiar_destino</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                 <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">WARN</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Arquivo </span><span class="si">{dado_copiar_origem}</span><span class="s1"> nao foi salvo na pasta de melhores estratégias&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_remover</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dados_copiar_destino</span><span class="p">):</span>
+        <span class="n">path_melhores_resultados</span> <span class="o">=</span> <span class="n">InOut</span><span class="p">()</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">PATH_PROJETO</span><span class="p">),</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_RESGATAR_PATH_MELHORES_RESULTADOS</span><span class="p">),</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">]))</span>
+
+        <span class="n">dados_salvos</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">InOut</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">path_melhores_resultados</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">])))</span>
+        <span class="n">arquivos_apagar</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">dados_salvos</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">dados_copiar_destino</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">arquivo_apagar</span> <span class="ow">in</span> <span class="n">arquivos_apagar</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;apagando dos melhores resultados {os.path.basename(arquivo_apagar)}&#39;</span><span class="p">)</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">arquivo_apagar</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">WARN</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Problema de remocao de </span><span class="si">{arquivo_apagar}</span><span class="s1">. Erro=[</span><span class="si">{ex}</span><span class="s1">]&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_gera_paths_origem_e_destino</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">estrategias</span><span class="p">):</span>
+
+        <span class="n">estrategias</span> <span class="o">=</span> <span class="n">estrategias</span><span class="o">.</span><span class="n">estrategias</span>
+
+        <span class="n">path_melhores_resultados</span> <span class="o">=</span> <span class="n">InOut</span><span class="p">()</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">PATH_PROJETO</span><span class="p">),</span>
+             <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_RESGATAR_PATH_MELHORES_RESULTADOS</span><span class="p">),</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">]))</span>
+        <span class="n">path_simulacao</span> <span class="o">=</span> <span class="n">InOut</span><span class="p">()</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">PATH_PROJETO</span><span class="p">),</span>
+                                                        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">PATH_SIMULACAO</span><span class="p">)]))</span>
+
+        <span class="n">dados_copiar_origem</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="n">dados_copiar_destino</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+        <span class="n">nome_melhores_estrategias</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">estrategias</span><span class="p">)):</span>
+            <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">estrategias</span><span class="p">[</span><span class="n">it</span><span class="p">])):</span>
+                <span class="k">if</span> <span class="n">estrategias</span><span class="p">[</span><span class="n">it</span><span class="p">][</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">of</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">nome_melhores_estrategias</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;</span><span class="si">{self._qualificador}</span><span class="s1">_</span><span class="si">{it}</span><span class="s1">_</span><span class="si">{id}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">nome_melhor_estrategia</span> <span class="ow">in</span> <span class="n">nome_melhores_estrategias</span><span class="p">:</span>
+            <span class="n">str_pesquisa_melhor_estrategia</span> <span class="o">=</span> <span class="n">InOut</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span>
+                <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">path_simulacao</span><span class="p">,</span> <span class="n">nome_melhor_estrategia</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span><span class="p">]))</span>
+            <span class="n">dados_copiar_origem</span> <span class="o">+=</span> <span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">str_pesquisa_melhor_estrategia</span><span class="p">))</span>
+        <span class="n">dados_copiar_destino</span> <span class="o">+=</span> \
+            <span class="p">[</span><span class="n">InOut</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">path_melhores_resultados</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">dado_copiar_origem</span><span class="p">)]))</span> <span class="k">for</span>
+             <span class="n">dado_copiar_origem</span> <span class="ow">in</span> <span class="n">dados_copiar_origem</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">dados_copiar_origem</span><span class="p">,</span> <span class="n">dados_copiar_destino</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

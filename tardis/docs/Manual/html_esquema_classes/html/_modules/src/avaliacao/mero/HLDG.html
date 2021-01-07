@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.avaliacao.mero.HLDG &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.avaliacao.mero.HLDG</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:author: Luis</span>
+<span class="sd">:data: 21/01/2020</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">src.dominio.Enum</span> <span class="k">import</span> <span class="n">EnumTipoParamentro</span>
+<span class="kn">from</span> <span class="nn">src.dominio.Estrategia</span> <span class="k">import</span> <span class="n">Estrategia</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Loggin</span> <span class="k">import</span> <span class="n">Loggin</span><span class="p">,</span> <span class="n">EnumLogStatus</span>
+<span class="kn">from</span> <span class="nn">src.contexto.Contexto</span> <span class="k">import</span> <span class="n">Contexto</span>
+<span class="kn">from</span> <span class="nn">src.contexto.EnumAtributo</span> <span class="k">import</span> <span class="n">EnumAtributo</span>
+<span class="kn">from</span> <span class="nn">src.inout.InOut</span> <span class="k">import</span> <span class="n">InOut</span>
+<span class="kn">from</span> <span class="nn">src.inout.TXT</span> <span class="k">import</span> <span class="n">TXT</span>
+<span class="kn">from</span> <span class="nn">src.inout.Terminal</span> <span class="k">import</span> <span class="n">Terminal</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+
+
+<div class="viewcode-block" id="HLDG"><a class="viewcode-back" href="../../../../src.avaliacao.mero.html#src.avaliacao.mero.HLDG.HLDG">[docs]</a><span class="k">class</span> <span class="nc">HLDG</span><span class="p">(</span><span class="n">Loggin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Classe para construção do arquivo HLDG.mero e sua execucao</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="vm">__name__</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_estrategia_pdf_atualizada</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iteracao_nova_amostragem</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path_hldg</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_amostragem</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ultimo_id</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="HLDG.run"><a class="viewcode-back" href="../../../../src.avaliacao.mero.html#src.avaliacao.mero.HLDG.HLDG.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contexto</span><span class="p">:</span> <span class="n">Contexto</span><span class="p">,</span> <span class="n">estrategia_pdf_atualizada</span><span class="p">:</span> <span class="n">Estrategia</span><span class="p">,</span> <span class="n">n_amostragem</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executa a amostragem com o IDLHCn</span>
+
+<span class="sd">        :param Contexto contexto: contexto com todas as informações necessárias</span>
+<span class="sd">        :param Estrategia estrategia_pdf_atualizada: Estrategia com pdf atualizada para utilizacao na amostragem</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_amostragem</span> <span class="o">=</span> <span class="n">n_amostragem</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span> <span class="o">=</span> <span class="n">contexto</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_estrategia_pdf_atualizada</span> <span class="o">=</span> <span class="n">estrategia_pdf_atualizada</span>
+
+        <span class="n">path_projeto</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">PATH_PROJETO</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">ESTRATEGIAS</span><span class="p">)</span>
+        <span class="n">ultima_iteracao</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span><span class="o">.</span><span class="n">estrategias</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ultimo_id</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span><span class="o">.</span><span class="n">estrategias</span><span class="p">[</span><span class="n">ultima_iteracao</span><span class="p">]))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_iteracao_nova_amostragem</span> <span class="o">=</span> <span class="n">ultima_iteracao</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path_hldg</span> <span class="o">=</span> <span class="n">InOut</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">path_projeto</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">PATH_SIMULACAO</span><span class="p">),</span> <span class="n">f</span><span class="s1">&#39;HLDG_</span><span class="si">{self._iteracao_nova_amostragem}</span><span class="s1">.mero&#39;</span><span class="p">]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gera_entrada_hldg</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_execucao_hldg</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_criar_estrategias_em_contexto</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span></div>
+
+    <span class="k">def</span> <span class="nf">_gera_conteudo_hldg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_gera_cabecalho</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gera_conteudo_variavel_peso</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gera_qtd_amostras</span><span class="p">()])</span>
+
+    <span class="k">def</span> <span class="nf">_gera_cabecalho</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;*MODEL_NAMING </span><span class="si">{}</span><span class="s1">_&#39;</span><span class="p">,</span> <span class="s1">&#39;*ATTRIBUTE_LIST&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_iteracao_nova_amostragem</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_gera_conteudo_variavel_peso</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">conteudo</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="n">estrategia</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estrategia_pdf_atualizada</span>
+        <span class="n">nome_variaveis</span> <span class="o">=</span> <span class="n">estrategia</span><span class="o">.</span><span class="n">variaveis</span><span class="o">.</span><span class="n">get_variaveis_by_tipo</span><span class="p">(</span><span class="n">EnumTipoParamentro</span><span class="o">.</span><span class="n">VARIAVEL</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">nome_variavel</span> <span class="ow">in</span> <span class="n">nome_variaveis</span><span class="p">:</span>
+            <span class="n">probabilidade</span> <span class="o">=</span> <span class="n">estrategia</span><span class="o">.</span><span class="n">variaveis</span><span class="o">.</span><span class="n">get_variavel_by_nome</span><span class="p">(</span><span class="n">nome_variavel</span><span class="p">)</span><span class="o">.</span><span class="n">parametro</span><span class="o">.</span><span class="n">probabilidade</span>
+            <span class="n">dominio</span> <span class="o">=</span> <span class="n">estrategia</span><span class="o">.</span><span class="n">variaveis</span><span class="o">.</span><span class="n">get_variavel_by_nome</span><span class="p">(</span><span class="n">nome_variavel</span><span class="p">)</span><span class="o">.</span><span class="n">parametro</span><span class="o">.</span><span class="n">dominio</span>
+
+            <span class="n">tipo_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_checa_tipo_variavel</span><span class="p">(</span><span class="n">dominio</span><span class="p">)</span>
+
+            <span class="n">conteudo</span> <span class="o">+=</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{nome_variavel}</span><span class="se">\t</span><span class="si">{tipo_str}</span><span class="s1">&#39;</span>
+            <span class="k">for</span> <span class="n">dom</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">dominio</span><span class="p">,</span> <span class="n">probabilidade</span><span class="p">):</span>
+                <span class="n">conteudo</span> <span class="o">+=</span> <span class="n">f</span><span class="s1">&#39;</span><span class="se">\t</span><span class="si">{dom}</span><span class="se">\t</span><span class="s1">(</span><span class="si">{prob}</span><span class="s1">)&#39;</span>
+            <span class="n">conteudo</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="k">return</span> <span class="n">conteudo</span>
+
+    <span class="k">def</span> <span class="nf">_gera_qtd_amostras</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">f</span><span class="s1">&#39;*SAMPLE_COUNT</span><span class="se">\t</span><span class="s1">{str(self._n_amostragem)}&#39;</span>
+
+    <span class="k">def</span> <span class="nf">_checa_tipo_variavel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dominio</span><span class="p">):</span>
+        <span class="n">tipo_str</span> <span class="o">=</span> <span class="s2">&quot;CAT&quot;</span>
+
+        <span class="k">for</span> <span class="n">dom</span> <span class="ow">in</span> <span class="n">dominio</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">tipo_str</span>
+            <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">float</span><span class="p">:</span>
+                <span class="n">tipo_str</span> <span class="o">=</span> <span class="s1">&#39;REAL&#39;</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">and</span> <span class="n">tipo_str</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s1">&#39;REAL&#39;</span><span class="p">:</span>
+                <span class="n">tipo_str</span> <span class="o">=</span> <span class="s1">&#39;INT&#39;</span>
+
+        <span class="k">return</span> <span class="n">tipo_str</span>
+
+    <span class="k">def</span> <span class="nf">_gera_entrada_hldg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">conteudo</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gera_conteudo_hldg</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">TXT</span><span class="p">()</span><span class="o">.</span><span class="n">salvar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path_hldg</span><span class="p">,</span> <span class="n">conteudo</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="s1">&#39;Arquivo de entrada do HLDG gerado com sucesso&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO_FATAL</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="s1">&#39;Erro na geracao do arquivo do HLDG&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_execucao_hldg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">executavel</span> <span class="o">=</span> <span class="n">InOut</span><span class="p">()</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_MERO_EXECUTAVEL</span><span class="p">))</span>
+        <span class="n">comando</span> <span class="o">=</span> <span class="n">f</span><span class="s1">&#39;</span><span class="si">{executavel}</span><span class="s1"> hldg -i </span><span class="si">{self._path_hldg}</span><span class="s1">&#39;</span>
+
+        <span class="k">if</span> <span class="n">Terminal</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">comando</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">texto</span><span class="o">=</span><span class="s1">&#39;Execucao HLDG feita com sucesso&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO_FATAL</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="s1">&#39;Erro execucao HLDG&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_carregar_saida_HLDG</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">path_out_hldg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path_hldg</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.mero&#39;</span><span class="p">,</span> <span class="s1">&#39;-models.txt&#39;</span><span class="p">)</span>
+        <span class="n">conteudo_sorteio_txt</span> <span class="o">=</span> <span class="n">TXT</span><span class="p">()</span><span class="o">.</span><span class="n">ler</span><span class="p">(</span><span class="n">path_out_hldg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">conteudo_sorteio_txt</span>
+
+    <span class="k">def</span> <span class="nf">_criar_estrategias_em_contexto</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">conteudo_sorteio_txt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_carregar_saida_HLDG</span><span class="p">()</span>
+
+        <span class="n">nomes_variaveis</span> <span class="o">=</span> <span class="n">conteudo_sorteio_txt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">lista_serializado</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span><span class="o">.</span><span class="n">serializacao</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">estrategia_txt</span> <span class="ow">in</span> <span class="n">conteudo_sorteio_txt</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">nome_estrategia_val_vars</span> <span class="o">=</span> <span class="n">estrategia_txt</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="p">[</span><span class="n">iteracao_estrategia</span><span class="p">,</span> <span class="n">id_estrategia</span><span class="p">]</span> <span class="o">=</span> <span class="n">nome_estrategia_val_vars</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)</span>
+
+            <span class="n">estrategia</span> <span class="o">=</span> <span class="n">Estrategia</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">id_estrategia</span><span class="p">)</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">_ultimo_id</span><span class="p">,</span> <span class="n">iteracao</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">iteracao_estrategia</span><span class="p">),</span> <span class="n">estrategia</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_estrategia_pdf_atualizada</span><span class="p">)</span>
+
+            <span class="n">val_vars</span> <span class="o">=</span> <span class="p">[</span><span class="n">InOut</span><span class="p">()</span><span class="o">.</span><span class="n">ajusta_entrada</span><span class="p">(</span><span class="n">val_var</span><span class="p">)</span> <span class="k">for</span> <span class="n">val_var</span> <span class="ow">in</span> <span class="n">nome_estrategia_val_vars</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="k">for</span> <span class="n">variavel</span><span class="p">,</span> <span class="n">valor</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nomes_variaveis</span><span class="p">,</span> <span class="n">val_vars</span><span class="p">):</span>
+                <span class="n">estrategia</span><span class="o">.</span><span class="n">variaveis</span><span class="o">.</span><span class="n">get_variavel_by_nome</span><span class="p">(</span><span class="n">variavel</span><span class="p">)</span><span class="o">.</span><span class="n">valor</span> <span class="o">=</span> <span class="n">valor</span>
+
+            <span class="k">if</span> <span class="n">estrategia</span><span class="o">.</span><span class="n">variaveis</span><span class="o">.</span><span class="n">serializacao</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lista_serializado</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span><span class="o">.</span><span class="n">add_in_estrategias</span><span class="p">(</span><span class="n">estrategia</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">ESTRATEGIAS</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estrategias</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_ITERACAO_AVALIAR</span><span class="p">,</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">iteracao_estrategia</span><span class="p">)],</span> <span class="kc">True</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

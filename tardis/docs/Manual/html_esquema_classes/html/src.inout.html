@@ -1,0 +1,455 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.inout package &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.loggin package" href="src.loggin.html" />
+    <link rel="prev" title="src.inicializacao.reestart package" href="src.inicializacao.reestart.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="src-inout-package">
+<h1>src.inout package<a class="headerlink" href="#src-inout-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-src.inout.CSV">
+<span id="src-inout-csv-module"></span><h2>src.inout.CSV module<a class="headerlink" href="#module-src.inout.CSV" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author Rafael</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>:date 07/01/2020</p>
+<dl class="class">
+<dt id="src.inout.CSV.CSV">
+<em class="property">class </em><code class="sig-prename descclassname">src.inout.CSV.</code><code class="sig-name descname">CSV</code><a class="reference internal" href="_modules/src/inout/CSV.html#CSV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.CSV.CSV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.inout.InOut.InOut" title="src.inout.InOut.InOut"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.inout.InOut.InOut</span></code></a>, <a class="reference internal" href="src.loggin.html#src.loggin.Loggin.Loggin" title="src.loggin.Loggin.Loggin"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.loggin.Loggin.Loggin</span></code></a></p>
+<p>Classe destinada para manipulacao de arquivos do tipo texto, csv.</p>
+<dl class="method">
+<dt id="src.inout.CSV.CSV.ler">
+<code class="sig-name descname">ler</code><span class="sig-paren">(</span><em class="sig-param">path_arquivo: str</em>, <em class="sig-param">headers: bool = True</em>, <em class="sig-param">index_col: bool = True</em>, <em class="sig-param">lines_ignore: int = -1</em>, <em class="sig-param">sep: str = ';'</em><span class="sig-paren">)</span> &#x2192; pandas.core.frame.DataFrame<a class="reference internal" href="_modules/src/inout/CSV.html#CSV.ler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.CSV.CSV.ler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Método responsavel por ler arquivos csv e transformar em dataframe
+:param str path_arquivo: caminho onde localiza o arquivo
+:param bool headers: se deve considerar que o arquivo tem cabeçalho ou não.
+:param bool index_col: se deve considerar que o arquivo tem index ou não.
+:param int lines_ignore: Quantidade de linhas que deve ser ignoradas antes de estar ler o cvs
+:param str sep: tipo do separador usado.
+:return: Retorna o pd.DataFrame do arquivo csv
+:rtype: pd.DataFrame</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.inout.CSV.CSV.salvar">
+<code class="sig-name descname">salvar</code><span class="sig-paren">(</span><em class="sig-param">path_arquivo: str</em>, <em class="sig-param">conteudo: str</em>, <em class="sig-param">metodo_gravacao: str = 'w'</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/src/inout/CSV.html#CSV.salvar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.CSV.CSV.salvar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.inout.Copy">
+<span id="src-inout-copy-module"></span><h2>src.inout.Copy module<a class="headerlink" href="#module-src.inout.Copy" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Nome_do_autor</p>
+</dd>
+<dt class="field-even">data</dt>
+<dd class="field-even"><p>dd/mm/aaaa</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.inout.Copy.Copy">
+<em class="property">class </em><code class="sig-prename descclassname">src.inout.Copy.</code><code class="sig-name descname">Copy</code><a class="reference internal" href="_modules/src/inout/Copy.html#Copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.Copy.Copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="src.loggin.html#src.loggin.Loggin.Loggin" title="src.loggin.Loggin.Loggin"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.loggin.Loggin.Loggin</span></code></a></p>
+<p>Isto é um comentário da classe MyClass</p>
+<dl class="method">
+<dt id="src.inout.Copy.Copy.copy_file">
+<em class="property">static </em><code class="sig-name descname">copy_file</code><span class="sig-paren">(</span><em class="sig-param">path_origem: str</em>, <em class="sig-param">path_destino: str</em>, <em class="sig-param">replace=True</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/src/inout/Copy.html#Copy.copy_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.Copy.Copy.copy_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Faz a copia de um arquivo para outro lugar, fazendo a checagem se existe diretorio e criando se não existir</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path_origem</strong> (<em>str</em>) – Caminho onde o arquivo se encontra.</p></li>
+<li><p><strong>path_destino</strong> (<em>str</em>) – Caminho para onde o arquivo sera comiado.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>se o arquivo foi copiado com sucesso ou teve erro</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.inout.Copy.Copy.criar_arquivos">
+<em class="property">static </em><code class="sig-name descname">criar_arquivos</code><span class="sig-paren">(</span><em class="sig-param">path_file: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/src/inout/Copy.html#Copy.criar_arquivos"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.Copy.Copy.criar_arquivos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Criar toda estrutura de arquivo para depois fazer a copia do arquivo.
+:param str path_file: Deve ser o caminho do arquivo, com o nome do arquivo junto.
+:return: Se tudo correu ok
+:rtype: bool</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.inout.Exportacao">
+<span id="src-inout-exportacao-module"></span><h2>src.inout.Exportacao module<a class="headerlink" href="#module-src.inout.Exportacao" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Rafael</p>
+</dd>
+<dt class="field-even">data</dt>
+<dd class="field-even"><p>06/12/2019</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.inout.Exportacao.Exportacao">
+<em class="property">class </em><code class="sig-prename descclassname">src.inout.Exportacao.</code><code class="sig-name descname">Exportacao</code><a class="reference internal" href="_modules/src/inout/Exportacao.html#Exportacao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.Exportacao.Exportacao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="src.loggin.html#src.loggin.Loggin.Loggin" title="src.loggin.Loggin.Loggin"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.loggin.Loggin.Loggin</span></code></a></p>
+<p>Classe destinada para a efetuar a exportacao dos resultados</p>
+<dl class="method">
+<dt id="src.inout.Exportacao.Exportacao.csv">
+<code class="sig-name descname">csv</code><span class="sig-paren">(</span><em class="sig-param">contexto: &lt;module 'src.contexto.Contexto' from '..\\src\\contexto\\Contexto.py'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/inout/Exportacao.html#Exportacao.csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.Exportacao.Exportacao.csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Método interno para salvar CSV com dados da otimização</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.inout.Exportacao.Exportacao.obejto">
+<code class="sig-name descname">obejto</code><span class="sig-paren">(</span><em class="sig-param">contexto: &lt;module 'src.contexto.Contexto' from '..\\src\\contexto\\Contexto.py'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/inout/Exportacao.html#Exportacao.obejto"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.Exportacao.Exportacao.obejto" title="Permalink to this definition">¶</a></dt>
+<dd><p>Método interno para salvar contexto com os dados da otimização</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.inout.InOut">
+<span id="src-inout-inout-module"></span><h2>src.inout.InOut module<a class="headerlink" href="#module-src.inout.InOut" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Rafael</p>
+</dd>
+<dt class="field-even">date</dt>
+<dd class="field-even"><p>09/12/2019</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.inout.InOut.InOut">
+<em class="property">class </em><code class="sig-prename descclassname">src.inout.InOut.</code><code class="sig-name descname">InOut</code><a class="reference internal" href="_modules/src/inout/InOut.html#InOut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.InOut.InOut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Classe com metodos staticos para ajustes</p>
+<dl class="method">
+<dt id="src.inout.InOut.InOut.ajusta_entrada">
+<em class="property">static </em><code class="sig-name descname">ajusta_entrada</code><span class="sig-paren">(</span><em class="sig-param">entrada: str</em><span class="sig-paren">)</span> &#x2192; object<a class="reference internal" href="_modules/src/inout/InOut.html#InOut.ajusta_entrada"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.InOut.InOut.ajusta_entrada" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converte do tipo str para o tipo correto da variavel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>entrada</strong> (<em>str</em>) – Tipo de entrada</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>O valor no tipo correto</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.inout.InOut.InOut.ajusta_id_iteracao">
+<em class="property">static </em><code class="sig-name descname">ajusta_id_iteracao</code><span class="sig-paren">(</span><em class="sig-param">valor: int</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/src/inout/InOut.html#InOut.ajusta_id_iteracao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.InOut.InOut.ajusta_id_iteracao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converte o id e iteração para um formato str melhor para salvar.
+:param int valor: Valor do id e ou iteracao.
+:return: Devolve o valor no formato str com zeros antes do número
+:rtype: str</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.inout.InOut.InOut.ajuste_path">
+<em class="property">static </em><code class="sig-name descname">ajuste_path</code><span class="sig-paren">(</span><em class="sig-param">caminho: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/src/inout/InOut.html#InOut.ajuste_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.InOut.InOut.ajuste_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Método estatico para ajustar as barras</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>caminho</strong> (<em>str</em>) – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Devolve o caminho com o ajuste de barra por sistema operacional</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.inout.InOut.InOut.arquivo_existe">
+<em class="property">static </em><code class="sig-name descname">arquivo_existe</code><span class="sig-paren">(</span><em class="sig-param">path_file: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/src/inout/InOut.html#InOut.arquivo_existe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.InOut.InOut.arquivo_existe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verificar se o arquivo existe
+:param str path_file: Verifica se o arquivo existe
+:return: Devolve bool informando se o arquivo existe
+:rtype: bool</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.inout.InOut.InOut.barra">
+<em class="property">static </em><code class="sig-name descname">barra</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/src/inout/InOut.html#InOut.barra"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.InOut.InOut.barra" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="src.inout.InOut.InOut.path_to_array">
+<em class="property">static </em><code class="sig-name descname">path_to_array</code><span class="sig-paren">(</span><em class="sig-param">path: str</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/src/inout/InOut.html#InOut.path_to_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.InOut.InOut.path_to_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.inout.Remocao">
+<span id="src-inout-remocao-module"></span><h2>src.inout.Remocao module<a class="headerlink" href="#module-src.inout.Remocao" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Luis</p>
+</dd>
+<dt class="field-even">data</dt>
+<dd class="field-even"><p>20/01/2020</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.inout.Remocao.Remocao">
+<em class="property">class </em><code class="sig-prename descclassname">src.inout.Remocao.</code><code class="sig-name descname">Remocao</code><a class="reference internal" href="_modules/src/inout/Remocao.html#Remocao"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.Remocao.Remocao" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="src.loggin.html#src.loggin.Loggin.Loggin" title="src.loggin.Loggin.Loggin"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.loggin.Loggin.Loggin</span></code></a></p>
+<p>Classe destinada para a efetuar a exportacao dos resultados</p>
+<dl class="method">
+<dt id="src.inout.Remocao.Remocao.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">contexto: src.contexto.Contexto.Contexto</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/inout/Remocao.html#Remocao.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.Remocao.Remocao.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inicia o processo de remocao de arquivos de saida de simulaao</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>contexto</strong> (<a class="reference internal" href="src.contexto.html#src.contexto.Contexto.Contexto" title="src.contexto.Contexto.Contexto"><em>Contexto</em></a>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.inout.TXT">
+<span id="src-inout-txt-module"></span><h2>src.inout.TXT module<a class="headerlink" href="#module-src.inout.TXT" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author Rafael</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<p>:date 02/05/2019</p>
+<dl class="class">
+<dt id="src.inout.TXT.TXT">
+<em class="property">class </em><code class="sig-prename descclassname">src.inout.TXT.</code><code class="sig-name descname">TXT</code><a class="reference internal" href="_modules/src/inout/TXT.html#TXT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.TXT.TXT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.inout.InOut.InOut" title="src.inout.InOut.InOut"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.inout.InOut.InOut</span></code></a>, <a class="reference internal" href="src.loggin.html#src.loggin.Loggin.Loggin" title="src.loggin.Loggin.Loggin"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.loggin.Loggin.Loggin</span></code></a></p>
+<p>Classe destinada para manipulacao de arquivos do tipo texto, txt.</p>
+<dl class="method">
+<dt id="src.inout.TXT.TXT.ler">
+<code class="sig-name descname">ler</code><span class="sig-paren">(</span><em class="sig-param">path_arquivo: str</em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="_modules/src/inout/TXT.html#TXT.ler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.TXT.TXT.ler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Método responsavel por leitura dos arquivos</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path_arquivo</strong> (<em>str</em>) – caminho do arquivo</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Um array com todas as linhas do arquivo</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="src.inout.TXT.TXT.salvar">
+<code class="sig-name descname">salvar</code><span class="sig-paren">(</span><em class="sig-param">path_arquivo: str</em>, <em class="sig-param">conteudo: str</em>, <em class="sig-param">metodo_gravacao: str = 'w'</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/src/inout/TXT.html#TXT.salvar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.TXT.TXT.salvar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Método para salvar conteudo de arquivos</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path_arquivo</strong> (<em>str</em>) – Caminho do arquivo</p></li>
+<li><p><strong>conteudo</strong> (<em>str</em>) – Conteudo a ser salvo</p></li>
+<li><p><strong>metodo_gravacao</strong> (<em>str</em>) – Método de gravação, padrão w</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Se deu erro ou não</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.inout.Terminal">
+<span id="src-inout-terminal-module"></span><h2>src.inout.Terminal module<a class="headerlink" href="#module-src.inout.Terminal" title="Permalink to this headline">¶</a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">author</dt>
+<dd class="field-odd"><p>Rafael</p>
+</dd>
+<dt class="field-even">data</dt>
+<dd class="field-even"><p>19/12/2019</p>
+</dd>
+</dl>
+<dl class="class">
+<dt id="src.inout.Terminal.Terminal">
+<em class="property">class </em><code class="sig-prename descclassname">src.inout.Terminal.</code><code class="sig-name descname">Terminal</code><a class="reference internal" href="_modules/src/inout/Terminal.html#Terminal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.Terminal.Terminal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="src.loggin.html#src.loggin.Loggin.Loggin" title="src.loggin.Loggin.Loggin"><code class="xref py py-class docutils literal notranslate"><span class="pre">src.loggin.Loggin.Loggin</span></code></a></p>
+<p>Classe responsavel por efetuar execução de comandos no terminarl</p>
+<dl class="method">
+<dt id="src.inout.Terminal.Terminal.run">
+<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">comando: str</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="_modules/src/inout/Terminal.html#Terminal.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#src.inout.Terminal.Terminal.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Executando o comando</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>comando</strong> (<em>str</em>) – String do comando a ser executado</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Se tudo correu bem</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-src.inout">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.inout" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="src.html">src package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="src.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="src.avaliacao.html">src.avaliacao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.carregamento.html">src.carregamento package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.contexto.html">src.contexto package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.dominio.html">src.dominio package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.inicializacao.html">src.inicializacao package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">src.inout package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.inout.CSV">src.inout.CSV module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.inout.Copy">src.inout.Copy module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.inout.Exportacao">src.inout.Exportacao module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.inout.InOut">src.inout.InOut module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.inout.Remocao">src.inout.Remocao module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.inout.TXT">src.inout.TXT module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.inout.Terminal">src.inout.Terminal module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-src.inout">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.loggin.html">src.loggin package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.modulo_padrao.html">src.modulo_padrao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.otimizacao.html">src.otimizacao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.reducao.html">src.reducao package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="src.sorteio.html">src.sorteio package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#src-main-module">src.main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#src-main-lua-module">src.main_lua module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#src-main-test-module">src.main_test module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="src.html">src package</a><ul>
+      <li>Previous: <a href="src.inicializacao.reestart.html" title="previous chapter">src.inicializacao.reestart package</a></li>
+      <li>Next: <a href="src.loggin.html" title="next chapter">src.loggin package</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/src.inout.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

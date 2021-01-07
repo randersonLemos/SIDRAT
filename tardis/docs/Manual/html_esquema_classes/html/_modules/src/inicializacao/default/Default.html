@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>src.inicializacao.default.Default &#8212; Tardis 1.0.0 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for src.inicializacao.default.Default</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">:author: Rafael</span>
+<span class="sd">:data: 10/12/2019</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">src.contexto.Contexto</span> <span class="k">import</span> <span class="n">Contexto</span>
+<span class="kn">from</span> <span class="nn">src.contexto.EnumAtributo</span> <span class="k">import</span> <span class="n">EnumAtributo</span>
+<span class="kn">from</span> <span class="nn">src.dominio.Enum</span> <span class="k">import</span> <span class="n">EnumTipoParamentro</span>
+<span class="kn">from</span> <span class="nn">src.dominio.Estrategia</span> <span class="k">import</span> <span class="n">Estrategia</span>
+<span class="kn">from</span> <span class="nn">src.dominio.Estrategias</span> <span class="k">import</span> <span class="n">Estrategias</span>
+<span class="kn">from</span> <span class="nn">src.dominio.Parametro</span> <span class="k">import</span> <span class="n">Parametro</span>
+<span class="kn">from</span> <span class="nn">src.dominio.Variavel</span> <span class="k">import</span> <span class="n">Variavel</span>
+<span class="kn">from</span> <span class="nn">src.inout.Exportacao</span> <span class="k">import</span> <span class="n">Exportacao</span>
+<span class="kn">from</span> <span class="nn">src.inout.InOut</span> <span class="k">import</span> <span class="n">InOut</span>
+<span class="kn">from</span> <span class="nn">src.inout.TXT</span> <span class="k">import</span> <span class="n">TXT</span>
+<span class="kn">from</span> <span class="nn">src.loggin.Enum</span> <span class="k">import</span> <span class="n">EnumLogStatus</span>
+<span class="kn">from</span> <span class="nn">src.modulo_padrao.EnumModulo</span> <span class="k">import</span> <span class="n">EnumModulo</span>
+<span class="kn">from</span> <span class="nn">src.modulo_padrao.ModuloPadrao</span> <span class="k">import</span> <span class="n">ModuloPadrao</span>
+<span class="kn">from</span> <span class="nn">src.avaliacao.Avaliacao</span> <span class="k">import</span> <span class="n">Avaliacao</span>
+
+
+<div class="viewcode-block" id="Default"><a class="viewcode-back" href="../../../../src.inicializacao.default.html#src.inicializacao.default.Default.Default">[docs]</a><span class="k">class</span> <span class="nc">Default</span><span class="p">(</span><span class="n">ModuloPadrao</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Classe para inicializacao dos dados.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="vm">__name__</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Variavel com o nome do arquivo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nessecidade</span> <span class="o">=</span> <span class="p">[</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">INICIALIZACAO_DOMINIO</span><span class="p">]</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Contem a lista de todos os atributos necessários para o módulo ser executado.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_estrategia</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Objeto com todos os parametros</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Default.run"><a class="viewcode-back" href="../../../../src.inicializacao.default.html#src.inicializacao.default.Default.Default.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contexto</span><span class="p">:</span> <span class="n">Contexto</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Contexto</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executa a inicizalicao default</span>
+
+<span class="sd">        :param Contexto contexto: contexto com todas as informações necessárias</span>
+<span class="sd">        :return: Devolve o contexto atualizado</span>
+<span class="sd">        :rtype: Contexto</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">contexto</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_necessidades</span><span class="p">()</span>
+
+        <span class="n">caminho_domino</span> <span class="o">=</span> <span class="n">TXT</span><span class="p">()</span><span class="o">.</span><span class="n">ajuste_path</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;{self._contexto.get_atributo(EnumAtributo.PATH_PROJETO)}/{self._contexto.get_atributo(EnumAtributo.INICIALIZACAO_DOMINIO)}&#39;</span><span class="p">)</span>
+
+        <span class="n">iteracao</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">identificador</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_estrategia</span> <span class="o">=</span> <span class="n">Estrategia</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">identificador</span><span class="p">,</span> <span class="n">iteracao</span><span class="o">=</span><span class="n">iteracao</span><span class="p">)</span>
+
+        <span class="n">dominio</span> <span class="o">=</span> <span class="n">TXT</span><span class="p">()</span><span class="o">.</span><span class="n">ler</span><span class="p">(</span><span class="n">caminho_domino</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dominio</span><span class="p">)):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_linha_2_parametro</span><span class="p">(</span><span class="n">dominio</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
+                <span class="n">variavel</span> <span class="o">=</span> <span class="n">Variavel</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_estrategia</span><span class="o">.</span><span class="n">add_in_variaveis</span><span class="p">(</span><span class="n">variavel</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">ex</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">WARN</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s1">&#39;Erro para adicionar variavel&#39;</span><span class="p">,</span> <span class="n">info_ex</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">ex</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">ESTRATEGIA_BASE</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_estrategia</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">AVALIACAO_ITERACAO_AVALIAR</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">estrategias</span> <span class="o">=</span> <span class="n">Estrategias</span><span class="p">()</span>
+        <span class="n">estrategias</span><span class="o">.</span><span class="n">add_in_estrategias</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_estrategia</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">set_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">ESTRATEGIAS</span><span class="p">,</span> <span class="n">estrategias</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_atributo</span><span class="p">(</span><span class="n">EnumAtributo</span><span class="o">.</span><span class="n">INICIALIZACAO_SIMULA_BASE</span><span class="p">):</span>
+
+            <span class="n">avaliacao</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="o">.</span><span class="n">get_modulo</span><span class="p">(</span><span class="n">EnumModulo</span><span class="o">.</span><span class="n">AVALIACAO</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span> <span class="o">=</span> <span class="n">avaliacao</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="p">)</span>
+
+            <span class="n">Exportacao</span><span class="p">()</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="p">)</span>
+            <span class="n">Exportacao</span><span class="p">()</span><span class="o">.</span><span class="n">obejto</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_contexto</span></div>
+
+    <span class="k">def</span> <span class="nf">_linha_2_parametro</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">linha</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converte a linha do arquivo de donimio em um objto do tipo parametro</span>
+
+<span class="sd">        :param linha: Linha do arquivo de dominio nome, dominio, default, probabilidade</span>
+<span class="sd">        :type linha: str</span>
+<span class="sd">        :return: retorna o objeto do parametro</span>
+<span class="sd">        :rtype: Parametro</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">linha</span> <span class="o">=</span> <span class="n">linha</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="n">tipo</span> <span class="o">=</span> <span class="n">EnumTipoParamentro</span><span class="o">.</span><span class="n">VARIAVEL</span>
+        <span class="k">if</span> <span class="n">linha</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;#&quot;</span><span class="p">:</span>
+            <span class="n">tipo</span> <span class="o">=</span> <span class="n">EnumTipoParamentro</span><span class="o">.</span><span class="n">CONSTANTE</span>
+            <span class="n">linha</span> <span class="o">=</span> <span class="n">linha</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">linha</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">tipo</span><span class="o">=</span><span class="n">EnumLogStatus</span><span class="o">.</span><span class="n">ERRO_FATAL</span><span class="p">,</span> <span class="n">texto</span><span class="o">=</span><span class="n">f</span><span class="s2">&quot;Dominio </span><span class="si">{linha}</span><span class="s2"> esta com erro.&quot;</span><span class="p">)</span>
+        <span class="n">nome</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">dominio</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">default</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">probabilidade</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">default</span> <span class="o">=</span> <span class="n">InOut</span><span class="o">.</span><span class="n">ajusta_entrada</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">default</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">default</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">probabilidade</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">probabilidade</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+                <span class="n">probabilidade</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">probabilidade</span> <span class="o">=</span> <span class="n">probabilidade</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;]&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">probabilidade</span><span class="p">)):</span>
+                    <span class="n">probabilidade</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">InOut</span><span class="o">.</span><span class="n">ajusta_entrada</span><span class="p">(</span><span class="n">probabilidade</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">Parametro</span><span class="p">(</span><span class="n">nome</span><span class="p">,</span> <span class="n">dominio</span><span class="p">,</span> <span class="n">probabilidade</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">tipo</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Tardis</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../src.html">src package</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Luis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

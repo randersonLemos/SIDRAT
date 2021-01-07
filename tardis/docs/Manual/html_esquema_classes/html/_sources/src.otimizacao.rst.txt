@@ -1,0 +1,33 @@
+src.otimizacao package
+======================
+
+Subpackages
+-----------
+
+.. toctree::
+
+   src.otimizacao.criterio_parada
+   src.otimizacao.idlhc
+   src.otimizacao.mcc
+   src.otimizacao.pso
+   src.otimizacao.pymoo
+
+Submodules
+----------
+
+src.otimizacao.Otimizacao module
+--------------------------------
+
+.. automodule:: src.otimizacao.Otimizacao
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.otimizacao
+   :members:
+   :undoc-members:
+   :show-inheritance:

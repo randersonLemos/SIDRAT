@@ -1,0 +1,92 @@
+Variavel; range [|] ou conjunto{}; default nao obrigatorio
+PP_00_I; [18|22]; 21
+PP_00_J; [15|21]; 20
+PP_00_K; [1|2]; 2
+PP_01_I; [13|15]; 15
+PP_01_J; [14|20]; 20
+PP_01_K; [1|2]; 1
+PP_02_I; [24|28]; 25
+PP_02_J; [10|13]; 10
+PP_02_K; [1|2]; 1
+PP_03_I; [35|37]; 35
+PP_03_J; [6|9]; 8
+PP_03_K; [1|2]; 1
+PP_04_I; [41|42]; 41
+PP_04_J; [19|22]; 19
+PP_04_K; [1|2]; 1
+PP_05_I; [31|35]; 35
+PP_05_J; [16|18]; 16
+PP_05_K; [1|2]; 1
+PP_06_I; [30|34]; 30
+PP_06_J; [12|14]; 12
+PP_06_K; [1|2]; 1
+PP_07_I; [32|37]; 37
+PP_07_J; [17|21]; 20
+PP_07_K; [1|2]; 1
+PP_08_I; [14|20]; 20
+PP_08_J; [11|14]; 14
+PP_08_K; [1|2]; 1
+PP_09_I; [22|26]; 22
+PP_09_J; [13|17]; 17
+PP_09_K; [1|2]; 1
+PI_10_I; [15|21]; 17
+PI_10_J; [4|8]; 4
+PI_10_K; [4|6]; 6
+PI_11_I; [17|22]; 22
+PI_11_J; [23|25]; 25
+PI_11_K; [4|6]; 5
+PI_12_I; [25|29]; 25
+PI_12_J; [4|9]; 8
+PI_12_K; [4|6]; 6
+PI_13_I; [5|9]; 9
+PI_13_J; [7|13]; 7
+PI_13_K; [4|6]; 5
+PI_14_I; [38|42]; 38
+PI_14_J; [12|18]; 17
+#PI_14_K; [6|6]; 6
+PI_15_I; [27|35]; 35
+PI_15_J; [19|24]; 22
+PI_15_K; [4|6]; 5
+PI_16_I; [35|38]; 37
+PI_16_J; [21|25]; 23
+PI_16_K; [4|6]; 5
+PI_17_I; [27|35]; 32
+PI_17_J; [12|16]; 16
+#PI_17_K; [6|6]; 6
+PP_00_DIRECTION; {"I" "J"}; "J"
+PP_01_DIRECTION; {"I" "J"}; "I"
+PP_02_DIRECTION; {"I" "J"}; "I"
+PP_03_DIRECTION; {"I" "J"}; "J"
+PP_04_DIRECTION; {"I" "J"}; "J"
+PP_05_DIRECTION; {"I" "J"}; "J"
+PP_06_DIRECTION; {"I" "J"}; "J"
+PP_07_DIRECTION; {"I" "J"}; "J"
+PP_08_DIRECTION; {"I" "J"}; "I"
+PP_09_DIRECTION; {"I" "J"}; "J"
+PI_10_DIRECTION; {"I" "J"}; "I"
+PI_11_DIRECTION; {"I" "J"}; "I"
+PI_12_DIRECTION; {"I" "J"}; "I"
+PI_13_DIRECTION; {"I" "J"}; "J"
+PI_14_DIRECTION; {"I" "J"}; "J"
+PI_15_DIRECTION; {"I" "J"}; "J"
+PI_16_DIRECTION; {"I" "J"}; "J"
+PI_17_DIRECTION; {"I" "J"}; "J"
+PP_00_BLOCKS; {-4 4}; -4
+PP_01_BLOCKS; {-4 4}; -4
+PP_02_BLOCKS; {-4 4}; -4
+PP_03_BLOCKS; {-4 4}; -4
+PP_04_BLOCKS; {-4 4}; -4
+PP_05_BLOCKS; {-4 4}; 4
+PP_06_BLOCKS; {-4 4}; -4
+PP_07_BLOCKS; {-4 4}; 4
+PP_08_BLOCKS; {-4 4}; 4
+PP_09_BLOCKS; {-4 4}; 4
+PI_10_BLOCKS; {-4 4}; 4
+PI_11_BLOCKS; {-4 4}; 4
+PI_12_BLOCKS; {-4 4}; 4
+PI_13_BLOCKS; {-4 4}; 4
+PI_14_BLOCKS; {-4 4}; 4
+PI_15_BLOCKS; {-4 4}; 4
+PI_16_BLOCKS; {-4 4}; 4
+PI_17_BLOCKS; {-4 4}; -4
+

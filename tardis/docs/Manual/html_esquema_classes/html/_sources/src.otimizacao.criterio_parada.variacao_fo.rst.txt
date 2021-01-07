@@ -1,0 +1,22 @@
+src.otimizacao.criterio\_parada.variacao\_fo package
+====================================================
+
+Submodules
+----------
+
+src.otimizacao.criterio\_parada.variacao\_fo.VariacaoFO module
+--------------------------------------------------------------
+
+.. automodule:: src.otimizacao.criterio_parada.variacao_fo.VariacaoFO
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.otimizacao.criterio_parada.variacao_fo
+   :members:
+   :undoc-members:
+   :show-inheritance:

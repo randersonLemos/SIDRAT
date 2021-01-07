@@ -1,0 +1,62 @@
+src.avaliacao.mero package
+==========================
+
+Submodules
+----------
+
+src.avaliacao.mero.Calcula\_OF module
+-------------------------------------
+
+.. automodule:: src.avaliacao.mero.Calcula_OF
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.avaliacao.mero.DSGU module
+------------------------------
+
+.. automodule:: src.avaliacao.mero.DSGU
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.avaliacao.mero.GEP module
+-----------------------------
+
+.. automodule:: src.avaliacao.mero.GEP
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.avaliacao.mero.GEVT module
+------------------------------
+
+.. automodule:: src.avaliacao.mero.GEVT
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.avaliacao.mero.HLDG module
+------------------------------
+
+.. automodule:: src.avaliacao.mero.HLDG
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+src.avaliacao.mero.Mero module
+------------------------------
+
+.. automodule:: src.avaliacao.mero.Mero
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: src.avaliacao.mero
+   :members:
+   :undoc-members:
+   :show-inheritance:
