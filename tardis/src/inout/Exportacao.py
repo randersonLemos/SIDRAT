@@ -21,20 +21,14 @@ class Exportacao(Loggin):
     def __init__(self):
         super().__init__()
 
-        self._contexto = None
-        """
-        Variavel de armazenagem do contexto.
-        """
-
         self._name = __name__
-        """
-        Variavel com o nome do arquivo
-        """
 
-    def csv(self, contexto: Contexto, nome=None):
+        self._contexto = None
+
+
+    def csv(self, contexto, nome=None):
         """
         Método interno para salvar CSV com dados da otimização
-
         """
 
         self._contexto = contexto
@@ -50,19 +44,16 @@ class Exportacao(Loggin):
                 path_csv = InOut().ajuste_path('/'.join([self._contexto.get_atributo(EnumAtributo.PATH_PROJETO), f'/{self._contexto.get_atributo(EnumAtributo.PATH_RESULTADO)}.csv'])).format(str(nome))
 
             if not TXT().salvar(path_csv, conteudo_solucao_csv):
-                self.log(tipo=EnumLogStatus.WARN, texto=f'Erro ao salvar CSV da otimização.')
+                self.log(tipo=EnumLogStatus.WARN, texto='Erro ao salvar CSV da otimização.')
 
         except Exception as ex:
-            self.log(tipo=EnumLogStatus.WARN, texto=f'Erro ao salvar CSV da otimização.', info_ex=str(ex))
+            self.log(tipo=EnumLogStatus.WARN, texto='Erro ao salvar CSV da otimização.', info_ex=str(ex))
+
 
     def _gerar_conteudo_solucoes_csv(self) -> str:
         """
         Método interno geracao do conteudo do CSV com os dados de otimizacao
-
-        :return: Retorna o conteudo
-        :rtype: str str
         """
-
         try:
             solucoes = self._contexto.get_atributo(EnumAtributo.SOLUCOES).solucoes
 
@@ -87,18 +78,18 @@ class Exportacao(Loggin):
                                 aux_conteudo = f'{item_solucao[item_cabecalho]}'
                                 del dados_solucao[_id_item]
                                 break
-                        conteudo += f'{aux_conteudo};'
+                        conteudo += aux_conteudo + ';'
                     conteudo = conteudo[:-1] + '\n'
 
             return conteudo[:-1]
+
         except Exception as ex:
-            self.log(tipo=EnumLogStatus.WARN, texto=f'Erro ao gerar conteudo de exportacao do csv.', info_ex=str(ex))
+            self.log(tipo=EnumLogStatus.WARN, texto='Erro ao gerar conteudo de exportacao do csv.', info_ex=str(ex))
             return ""
 
-    def obejto(self, contexto: Contexto, nome=None):
+    def objeto(self, contexto: Contexto, nome=None):
         """
         Método interno para salvar contexto com os dados da otimização
-
         """
 
         try:

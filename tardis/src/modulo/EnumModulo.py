@@ -54,3 +54,8 @@ class EnumModulo(Enum):
     """
     Modulo responsavael por armazenar a visualizacao selecionada
     """
+    
+    FOFE = 10
+    """
+    Modulo responsável por gerenciar FOFE
+    """

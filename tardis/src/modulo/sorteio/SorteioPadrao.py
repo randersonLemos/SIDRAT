@@ -12,107 +12,98 @@ from src.problema.Solucoes import Solucoes
 
 class SorteioPadrao(Loggin):
     """
-    Classe destinada para a ser o pai de todos os sorteios
+    Class pai dos sorteios
     """
-    __metaclass__ = ABCMeta
-
     def __init__(self):
-        super(SorteioPadrao, self).__init__()
+        super().__init__()
 
-        self._necessidade = []
-        self._contexto = None
         self._name = __name__
 
-        self._tamanho_populacao = None
-        """
-        Qual o tamanho da população que o sorteio vai retornar
-        """
+        self._necessidade = []
 
-        self._iteracao = None
-        """
-        Qual a iteração responsavel por esse sorteio
-        """
+        self._contexto = None
 
-        self._ultimo_id = None
-        """
-        Qual é o proximo id
-        """
+        self._tamanho_populacao = None  # Tamanho população
 
-        self._solucao_referencia = None
-        """
-        Solução de referencia para o sorteio
-        """
+        self._iteracao = None  # Iteração responsável pelo sorteio
 
-        self._solucoes = Solucoes()
-        """
-        Conjunto que contem as solucoes sorteadas
-        """
+        self._ultimo_id = None  # Qual é o próximo id
 
-        self._solucoes_historico = None
+        self._solucao_referencia = None  # Solução de referência para o sorteio
+
+        self._solucoes = None  # Conjunto que contem as soluções
+
+        self._solucoes_historico = None  # Histórico de soluções
+
 
     def before(self):
         self.log(texto=f"Before {self._name}")
+
         self._solucoes_historico = self._contexto.get_atributo(EnumAtributo.SOLUCOES)
+
 
     def run(self):
         """
         Executa o inicializador desejado.
-
-        :param Contexto contexto: contexto com todas as informações necessárias
         """
         self.log(texto=f"Executando {self._name}")
 
-    @property
-    def tamanho_populacao(self):
-        return self._tamanho_populacao
-
-    @property
-    def iteracao(self):
-        return self._iteracao
-
-    @property
-    def ultimo_id(self):
-        return self._ultimo_id
-
-    @property
-    def solucao_referencia(self):
-        return self._solucao_referencia
 
     @property
     def solucoes(self):
         return self._solucoes
 
-    @tamanho_populacao.setter
-    def tamanho_populacao(self, tamanho_populacao):
-        self._tamanho_populacao = tamanho_populacao
+
+    @property
+    def necessidade(self):
+        return self._necessidade
+
+
+    @property
+    def iteracao(self):
+        return self._iteracao
+
 
     @iteracao.setter
     def iteracao(self, iteracao):
         self._iteracao = iteracao
 
+
+    @property
+    def contexto(self):
+        return self._contexto
+
+
+    @contexto.setter
+    def contexto(self, contexto):
+        self._contexto = contexto
+
+
+    @property
+    def ultimo_id(self):
+        return self._ultimo_id
+
+
     @ultimo_id.setter
     def ultimo_id(self, ultimo_id):
         self._ultimo_id = ultimo_id
+
+
+    @property
+    def solucao_referencia(self):
+        return self._solucao_referencia
+
 
     @solucao_referencia.setter
     def solucao_referencia(self, solucao_referencia):
         self._solucao_referencia = solucao_referencia
 
-    @property
-    def contexto(self):
-        """
-        contexto com todas as informações necessárias
-        :return:
-        """
-        return self._contexto
 
     @property
-    def necessidade(self):
-        """
-        Defini quais os atributos necessarios para executar o modulo desejado
-        """
-        return self._necessidade
+    def tamanho_populacao(self):
+        return self._tamanho_populacao
 
-    @contexto.setter
-    def contexto(self, contexto):
-        self._contexto = contexto
+
+    @tamanho_populacao.setter
+    def tamanho_populacao(self, tamanho_populacao):
+        self._tamanho_populacao = tamanho_populacao

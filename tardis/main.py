@@ -1,86 +1,97 @@
-import sys
-
 from src.carregamento.Carregamento import Carregamento
 from src.inout.LogarMemoria import LiberarMemoria
-#from src.modulo.EnumModulo import EnumModulo
-
-modules = [  'OTIMIZACAO'
-           , 'INICIALIZACAO'
-           , 'REDUCAO'
-           , 'AVALIACAO'
-           , 'CRITERIOPARADA'
-           , 'SORTEIO'
-           , 'PROBLEMA_FECHADO'
-          ]
-
-path_projeto = ''
-Path_config = []
-
-if sys.stdin.isatty():
-    for idx, argumento in enumerate(sys.argv):
-        if idx == 1:
-            path_projeto = argumento
-        if idx >= 2:
-            Path_config.append(argumento)
-
-# Caminho para a raiz do projeto (DEFAULT)
-if not path_projeto:
-    path_projeto = '/media/beldroega/DATA/SIDRAT/TARDIS'
-
-# Caminho relativo para o arquivo *.config (DEFAULT)
-if not Path_config:
-    Path_config.append('base/configuracao.config')
+from src.modulo.EnumModulo import EnumModulo
+from src.contexto.EnumAtributo import EnumAtributo
 
 
-print(f'projeto {path_projeto}')
-print(f'paths   {Path_config}')
+def run_idlhc_standard(time):
+    path_project = 'U:/SIDRAT/tardis'
+
+    path_config  = '/base/configuracao.config'
+
+    modules      = [  'OTIMIZACAO'
+                    , 'INICIALIZACAO'
+                    , 'AVALIACAO'
+                    , 'CRITERIOPARADA'
+                    , 'SORTEIO'
+                    , 'PROBLEMA_FECHADO'
+                   ]        
+    
+    carregamento = Carregamento(path_project, path_config, modules)
+    contexto = carregamento.run()    
+   
+    problema_fechado = contexto.get_modulo(EnumModulo.PROBLEMA_FECHADO)
+    
+    contexto = problema_fechado.run(contexto)
+    
+    EA = EnumAtributo
+    csa = contexto.set_atributo
+    csa(EA.PATH_RESULTADO, "RES/IDLHC_STANDARD_{}/it_{{}}".format(time), True)
+    
+    inicializacao = contexto.get_modulo(EnumModulo.INICIALIZACAO)
+    
+    contexto = inicializacao.run(contexto)
+    
+    otimizador = contexto.get_modulo(EnumModulo.OTIMIZACAO)
+    contexto = otimizador.run(contexto)
+    
+    carregamento = None
+    problema_fechado = None
+    inicializacao = None
+    otimizador = None
+    contexto = None
+    LiberarMemoria()
 
 
-for path_config in Path_config:
-    try:
-        print('******************************************************')
-        print('******************************************************')
-        print(f'** EXECUTANDO {path_config}')
-        print('******************************************************')
-        print('******************************************************')
+def run_idlhc_ml(time):    
+    path_project = 'U:/SIDRAT/tardis'
 
-        carregamento = Carregamento(path_projeto, path_config, modules)
+    path_config  = '/base/configuracao_fofe.config'
+
+    modules      = [  'OTIMIZACAO'
+                    , 'INICIALIZACAO'
+                    , 'AVALIACAO'
+                    , 'CRITERIOPARADA'
+                    , 'SORTEIO'
+                    , 'PROBLEMA_FECHADO'
+                    , 'FOFE'
+                   ]
+    
+    NCLASS1 = [10, 15, 20]
+    THRESHOLD = [10, 20, 30, 40, 50]
+    
+    
+    import itertools
+    for nclass1, threshold in itertools.product(NCLASS1, THRESHOLD):
+        carregamento = Carregamento(path_project, path_config, modules)
         contexto = carregamento.run()
-
-        #problema_fechado = contexto.get_modulo(EnumModulo.PROBLEMA_FECHADO)
-        #contexto = problema_fechado.run(contexto)
-
-        #inicializacao = contexto.get_modulo(EnumModulo.INICIALIZACAO)
-        #contexto = inicializacao.run(contexto)
-
-        #otimizador = contexto.get_modulo(EnumModulo.OTIMIZACAO)
-        #contexto = otimizador.run(contexto)
-
-        print('******************************************************')
-        print('******************************************************')
-        print('************** PROGRAMA FINALIZADO *******************')
-        print('******************************************************')
-        print('******************************************************')
-
-    except Exception as ex:
-        print('ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ')
-        print('ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ')
-        print(str(ex))
-        print('************** PROGRAMA FINALIZADO *******************')
-        print('ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ')
-        print('ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ERRO ')
-        sys.exit(-1)
-
-    finally:
+    
+        EA = EnumAtributo
+        csa = contexto.set_atributo
+        csa(EA.NN_BINARY_CLASSIFIER_NCLASS1, nclass1, True)
+        csa(EA.NN_BINARY_CLASSIFIER_THRESHOLD, threshold/100, True)
+        csa(EA.PATH_RESULTADO, "RES/IDLHC_ML_C{}T{}_{}/it_{{}}".format(nclass1, threshold, time), True)
+    
+        problema_fechado = contexto.get_modulo(EnumModulo.PROBLEMA_FECHADO)
+        contexto = problema_fechado.run(contexto)
+    
+        inicializacao = contexto.get_modulo(EnumModulo.INICIALIZACAO)
+        contexto = inicializacao.run(contexto)
+    
+        otimizador = contexto.get_modulo(EnumModulo.OTIMIZACAO)
+        contexto = otimizador.run(contexto)
+    
         carregamento = None
         problema_fechado = None
         inicializacao = None
         otimizador = None
         contexto = None
         LiberarMemoria()
-
-print('******************************************************')
-print('******************************************************')
-print('************** TUDO CHEGOU AO FIM ********************')
-print('******************************************************')
-print('******************************************************')
+  
+times = [1, 2, 3, 4, 5]   
+  
+for time in times:        
+    run_idlhc_standard(time)
+    
+for time in times:
+    run_idlhc_ml(time)  

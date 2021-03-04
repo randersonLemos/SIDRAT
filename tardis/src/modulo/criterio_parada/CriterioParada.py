@@ -17,20 +17,16 @@ class CriterioParada(ModuloPadrao):
     Classe destinada para executar os criterios de parada
     """
 
+
     def __init__(self):
-        super(CriterioParada, self).__init__()
+        super().__init__()
 
         self._name = __name__
-        """
-        Variavel com o nome do arquivo
-        """
 
         self._necessidade = [] + super(CriterioParada, self).necessidade
-        """
-        Contem a lista de todos os atributos necessários para o módulo ser executado.
-        """
 
         self._criterios_parada = []
+
 
     def carrega(self, contexto):
         """
@@ -38,7 +34,9 @@ class CriterioParada(ModuloPadrao):
 
         :param Contexto contexto: contexto com todas as informações necessárias
         """
-        super(CriterioParada, self).carrega(contexto)
+        self.log(texto=f'Carregando o {self._name}')
+
+        self._contexto = contexto
 
         if self._contexto.tem_atributo(EnumAtributo.CRITERIO_PARADA):
             for criterio in self._contexto.get_atributo(EnumAtributo.CRITERIO_PARADA, True):
@@ -46,22 +44,27 @@ class CriterioParada(ModuloPadrao):
                     simulacao_max = SimulacoesMaximas()
                     self._necessidade += simulacao_max.necessidade
                     self._criterios_parada.append(simulacao_max)
+
                 if criterio == EnumValues.VARIACAO_OF.name:
                     variacaofo = VariacaoFO()
                     self._necessidade += variacaofo.necessidade
                     self._criterios_parada.append(variacaofo)
+
                 if criterio == EnumValues.ITERACOES_MAX.name:
                     iteracoes_max = IteracoesMaximas()
                     self._necessidade += iteracoes_max.necessidade
                     self._criterios_parada.append(iteracoes_max)
+
                 if criterio == EnumValues.QTD_SOLUCAO_NOVA.name:
                     qtd_solucoes_novas = QtdSolucoesNovas()
                     self._necessidade += qtd_solucoes_novas.necessidade
                     self._criterios_parada.append(qtd_solucoes_novas)
+
                 if criterio == EnumValues.QTD_MEMORIA_USADA_MB.name:
                     qtd_memoria_usada = QtdMemoriaUsada()
                     self._necessidade += qtd_memoria_usada.necessidade
                     self._criterios_parada.append(qtd_memoria_usada)
+
 
     def run(self, contexto) -> bool:
         """
@@ -71,7 +74,7 @@ class CriterioParada(ModuloPadrao):
         :return Contexto contexto: contexto com todas as informações necessárias
         :rtype Contexto
         """
-        self._contexto = super(CriterioParada, self).run(contexto)
+        self._contexto = super().run(contexto)
 
         for criterio_parada in self._criterios_parada:
             if criterio_parada.run(self._contexto):

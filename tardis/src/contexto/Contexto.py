@@ -20,7 +20,7 @@ def _get_chave(atributo: EnumAtributo):
     """
     chave = None
     for attr in EnumAtributo:
-        if type("") == type(atributo):
+        if isinstance(atributo, str):
             if attr.name.upper() == atributo.upper():
                 chave = atributo.upper()
                 break
@@ -36,20 +36,16 @@ class Contexto(Loggin):
     Classe que contem todas as informações de configuracao
     """
 
+
     def __init__(self):
         super().__init__()
 
-        self._configuracao = {}
-        """
-        Variável responsável por armazenar toda informacao
-        """
-
         self._name = __name__
-        """
-        Variavel com o nome do arquivo
-        """
+
+        self._configuracao = {}  # Dicionário com todos os dicionários
 
         self._modulo = {}
+
 
     def set_modulo(self, enum_modulo: EnumModulo, modulo):
         """
@@ -64,6 +60,7 @@ class Contexto(Loggin):
         else:
             self._modulo[enum_modulo.name] = modulo
 
+
     def get_modulo(self, enum_modulo: EnumModulo) -> object:
         """
         Buscar o modulo informado pelo enum
@@ -75,6 +72,7 @@ class Contexto(Loggin):
         if enum_modulo.name in self._modulo:
             return self._modulo[enum_modulo.name]
         return None
+
 
     def set_atributo(self, atributo: EnumAtributo, valor: list, sobrescreve: bool = False) -> None:
         """
@@ -114,9 +112,10 @@ class Contexto(Loggin):
             else:
                 self._configuracao[chave] = aux_valor
 
-            self.log(texto=f"Gravado no contexto chave[{chave}]\tvalor[{self._configuracao[chave]}]")
+            self.log(texto=f"Grava no contexto - chave [{chave}] valor [{self._configuracao[chave]}]")
         else:
             self.log(texto=f"A chave {atributo}, não é um atributo valido", tipo=EnumLogStatus.WARN)
+
 
     def get_atributo(self, atributo: EnumAtributo, valor_unico_list: bool = False) -> object:
         """
@@ -144,6 +143,7 @@ class Contexto(Loggin):
             self.log(texto=f'O atributo {atributo} não esta no contexto', tipo=EnumLogStatus.WARN, info_ex=str(ex))
             return None
 
+
     def tem_atributo(self, chave: EnumAtributo) -> bool:
         """
         Verificar se existe a chave no contexto
@@ -155,6 +155,7 @@ class Contexto(Loggin):
         if _get_chave(chave) in self._configuracao:
             return True
         return False
+
 
     def get_gevts_templates(self, gevts_templates):
         gevts_templantes_executar = {}
@@ -197,6 +198,7 @@ class Contexto(Loggin):
                                                                                    'template_prob': template_prob}
         return gevts_templantes_executar
 
+
     def get_uniecos(self, uniecos):
         uniecos_executar = {}
         if type(uniecos) is list:
@@ -226,6 +228,7 @@ class Contexto(Loggin):
                                                   'unieco_prob': unieco_prob}
 
         return uniecos_executar
+
 
     def set_defaults(self):
         if not self.tem_atributo(EnumAtributo.AVALIACAO_QUALIFICADOR):

@@ -48,29 +48,36 @@ class Dominio(Loggin):
         Valor default para o dominio
         """
 
+
     @property
     def nome(self):
         return self._nome
+
 
     @property
     def probabilidade(self):
         return self._probabilidade
 
+
     @property
     def niveis(self):
         return self._niveis
+
 
     @property
     def equacao(self):
         return self._equacao
 
+
     @property
     def default(self):
         return self._default
 
+
     @property
     def tipo(self):
         return self._tipo
+
 
     def get_valor(self, valor):
         """
@@ -82,9 +89,12 @@ class Dominio(Loggin):
         """
         if valor is None:
             valor = self._default
+
         if valor in self._niveis:
             return valor, self._niveis.index(valor)
+
         return None, None
+
 
     def get_posicao(self, posicao: int) -> tuple:
         """
@@ -99,6 +109,7 @@ class Dominio(Loggin):
         if (posicao >= 0) and (posicao < len(self._niveis)):
             return posicao, self._niveis[posicao]
         return None, None
+
 
     @probabilidade.setter
     def probabilidade(self, probabilidade):
@@ -139,9 +150,18 @@ class Dominio(Loggin):
 
         self._probabilidade = probabilidade
 
+
     def to_string(self):
-        return "Nome: {};\tDominio: {};\tProbabilidade: {};\tDefault: {};\tTipo: {}".format(self.nome,
-                                                                                            self._niveis,
-                                                                                            self._probabilidade,
-                                                                                            self._default,
-                                                                                            self._tipo.name)
+        #stg  = 'nome = {}; '.format(self.nome)
+        #stg += 'valor default = {}; '.format(self._default)
+        #stg += 'tipo = {}\n'.format(self.name)
+        #stg += 'dominio       {' + ', '.join(['{:+.3f}'.format(el) for el in self._niveis]) + '}\n'
+        #stg += 'probabilidade {' + ', '.join(['{:+.3f}'.format(el) for el in self._probabilidade]) + '}'
+        #return stg
+
+        return "Nome: {};\tDominio: {};\tProbabilidade: {};\tDefault: {};\tTipo: {}".format(self.nome
+                                                                                            , self._niveis
+                                                                                            , self._probabilidade
+                                                                                            , self._default
+                                                                                            , self._tipo.name
+                                                                                           )

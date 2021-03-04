@@ -15,7 +15,9 @@ class ModuloPadrao(Loggin):
         super().__init__()
 
         self._name = __name__
+
         self._contexto = None
+
         self._necessidade = [EnumAtributo.PATH_PROJETO]
 
 
@@ -41,12 +43,12 @@ class ModuloPadrao(Loggin):
         """
         tem_tudo = True
         msg = ""
-        for need in self.necessidade:
-            if self._contexto.tem_atributo(need):
-                self.log(texto=f"Atritubo [{need}] definico como [{self._contexto.get_atributo(need)}]")
+        for necessidade in self._necessidade:
+            if self._contexto.tem_atributo(necessidade):
+                self.log(texto=f"Atritubo [{necessidade}] está definido como [{self._contexto.get_atributo(necessidade)}] (OK)")
             else:
                 tem_tudo = False
-                msg = f'Atributo [{need}] não foi definido\n{msg}'
+                msg = f'Atributo [{necessidade}] não está definido\n{msg}'
 
         if not tem_tudo:
             self.log(tipo=EnumLogStatus.ERRO_FATAL, texto=msg)

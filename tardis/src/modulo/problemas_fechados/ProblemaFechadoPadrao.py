@@ -2,9 +2,6 @@
 :author: Rafael
 :data: 17/09/2020
 """
-from abc import ABCMeta
-
-from src.contexto.Contexto import Contexto
 from src.loggin.Loggin import Loggin
 
 
@@ -12,13 +9,12 @@ class ProblemaFechadoPadrao(Loggin):
     """
     Classe destinada para a ser o pai de todos os inicializadores
     """
-    __metaclass__ = ABCMeta
-
     def __init__(self):
         super().__init__()
+        self._name = __name__
         self._necessidade = []
         self._contexto = None
-        self._name = __name__
+
 
     def run(self, contexto):
         """
@@ -29,6 +25,7 @@ class ProblemaFechadoPadrao(Loggin):
         self.log(texto=f"Executando {self._name}")
         self._contexto = contexto
 
+
     @property
     def contexto(self):
         """
@@ -36,6 +33,7 @@ class ProblemaFechadoPadrao(Loggin):
         :return:
         """
         return self._contexto
+
 
     @property
     def necessidade(self):

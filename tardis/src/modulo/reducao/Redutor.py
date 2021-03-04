@@ -11,19 +11,14 @@ class Redutor(ModuloPadrao):
     """
 
     def __init__(self):
-        super(Redutor, self).__init__()
+        super().__init__()
 
         self._name = __name__
-        """
-        Variavel com o nome do arquivo
-        """
 
-        self._necessidade = [EnumAtributo.AVALIACAO_TYPE] + super(Redutor, self).necessidade
-        """
-        Contem a lista de todos os atributos necessários para o módulo ser executado.
-        """
+        self._necessidade = self._necessidade + [EnumAtributo.AVALIACAO_TYPE]
 
         self._redutor = RedutorPadrao()
+
 
     def carrega(self, contexto):
         """
@@ -31,11 +26,14 @@ class Redutor(ModuloPadrao):
 
         :param Contexto contexto: contexto com todas as informações necessárias
         """
-        super(Redutor, self).carrega(contexto)
+        #super().carrega(contexto)
+
+        self.log(texto=f'Carregando o {self._name}')
+        self._contexto = contexto
 
         if self._contexto.tem_atributo(EnumAtributo.REDUCAO_TYPE):
             tipo = self._contexto.get_atributo(EnumAtributo.REDUCAO_TYPE)
-            if type("") == type(tipo):
+            if isinstance(tipo, str):
                 tipo = tipo.upper()
 
             if (tipo == EnumValues.SIMULACAO_PARCIAL.name) or (tipo == EnumValues.SIMULACAO_PARCIAL):
@@ -43,6 +41,7 @@ class Redutor(ModuloPadrao):
                 self._redutor = SimulacaoParcial()
 
             self._necessidade += self._redutor.necessidade
+
 
     def run(self, contexto) -> Contexto:
         """
@@ -58,6 +57,7 @@ class Redutor(ModuloPadrao):
         self._redutor.run(self._contexto)
         return self._redutor.contexto
 
+
     def after(self, contexto: Contexto) -> Contexto:
         """
         Executa o after do Redutor desejado.
@@ -67,7 +67,8 @@ class Redutor(ModuloPadrao):
         :rtype Contexto
         """
         self._name = self._redutor.name
-        self._contexto = super(Redutor, self).after(contexto)
+        self._contexto = super().after(contexto)
 
         self._redutor.after(self._contexto)
+
         return self._redutor.contexto

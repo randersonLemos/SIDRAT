@@ -15,31 +15,25 @@ from src.problema.Solucao import Solucao
 class Solucoes(Loggin):
     def __init__(self):
         """
-        Construtor da solucoes
+        Classe coleção de soluções
         """
-
         super().__init__()
 
         self._name = __name__
-        """
-        Variavel com o nome do arquivo
-        """
 
-        self._solucoes = {}
-        """
-        Variavel que armazena a coleção de solucoes
-        """
+        self._solucoes = {}  # Dicionário para coleção de soluções
 
         self._melhor_solucao = Solucao(0, 0)
+
         self._solucoes_serializado = {}
 
+
     @property
-    def solucoes(self):
+    def solucoes(self) -> dict:
 
         """
         Retorna o dicionario com todas as solucoes
         :return: Retorna as solucoes
-        :rtype: dict
         """
         return self._solucoes
 
@@ -51,7 +45,6 @@ class Solucoes(Loggin):
         :param Solucao solucao: É a solucao para ser adcionada
         :param bool sobrescreve: Se quando encontrar uma solucao igual, deve sobrescrever. Padrão é não
         :return: Retorna True ou False, para verificar se a adição ocorreu corretamente.
-        :rtype: bool
         """
 
         if solucao is None:
@@ -177,6 +170,7 @@ class Solucoes(Loggin):
         self.log(tipo=EnumLogStatus.ERRO, texto=f'Nenhuma estratégia com iteracao {iteracao} e id {id} foi encontrada.')
         return None
 
+
     def data_frame(self, iteracao: [int] = None, identificador: int = None, com_erro: bool = False) -> pd.DataFrame:
         """
         Converte as solucoes em um dataFrame. Seguindo a regra: Se identificar = None, retorna todas as estratégias da iteracao definida, Se iteração nao definida retorna todas as estratégias.
@@ -210,17 +204,18 @@ class Solucoes(Loggin):
                  texto=f'Nenhuma estratégia com iteracao {iteracao} e id {identificador} foi encontrada.')
         return df
 
+
     def to_save(self) -> list:
         """
         Retorna um lista de dicionarios com a ordenação para salvar, e no dicionario com o nome da coluna e valor.
         :return: uma lista de dicionarios.
-        :rtype: list
         """
         estats = []
         for iteracao in self._solucoes:
             for id in self._solucoes[iteracao]:
                 estats.append(self._solucoes[iteracao][id].to_save())
         return estats
+
 
     def existe_solucao(self, solucao: Solucao, retorna_solucao=False):
         try:
@@ -276,12 +271,14 @@ class Solucoes(Loggin):
                         self._melhor_solucao = copy.deepcopy(self._solucoes[it][id])
         return self._melhor_solucao
 
+
     def serializacao(self):
         lista_serialiazado = []
         for solucoes_in in self._solucoes.values():
             for solucao_in in solucoes_in.values():
                 lista_serialiazado.append(solucao_in.serializacao())
         return lista_serialiazado
+
 
     def conjunto_melhores_solucoes(self, quantidade=10, nome_of_mono=None, iteracao=None):
         """
@@ -329,6 +326,7 @@ class Solucoes(Loggin):
 
         return melhores_solucoes
 
+
     def remove_iteracao(self, it):
         if self.solucoes[it]:
             for id in self._solucoes[it]:
@@ -337,6 +335,7 @@ class Solucoes(Loggin):
         else:
             self.log(EnumLogStatus.WARN, texto=f'Iteracao nao removida. Iteracap {it} não existente')
 
+
     def remove_iteracao_id(self, it, id):
         if self.solucoes[it]:
             if self.solucao[it][id]:
@@ -344,6 +343,7 @@ class Solucoes(Loggin):
                 del self._solucoes[it][id]
         else:
             self.log(EnumLogStatus.WARN, texto=f'Iteracao nao removida. Iteracap {it} e id {id} não existente')
+
 
     def solucoes_it_para_menos1(self, it):
         solucoes = self.get_solucoes_by_iteracao(it)

@@ -1,7 +1,0 @@
-Versão 0.5.0.0
-[2620]  -   Adicionado o parâmetro OTIMIZACAO_IDLHC_CORTE_PDF. Este pâmetro é opcional para o uso do IDLHC.
-            O parâmetro define um valor de corte que atua na pdf que será utilizado para os sorteios entre as iterações
-            do IDLHC.  Caso, durante a geração das PDFs que serão utilizadas para os sorteios do HLDG, algum nivel tenha
-            probabilidade abaixo do valor OTIMIZACAO_IDLHC_CORTE_PDF, o nívei recebe probabilidade zero, e a
-            probabilidade é redistribuida para os outros niveis. Caso todos os níveis tenham probabilidade abaixo de
-            OTIMIZACAO_IDLHC_CORTE_PDF, não há alteraçao das probabilidades.

@@ -23,7 +23,9 @@ class Inicializador(ModuloPadrao):
         super().__init__()
 
         self._name = __name__
-        self._necessidade = self._necessidade + [EnumAtributo.INICIALIZACAO_TYPE]
+
+        self._necessidade.append(EnumAtributo.INICIALIZACAO_TYPE)
+
         self._inicializador = InicializadorPadrao()
 
 
@@ -33,14 +35,13 @@ class Inicializador(ModuloPadrao):
 
         :param Contexto contexto: contexto com todas as informações necessárias
         """
-        #super().carrega(contexto)
-
         self.log(texto=f'Carregando o {self._name}')
+
         self._contexto = contexto
 
         if self._contexto.tem_atributo(EnumAtributo.INICIALIZACAO_TYPE):
             tipo = self._contexto.get_atributo(EnumAtributo.INICIALIZACAO_TYPE)
-            if type("") == type(tipo):
+            if isinstance(tipo, str):
                 tipo = tipo.upper()
 
             if (tipo == EnumValues.DEFAULT.name) or (tipo == EnumValues.DEFAULT):
@@ -52,7 +53,10 @@ class Inicializador(ModuloPadrao):
                 self._inicializador = Resume()
 
             else:
-                self.log(tipo=EnumLogStatus.ERRO_FATAL, texto=f"O método de inicialização definido [{tipo}] não existe. Somente existe os métodos {EnumValues.DEFAULT.name} e {EnumValues.RESUME.name}")
+                self.log(tipo=EnumLogStatus.ERRO_FATAL, 
+                         texto=f"O método de inicialização definido [{tipo}] não existe." +
+                               f"Somente existe os métodos {EnumValues.DEFAULT.name} e {EnumValues.RESUME.name}"
+                        )
 
             self._necessidade += self._inicializador.necessidade
 
@@ -63,10 +67,13 @@ class Inicializador(ModuloPadrao):
 
         :param Contexto contexto: contexto com todas as informações necessárias
         :return Contexto contexto: contexto com todas as informações necessárias
-        :rtype Contexto
         """
-        self._name = self._inicializador.name
-        self._contexto = super(Inicializador, self).run(contexto)
+        self.log(texto=f'Executando {self._name}')
+
+        #self._name = self._inicializador.name
+
+        self._contexto = contexto
 
         self._inicializador.run(self._contexto)
+
         return self._inicializador.contexto

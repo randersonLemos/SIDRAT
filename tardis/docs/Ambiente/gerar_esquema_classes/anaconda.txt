@@ -1,5 +1,0 @@
-exportar 
-conda env export > environment.yaml
-
-importar
-conda env create -f environment.yaml

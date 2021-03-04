@@ -2,7 +2,6 @@
 :author: Rafael
 :data: 10/12/2019
 """
-from src.contexto.Contexto import Contexto
 from src.contexto.EnumAtributo import EnumAtributo, EnumValues
 from src.modulo.inicializacao.InicializadorPadrao import InicializadorPadrao
 from src.inout.Exportacao import Exportacao
@@ -21,71 +20,78 @@ class Default(InicializadorPadrao):
     """
     Classe para inicializacao dos dados.
     """
-
     def __init__(self):
-        super(Default, self).__init__()
+        super().__init__()
 
         self._name = __name__
-        """
-        Variavel com o nome do arquivo
-        """
 
-        self._necessidade = [EnumAtributo.INICIALIZACAO_DOMINIO] + super(Default, self).necessidade
-        """
-        Contem a lista de todos os atributos necessários para o módulo ser executado.
-        """
+        if EnumAtributo.INICIALIZACAO_DOMINIO not in self._necessidade:
+            self._necessidade.append(EnumAtributo.INICIALIZACAO_DOMINIO)
 
-        self._solucao = None
-        """
-        Objeto com todos os dominios
-        """
+        self._solucao = None  # Objeto com todos os dominios
+
 
     def run(self, contexto):
         """
         Executa a inicizalicao default
 
-        :param Contexto contexto: contexto com todas as informações necessárias
-        :return: Devolve o contexto atualizado
-        :rtype: Contexto
+        :param Contexto contexto
+        :return: Contexto contexto (atualizado) 
         """
-        super(Default, self).run(contexto)
+        self.log(texto=f"Executando {self._name}")
 
-        caminho_dominio = TXT().ajuste_path(f'{self._contexto.get_atributo(EnumAtributo.PATH_PROJETO)}/{self._contexto.get_atributo(EnumAtributo.INICIALIZACAO_DOMINIO)}')
+        self._contexto = contexto
+
+        self._nomes_direcoes_of = self._contexto.get_atributo(
+            EnumAtributo.AVALIACAO_NOMES_DIRECOES_OFS, valor_unico_list=True
+        )
+
+        caminho_dominio = TXT().ajuste_path(
+            f'{self._contexto.get_atributo(EnumAtributo.PATH_PROJETO)}/' +
+            f'{self._contexto.get_atributo(EnumAtributo.INICIALIZACAO_DOMINIO)}'
+        )
 
         iteracao = 0
         identificador = 0
         self._solucao = Solucao(id=identificador, iteracao=iteracao)
+
         for nome_of in self._nomes_direcoes_of:
             direcao = self._nomes_direcoes_of[nome_of][EnumValues.DIRECAO.name]
             self._solucao.of = Of(nome_of, direcao=direcao)
 
         dominio = TXT().ler(caminho_dominio)
+
         for ii in range(1, len(dominio)):
             try:
-                if str(dominio[ii]).strip() == "":
-                    continue
-                dom = self._linha_2_dominio(dominio[ii])
-                self.log(texto=f'Criando variavel {dom.to_string()}')
-                variavel = Variavel(dom)
-                self._solucao.add_in_variaveis(variavel)
+                if str(dominio[ii]).strip() != "":
+                    dom = self._linha_2_dominio(dominio[ii])
+                    self.log(texto=f'Criando variavel - {dom.to_string()}')
+                    variavel = Variavel(dom)
+                    self._solucao.add_in_variaveis(variavel)
+
             except Exception as ex:
-                self.log(tipo=EnumLogStatus.WARN, texto=f'Erro para adicionar variavel', info_ex=str(ex))
+                self.log(tipo=EnumLogStatus.WARN, texto='Erro para adicionar variavel', info_ex=str(ex))
 
         self._contexto.set_atributo(EnumAtributo.SOLUCAO_BASE, self._solucao)
 
         self._contexto.set_atributo(EnumAtributo.AVALIACAO_ITERACAO_AVALIAR, [0], True)
 
         solucoes = Solucoes()
+
         solucoes.add_in_solucoes(self._solucao)
+
         self._contexto.set_atributo(EnumAtributo.SOLUCOES, solucoes, True)
 
         if self._contexto.get_atributo(EnumAtributo.INICIALIZACAO_SIMULA_BASE):
 
             avaliacao = self._contexto.get_modulo(EnumModulo.AVALIACAO)
+
             self._contexto = avaliacao.run(self._contexto)
 
             Exportacao().csv(self._contexto)
-            Exportacao().obejto(self._contexto)
+
+            Exportacao().objeto(self._contexto)
+
 
     def _linha_2_dominio(self, linha):
         """
@@ -114,36 +120,43 @@ class Default(InicializadorPadrao):
 
         if '=' in linha:
             tipo = EnumTipoVariaveis.CONDICIONAL
+
             if len(args) > 2:
                 self.log(tipo=EnumLogStatus.WARN, texto=f"Para variavel tipo condicional, são usados somentes dois parametros, nome [{args[0]}] e equacao [{args[1]}].")
+
             equacao = args[1].strip()
             equacao = equacao.replace("=", "").strip()
+
         else:
             niveis, probabilidade = self._str_2_niveis(args[1].strip())
 
             if len(args) > 2:
                 default = InOut.ajusta_entrada(args[2].strip().replace("'", "").replace('"', ''))
+
                 if default == "":
                     self.log(tipo=EnumLogStatus.WARN, texto=f'O valor default, não existe, com isso o default será [{niveis[0]}]')
                     default = niveis[0]
+
                 else:
-                    if default in niveis:
-                        pass
-                    else:
+                    if default not in niveis:
                         self.log(tipo=EnumLogStatus.WARN, texto=f'O valor default [{default}], não existe no domínio, com isso o default será [{niveis[0]}]')
                         default = niveis[0]
+
             if len(args) > 3:
                 probabilidade = args[3].strip()
                 if probabilidade == "":
                     probabilidade = None
+
                 else:
                     probabilidade = probabilidade.replace("[", "").replace("]", "").replace(" ", "").split(",")
                     for ii in range(len(probabilidade)):
                         probabilidade[ii] = InOut.ajusta_entrada(probabilidade[ii])
+
             if len(niveis) != len(probabilidade):
                 self.log(tipo=EnumLogStatus.ERRO_FATAL, texto=f"Quantidade de níveis [{len(niveis)}] é diferente da quantidade de probabilidades [{len(probabilidade)}].")
 
         return Dominio(nome, niveis, probabilidade, default, equacao, tipo)
+
 
     def _monta_niveis(self, linha, replace):
         linha = linha.strip()
@@ -156,6 +169,7 @@ class Default(InicializadorPadrao):
         niveis, probabilidade = self._str_2_niveis(args[1].strip())
 
         return nome, niveis, probabilidade, default
+
 
     def _str_2_niveis(self, str_niveis: str) -> tuple:
         """

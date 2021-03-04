@@ -503,6 +503,29 @@ class EnumAtributo(Enum):
     Define um valor mínimo de probabilidade dos níveis das variáveis. Caso seja atingido o valor definido, é forcado
     a probabilidade do nível para 0
     """
+    
+    FOFE = 300
+    """
+    Defina qual FOFE será utilizada
+    """
+
+    NN_BINARY_CLASSIFIER_NCLASS1 = 320
+    """
+    Número de melhores simulações consideradas como classe 1 para o treinamento
+    da NN
+    """
+
+    NN_BINARY_CLASSIFIER_NMODELS = 330
+    """
+    Número de modelos para formação no conjunto de NNs
+    """
+
+    NN_BINARY_CLASSIFIER_THRESHOLD = 340
+    """
+    Limiar de probabilidade considerado para classificar uma amostra como sendo
+    da classe 1
+    """
+
 
 class EnumValues(Enum):
     DEFAULT = 1
@@ -803,4 +826,10 @@ Julian Blank, Kalyanmoy Deb, and Proteek Chandan Roy. Investigating the normaliz
     MULTIOBJETIVO = 64
     """
     Nome da função objetivo para o multiobjetivo
+    """
+    
+    NN_BINARY_CLASSIFIER = 70
+    """
+    Nome da FOFE que utiliza um classificar binário treinado com NN para
+    identificar quais solucões valem a pena serem rodadas
     """

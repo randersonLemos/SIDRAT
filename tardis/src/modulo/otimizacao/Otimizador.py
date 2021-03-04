@@ -19,86 +19,114 @@ class Otimizador(ModuloPadrao):
     """
     Classe destinada para a efetuar a otimizacao
     """
-
     def __init__(self):
         super().__init__()
 
         self._name = __name__
-        """
-        Variavel com o nome do arquivo
-        """
 
-        self._necessidade = [EnumAtributo.OTIMIZACAO_TYPE,
-                            EnumAtributo.PATH_RESULTADO,
-                            EnumAtributo.AVALIACAO_TYPE,
-                            EnumAtributo.INICIALIZACAO_DOMINIO] + super(Otimizador, self).necessidade
-        """
-        Contem a lista de todos os atributos necessários para o módulo ser executado.
-        """
+        EA = EnumAtributo
 
-        self._modulo = OtimizadorPadrao()
+        if EnumAtributo.OTIMIZACAO_TYPE not in self._necessidade:
+            self._necessidade.append(EA.OTIMIZACAO_TYPE)
+
+        if EnumAtributo.PATH_RESULTADO not in self._necessidade:
+            self._necessidade.append(EA.PATH_RESULTADO)
+        
+        if EnumAtributo.AVALIACAO_TYPE not in self._necessidade:
+            self._necessidade.append(EA.AVALIACAO_TYPE)
+        
+        if EnumAtributo.INICIALIZACAO_DOMINIO not in self._necessidade:
+            self._necessidade.append(EA.INICIALIZACAO_DOMINIO)
+
+        self._otimizador = OtimizadorPadrao()
+
 
     def carrega(self, contexto):
         """
-        Método para obter o modulo selecionado
+        Método para obter o otimizador selecionado.
 
-        :param Contexto contexto: contexto com todas as informações necessárias
+        :param  Contexto contexto: objeto que carrega todas as informações
         """
-        super(Otimizador, self).carrega(contexto)
+        self.log(texto=f"Carregando o {self._name}")
 
-        if self._contexto.tem_atributo(EnumAtributo.OTIMIZACAO_TYPE):
-            tipo = self._contexto.get_atributo(EnumAtributo.OTIMIZACAO_TYPE)
-            if type("") == type(tipo):
+        self.atualiza_contexto(contexto)
+
+        EA = EnumAtributo
+        EV = EnumValues
+
+        if self._contexto.tem_atributo(EA.OTIMIZACAO_TYPE):
+            tipo = self._contexto.get_atributo(EA.OTIMIZACAO_TYPE)
+
+            if isinstance(tipo, str):
                 tipo = tipo.upper()
 
-            if (tipo == EnumValues.MCC.name) or (tipo == EnumValues.MCC):
-                self.log(texto=f"O modulo de inicialização [{EnumValues.MCC.name}] foi definido.")
-                self._modulo = MCC()
-            elif (tipo == EnumValues.IDLHC.name) or (tipo == EnumValues.IDLHC):
-                self.log(texto=f"O modulo de otimizacao [{EnumValues.IDLHC.name}] foi definido.")
-                self._modulo = IDLHC()
-            elif (tipo == EnumValues.PYMOO_DE.name) or (tipo == EnumValues.PYMOO_DE):
-                self.log(texto=f"O modulo de otimizacao [{EnumValues.PYMOO_DE.name}] foi definido.")
-                self._modulo = Pymoo()
-                self._modulo.otimizador = EnumValues.PYMOO_DE
-            elif (tipo == EnumValues.PYMOO_GA.name) or (tipo == EnumValues.PYMOO_GA):
-                self.log(texto=f"O modulo de otimizacao [{EnumValues.PYMOO_GA.name}] foi definido.")
-                self._modulo = Pymoo()
-                self._modulo.otimizador = EnumValues.PYMOO_GA
-            elif (tipo == EnumValues.PYMOO_NSGA3.name) or (tipo == EnumValues.PYMOO_NSGA3):
-                self.log(texto=f"O modulo de otimizacao [{EnumValues.PYMOO_NSGA3.name}] foi definido.")
-                self._modulo = Pymoo()
-                self._modulo.otimizador = EnumValues.PYMOO_NSGA3
-            elif (tipo == EnumValues.PSO.name) or (tipo == EnumValues.PSO):
-                self.log(texto=f"O modulo de otimizacao [{EnumValues.PSO.name}] foi definido.")
-                self._modulo = PSO()
-            elif (tipo == EnumValues.TABUSEARCH.name) or (tipo == EnumValues.TABUSEARCH):
-                self.log(texto=f"O modulo de otimizacao [{EnumValues.TABUSEARCH.name}] foi definido.")
-                self._modulo = Tabuseach()
-            elif (tipo == EnumValues.ABC.name) or (tipo == EnumValues.ABC):
-                self.log(texto=f"O modulo de otimizacao [{EnumValues.ABC.name}] foi definido.")
-                self._modulo = ABC()
-            elif (tipo == EnumValues.ACOPLADO.name) or (tipo == EnumValues.ACOPLADO):
-                self.log(texto=f"O modulo de otimizacao [{EnumValues.ACOPLADO.name}] foi definido.")
-                self._modulo = Acoplado()
+            if (tipo == EV.MCC.name) or (tipo == EV.MCC):
+                self.log(texto=f"O modulo de inicialização [{EV.MCC.name}] foi definido.")
+                self._otimizador = MCC()
 
-            self._necessidade += self._modulo.necessidade
+            elif (tipo == EV.IDLHC.name) or (tipo == EV.IDLHC):
+                self.log(texto=f"O modulo de otimizacao [{EV.IDLHC.name}] foi definido.")
+                self._otimizador = IDLHC()
+
+            elif (tipo == EV.PYMOO_DE.name) or (tipo == EV.PYMOO_DE):
+                self.log(texto=f"O modulo de otimizacao [{EV.PYMOO_DE.name}] foi definido.")
+                self._otimizador = Pymoo()
+                self._otimizador.otimizador = EV.PYMOO_DE
+
+            elif (tipo == EV.PYMOO_GA.name) or (tipo == EV.PYMOO_GA):
+                self.log(texto=f"O modulo de otimizacao [{EV.PYMOO_GA.name}] foi definido.")
+                self._otimizador = Pymoo()
+                self._otimizador.otimizador = EV.PYMOO_GA
+
+            elif (tipo == EV.PYMOO_NSGA3.name) or (tipo == EV.PYMOO_NSGA3):
+                self.log(texto=f"O modulo de otimizacao [{EV.PYMOO_NSGA3.name}] foi definido.")
+                self._otimizador = Pymoo()
+                self._otimizador.otimizador = EV.PYMOO_NSGA3
+
+            elif (tipo == EV.PSO.name) or (tipo == EV.PSO):
+                self.log(texto=f"O modulo de otimizacao [{EV.PSO.name}] foi definido.")
+                self._otimizador = PSO()
+
+            elif (tipo == EV.TABUSEARCH.name) or (tipo == EV.TABUSEARCH):
+                self.log(texto=f"O modulo de otimizacao [{EV.TABUSEARCH.name}] foi definido.")
+                self._otimizador = Tabuseach()
+
+            elif (tipo == EV.ABC.name) or (tipo == EV.ABC):
+                self.log(texto=f"O modulo de otimizacao [{EV.ABC.name}] foi definido.")
+                self._otimizador = ABC()
+
+            elif (tipo == EV.ACOPLADO.name) or (tipo == EV.ACOPLADO):
+                self.log(texto=f"O modulo de otimizacao [{EV.ACOPLADO.name}] foi definido.")
+                self._otimizador = Acoplado()
+
+            for necessidade in self._otimizador._necessidade:
+                if necessidade not in self._necessidade:
+                    self._necessidade.append(necessidade)
+
 
     def run(self, contexto) -> Contexto:
         """
         Executa o inicializador desejado.
 
-        :param Contexto contexto: contexto com todas as informações necessárias
-        :return Contexto contexto: contexto com todas as informações necessárias
-        :rtype Contexto
+        :param  Contexto contexto: objeto que carrega todas as informações
+        :return Contexto contexto: objeto que carrega todas as informações
         """
-        self._name = self._modulo.name
-        self._contexto = super(Otimizador, self).run(contexto)
+        self.log(texto=f'Executando o {self._name}')
 
-        self._modulo.contexto = contexto
-        self._modulo.inicializacao()
-        self._modulo.before()
-        self._modulo.run()
-        self._modulo.after()
+        self.atualiza_contexto(contexto)
 
-        return self._modulo.contexto
+        self._otimizador.atualiza_contexto(contexto)
+
+        self._otimizador.inicializacao()
+
+        self._otimizador.before()
+
+        self._otimizador.run()
+
+        self._otimizador.after()
+
+        return self._otimizador.contexto
+
+
+    def atualiza_contexto(self, contexto):
+        self._contexto = contexto

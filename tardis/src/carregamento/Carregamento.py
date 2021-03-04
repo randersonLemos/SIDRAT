@@ -20,6 +20,7 @@ from src.modulo.otimizacao.Otimizador import Otimizador
 from src.modulo.problemas_fechados.ProblemaFechado import ProblemaFechado
 from src.modulo.reducao.Redutor import Redutor
 from src.modulo.sorteio.Sorteio import Sorteio
+from src.modulo.fofe.Fofe import Fofe
 from src.modulo.visualizacao.Visualizacao import Visualizacao
 
 
@@ -44,16 +45,16 @@ class Carregamento(Loggin):
         path_config  = TXT().ajuste_path(path_projeto + '/' + path_config)
 
         if not TXT().diretorio_existe(path_projeto):
-            self.log(tipo=EnumLogStatus.ERRO_FATAL, texto=f"Diretorio [{path_projeto}] não existe.")
+            self.log(tipo=EnumLogStatus.ERRO_FATAL, texto="Diretorio [{}] não existe.".format(path_projeto))
 
         if not TXT().arquivo_existe(path_config):
-            self.log(tipo=EnumLogStatus.ERRO_FATAL, texto=f"O arquivo de configuracao [{path_config}] não existe.")
+            self.log(tipo=EnumLogStatus.ERRO_FATAL, texto="O arquivo de configuracao [{}] não existe.".format(path_config))
 
-        path_log = TXT().ajuste_path(f'{path_projeto}/log.out')
+        path_log = TXT().ajuste_path('{}/log.out'.format(path_projeto))
 
         Loggin.set_arquivo_log(path_log)
 
-        self.log(texto="[INICIO_TARDIS] - Iniciando Carregamento.")
+        self.log(texto="INICIALIZANDO TARDIS")
 
         self._contexto = Contexto()
 
@@ -65,6 +66,7 @@ class Carregamento(Loggin):
             self._carregar_informacao(modules)
             self._contexto.set_defaults()
             self._valida_contexto()
+
         except Exception as ex:
             self.log(texto="Erro para configurar valores defaults", info_ex=str(ex), tipo=EnumLogStatus.ERRO_FATAL)
 
@@ -73,14 +75,13 @@ class Carregamento(Loggin):
         """
         Ler o arquivo carrega toda informação e adiciona na variavel _configuracao
         """
-
         linha = ''
         try:
-            contexto = TXT().ler(str(self._contexto.get_atributo(EnumAtributo.PATH_CONFIGURACAO)))
             for module in modules:
                 self._contexto.set_atributo('module', [InOut.ajusta_entrada(module)])
 
-            for linha in contexto:
+            file_config = TXT().ler(str(self._contexto.get_atributo(EnumAtributo.PATH_CONFIGURACAO)))
+            for linha in file_config:
                 linha = linha.replace("\n", "").strip()
                 if (len(linha) > 0) and (not linha[0] == "*"):
                     sp = linha.split()
@@ -93,6 +94,7 @@ class Carregamento(Loggin):
                                 valor = f'{valor} {sp[ii]}'
 
                     self._contexto.set_atributo(chave, [InOut.ajusta_entrada(valor)])
+
         except Exception as ex:
             self.log(tipo=EnumLogStatus.ERRO_FATAL, texto=f"Erro ao carregar arquivos. Linha [{linha}]", info_ex=f'ex[{str(ex)}]')
 
@@ -109,43 +111,64 @@ class Carregamento(Loggin):
             obj_modulo.check_necessidades()
         self._contexto.set_modulo(EnumModulo.INICIALIZACAO, obj_modulo)
 
-        #problema_fechado = ModuloPadrao()
-        #if EnumModulo.PROBLEMA_FECHADO.name in modulos:
-        #    problema_fechado = Modulo(ProblemaFechado()).run(self._contexto)
-        #self._contexto.set_modulo(EnumModulo.PROBLEMA_FECHADO, problema_fechado)
+        obj_modulo = ModuloPadrao()
+        if EnumModulo.PROBLEMA_FECHADO.name in modulos:
+            obj_modulo = ProblemaFechado()
+            obj_modulo.carrega(self._contexto)
+            obj_modulo.check_necessidades()
+        self._contexto.set_modulo(EnumModulo.PROBLEMA_FECHADO, obj_modulo)
 
-        #sorteio = ModuloPadrao()
-        #if EnumModulo.SORTEIO.name in modulos:
-        #    sorteio = Modulo(Sorteio()).run(self._contexto)
-        #self._contexto.set_modulo(EnumModulo.SORTEIO, sorteio)
+        obj_modulo = ModuloPadrao()
+        if EnumModulo.SORTEIO.name in modulos:
+            obj_modulo = Sorteio()
+            obj_modulo.carrega(self._contexto)
+            obj_modulo.check_necessidades()
+        self._contexto.set_modulo(EnumModulo.SORTEIO, obj_modulo)
 
-        #avaliacao = ModuloPadrao()
-        #if EnumModulo.AVALIACAO.name in modulos:
-        #    avaliacao = Modulo(Avaliador()).run(self._contexto)
-        #self._contexto.set_modulo(EnumModulo.AVALIACAO, avaliacao)
+        obj_modulo = ModuloPadrao()
+        if EnumModulo.AVALIACAO.name in modulos:
+            obj_modulo = Avaliador()
+            obj_modulo.carrega(self._contexto)
+            obj_modulo.check_necessidades()
+        self._contexto.set_modulo(EnumModulo.AVALIACAO, obj_modulo)
 
-        #redutor = ModuloPadrao()
+        #obj_modulo = ModuloPadrao()
         #if EnumModulo.REDUCAO.name in modulos:
-        #    redutor = Modulo(Redutor()).run(self._contexto)
-        #self._contexto.set_modulo(EnumModulo.REDUCAO, redutor)
+        #    obj_modulo = Redutor()
+        #    obj_modulo.carrega(self._contexto)
+        #    obj_modulo.check_necessidades()
+        #self._contexto.set_modulo(EnumModulo.REDUCAO, obj_modulo)
 
-        #criterio_parada = ModuloPadrao()
-        #if EnumModulo.CRITERIOPARADA.name in modulos:
-        #    criterio_parada = Modulo(CriterioParada()).run(self._contexto)
-        #self._contexto.set_modulo(EnumModulo.CRITERIOPARADA, criterio_parada)
+        obj_modulo = ModuloPadrao()
+        if EnumModulo.CRITERIOPARADA.name in modulos:
+            obj_modulo = CriterioParada()
+            obj_modulo.carrega(self._contexto)
+            obj_modulo.check_necessidades()
+        self._contexto.set_modulo(EnumModulo.CRITERIOPARADA, obj_modulo)
 
-        #otimizador = ModuloPadrao()
-        #if EnumModulo.OTIMIZACAO.name in modulos:
-        #    otimizador = Modulo(Otimizador()).run(self._contexto)
-        #self._contexto.set_modulo(EnumModulo.OTIMIZACAO, otimizador)
+        obj_modulo = ModuloPadrao()
+        if EnumModulo.OTIMIZACAO.name in modulos:
+            obj_modulo = Otimizador()
+            obj_modulo.carrega(self._contexto)
+            obj_modulo.check_necessidades()
+        self._contexto.set_modulo(EnumModulo.OTIMIZACAO, obj_modulo)
 
         #visualizacao = ModuloPadrao()
         #if EnumModulo.VISUALIZACAO.name in modulos:
         #    visualizacao = Modulo(Visualizacao()).run(self._contexto)
         #self._contexto.set_modulo(EnumModulo.VISUALIZACAO, visualizacao)
 
-        #LogarMemoria(self._contexto)
+        obj_modulo = ModuloPadrao()
+        if EnumModulo.FOFE.name in modulos:
+            obj_modulo = Fofe()
+            obj_modulo.carrega(self._contexto)
+            obj_modulo.check_necessidades()
+        self._contexto.set_modulo(EnumModulo.FOFE, obj_modulo)
+
+        LogarMemoria(self._contexto)
+
         return deepcopy(self._contexto)
+
 
     def _valida_contexto(self):
         try:
@@ -186,7 +209,7 @@ class Carregamento(Loggin):
 
     def _valida_of_direcao(self, direcao_of):
         if direcao_of not in EnumValues.MAX.name and direcao_of not in EnumValues.MIN.name:
-            self.log(tipo=EnumLogStatus.ERRO, texto=f"A direção [{direcao}] não é valida.")
+            self.log(tipo=EnumLogStatus.ERRO, texto=f"A direção [{direcao_of}] não é valida.")
             self.log(tipo=EnumLogStatus.ERRO_FATAL, texto=f"As direcções de of tem de ser um dos: {EnumValues.MIN.name}, {EnumValues.MAX.name}.")
 
     def _valida_of_mult_objetivo(self, nomes_direcoes_of):

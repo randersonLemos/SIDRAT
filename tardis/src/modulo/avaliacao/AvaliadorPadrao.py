@@ -2,7 +2,6 @@
 :author: Luis Otavio
 :data: 28/04/2020
 """
-from abc import ABCMeta
 
 from src.contexto.EnumAtributo import EnumAtributo, EnumValues
 from src.loggin.Enum import EnumLogStatus
@@ -14,17 +13,21 @@ from src.problema.Solucoes import Solucoes
 
 class AvaliadorPadrao(Loggin):
     """
-    Classe destinada a fazer pre e pos processos da avaliacao
+    Classe destinada a fazer pre e pos processos da avaliacao.
     """
-    __metaclass__ = ABCMeta
-
     def __init__(self):
         super().__init__()
-        self._necessidade = [EnumAtributo.AVALIACAO_TYPE]
-        self._contexto = None
-        self._nomes_direcoes_of = None
+
         self._name = __name__
+
+        self._necessidade = [EnumAtributo.AVALIACAO_TYPE]
+
+        self._contexto = None
+
         self._nome_of_mono = None
+
+        self._nomes_direcoes_of = None
+
 
     def before(self):
         self.log(texto=f"Before {self._name}")
@@ -35,10 +38,6 @@ class AvaliadorPadrao(Loggin):
 
         self._retira_solucoes_repetida_avaliacao()
 
-    def after(self):
-        self.log(texto=f"After {self._name}")
-
-        self._atualiza_solucao_para_avaliada_e_qtd_avaliacoes()
 
     def run(self):
         """
@@ -46,6 +45,17 @@ class AvaliadorPadrao(Loggin):
 
         """
         self.log(texto=f"Executando {self._name}")
+
+
+    def after(self):
+        self.log(texto=f"After {self._name}")
+
+        self._atualiza_solucao_para_avaliada_e_qtd_avaliacoes()
+
+
+    def update_contexto(self, contexto):
+        self._contexto = contexto
+
 
     @property
     def contexto(self):
@@ -55,6 +65,7 @@ class AvaliadorPadrao(Loggin):
         """
         return self._contexto
 
+
     @property
     def necessidade(self):
         """
@@ -62,13 +73,14 @@ class AvaliadorPadrao(Loggin):
         """
         return self._necessidade
 
+
     def _atualiza_solucao_para_avaliada_e_qtd_avaliacoes(self):
         qtd_avaliacao = 0
         if self._contexto.tem_atributo(EnumAtributo.QTD_SOLUCES_AVALIADAS):
             qtd_avaliacao = self._contexto.get_atributo(EnumAtributo.QTD_SOLUCES_AVALIADAS)
 
         iteracoes = self._contexto.get_atributo(EnumAtributo.AVALIACAO_ITERACAO_AVALIAR, valor_unico_list=True)
-        solucoes: Solucoes = self._contexto.get_atributo(EnumAtributo.SOLUCOES)
+        solucoes = self._contexto.get_atributo(EnumAtributo.SOLUCOES)
 
         list_solucoes = solucoes.get_solucoes_by_iteracao(iteracoes)
         if len(list_solucoes) <= 0:
@@ -79,6 +91,7 @@ class AvaliadorPadrao(Loggin):
             for id in list_solucoes[k_iteracao]:
                 solucoes.solucoes[k_iteracao][id].set_avaliada()
         self._contexto.set_atributo(EnumAtributo.QTD_SOLUCES_AVALIADAS, [qtd_avaliacao], True)
+
 
     def _retira_solucoes_repetida_avaliacao(self):
         try:
@@ -103,7 +116,8 @@ class AvaliadorPadrao(Loggin):
                                 self.log(tipo=EnumLogStatus.ERRO, texto=f"Erro ao recurar solucao [it:{solucao_repetida.iteracao}|id:{solucao_repetida.id}].", info_ex=str(ex))
             self._contexto.set_atributo(EnumAtributo.INTERNO_CRITERIO_PARADA_QTD_SOLUCAO_NOVA, [qtd_solucoes_novas], sobrescreve=True)
         except Exception as ex:
-            self.log(texto=f"Erro ao recuperar solução repetida.", tipo=EnumLogStatus.ERRO, info_ex=str(ex))
+            self.log(texto="Erro ao recuperar solução repetida.", tipo=EnumLogStatus.ERRO, info_ex=str(ex))
+
 
     @contexto.setter
     def contexto(self, contexto):

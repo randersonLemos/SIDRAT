@@ -10,33 +10,38 @@ import pandas as pd
 
 
 class Variaveis(Loggin):
-
     def __init__(self):
         super().__init__()
 
+        self._name = __name__
+
         self._variaveis = {}
+
         self._set_variaveis()
+
 
     def _set_variaveis(self):
         for tipo in EnumTipoVariaveis:
             self._variaveis[tipo.name] = {}
 
-    def add_in_variaveis(self, variavel: Variavel):
 
+    def add_in_variaveis(self, variavel: Variavel):
         """
         Adicionar uma nova variavel a lista de variaveis
+
         :param Variavel variavel: variavel
         """
         for tipo in EnumTipoVariaveis:
             if variavel.nome in self._variaveis[tipo.name]:
-                self.log(tipo=EnumLogStatus.ERRO_FATAL, texto=f"Variavel {variavel.nome} já esta definida.")
+                self.log(tipo=EnumLogStatus.ERRO_FATAL, texto=f"Variavel {variavel.nome} já definida.")
 
         self._variaveis[variavel.dominio.tipo.name][variavel.nome] = variavel
 
-    def get_variavel_by_nome(self, nome: str) -> Variavel:
 
+    def get_variavel_by_nome(self, nome: str) -> Variavel:
         """
         Obtem a variavel com o nome informado
+
         :param str nome: Nome da variavel informado
         :return: variavel encontrada
         :rtype: Variavel
@@ -45,6 +50,7 @@ class Variaveis(Loggin):
             if nome in self._variaveis[tipo.name]:
                 return self._variaveis[tipo.name][nome]
         return None
+
 
     def set_variavel_posicao_by_nome(self, nome: str, posicao: int):
 

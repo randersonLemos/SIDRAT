@@ -18,34 +18,36 @@ class ProblemaFechado(ModuloPadrao):
     Classe destinada a gerenciar e setar arquivos quando utilizado problemas fechados
     """
 
+
     def __init__(self):
-        super(ProblemaFechado, self).__init__()
+        super().__init__()
 
         self._name = __name__
-        """
-        Variavel com o nome do arquivo
-        """
+        
+        if EnumAtributo.OTIMIZACAO_TYPE not in self._necessidade:
+            self._necessidade.append(EnumAtributo.OTIMIZACAO_TYPE)
 
-        self._necessidade = [EnumAtributo.OTIMIZACAO_TYPE,
-                             EnumAtributo.PATH_RESULTADO,
-                             EnumAtributo.AVALIACAO_TYPE] + super(ProblemaFechado, self).necessidade
-        """
-        Contem a lista de todos os atributos necessários para o módulo ser executado.
-        """
+        if EnumAtributo.PATH_RESULTADO not in self._necessidade:
+            self._necessidade.append(EnumAtributo.PATH_RESULTADO)
+
+        if EnumAtributo.AVALIACAO_TYPE not in self._necessidade:
+            self._necessidade.append(EnumAtributo.AVALIACAO_TYPE)
 
         self._problema_fechado = ProblemaFechadoPadrao()
 
+
     def carrega(self, contexto):
         """
-        Método para obter o modulo selecionado
+        Método para obter o modulo selecionado.
 
         :param Contexto contexto: contexto com todas as informações necessárias
         """
-        super(ProblemaFechado, self).carrega(contexto)
+        self.log(texto=f"Carregando {self._name}")
+        self._contexto = contexto
 
         if self._contexto.tem_atributo(EnumAtributo.AVALIACAO_TYPE):
             tipo = self._contexto.get_atributo(EnumAtributo.AVALIACAO_TYPE)
-            if type("") == type(tipo):
+            if isinstance(tipo, str):
                 tipo = tipo.upper()
 
             if (tipo == EnumValues.RASTRIGIN.name) or (tipo == EnumValues.RASTRIGIN):
@@ -76,7 +78,10 @@ class ProblemaFechado(ModuloPadrao):
                 self.log(texto=f"O modulo de inicialização [{EnumValues.CAMPO_NAMORADO_NUMERO_POCOS.name}] foi definido.")
                 self._problema_fechado = CampoNamoradoNumeroPocos()
 
-            self._necessidade += self._problema_fechado.necessidade
+            for necessidade in self._problema_fechado.necessidade:
+                if necessidade not in self._necessidade:
+                    self._necessidade.append(necessidade)
+
 
     def run(self, contexto) -> Contexto:
         """
@@ -84,10 +89,13 @@ class ProblemaFechado(ModuloPadrao):
 
         :param Contexto contexto: contexto com todas as informações necessárias
         :return Contexto contexto: contexto com todas as informações necessárias
-        :rtype Contexto
         """
-        self._name = self._problema_fechado.name
-        self._contexto = super(ProblemaFechado, self).run(contexto)
+        #self._name = self._problema_fechado.name
 
+        self.log(texto=f'Executando {self._name}')
+
+        self._contexto = contexto
+ 
         self._problema_fechado.run(self._contexto)
+
         return self._problema_fechado.contexto

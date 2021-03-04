@@ -2,9 +2,6 @@
 :author: Rafael
 :data: 07/09/2020
 """
-from abc import ABCMeta
-
-from src.contexto.Contexto import Contexto
 from src.loggin.Loggin import Loggin
 
 
@@ -12,13 +9,13 @@ class RedutorPadrao(Loggin):
     """
     Classe destinada para a ser o pai de todos os redutor
     """
-    __metaclass__ = ABCMeta
 
     def __init__(self):
         super().__init__()
         self._necessidade = []
         self._contexto = None
         self._name = __name__
+
 
     def run(self, contexto):
         """
@@ -29,6 +26,7 @@ class RedutorPadrao(Loggin):
         self.log(texto=f"Executando {self._name}")
         self._contexto = contexto
 
+
     @property
     def contexto(self):
         """
@@ -37,12 +35,14 @@ class RedutorPadrao(Loggin):
         """
         return self._contexto
 
+
     @property
     def necessidade(self):
         """
         Defini quais os atributos necessarios para executar o modulo desejado
         """
         return self._necessidade
+
 
     def after(self, contexto):
         self._contexto = contexto

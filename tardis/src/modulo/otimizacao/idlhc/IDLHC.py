@@ -22,100 +22,135 @@ from src.problema.Variavel import Variavel
 
 class IDLHC(OtimizadorPadrao):
     """
-    Implementação do algoritmo de otimização IDLHC - Hiper Cubo Latino Discretizado Iterativo
+    Algoritmo de otimização IDLHC - Hiper Cubo Latino Discretizado Iterativo.
     """
-
     def __init__(self):
-
-        super(IDLHC, self).__init__()
+        super().__init__()
 
         self._name = __name__
-        """
-        Variavel com o nome do arquivo
-        """
 
-        self._necessidade = [EnumAtributo.INICIALIZACAO_DOMINIO,
-                             EnumAtributo.OTIMIZACAO_IDLHC_AMOSTRAS_ITERACAO,
-                             EnumAtributo.OTIMIZACAO_IDLHC_AMOSTRAS_PDF,
-                             EnumAtributo.PATH_RESULTADO] + super(IDLHC, self).necessidade
-        """
-        Contem a lista de todos os atributos necessários para o módulo ser executado.
-        """
+        EA = EnumAtributo
 
-        self._solucao_referencia: Solucao = None
-        self._variavies_nome_niveis = {}
+        if EA.INICIALIZACAO_DOMINIO not in self._necessidade:
+            self._necessidade.append(EA.INICIALIZACAO_DOMINIO)
+
+        if EA.OTIMIZACAO_IDLHC_AMOSTRAS_ITERACAO not in self._necessidade:
+            self._necessidade.append(EA.OTIMIZACAO_IDLHC_AMOSTRAS_ITERACAO)
+
+        if EA.OTIMIZACAO_IDLHC_AMOSTRAS_PDF not in self._necessidade:
+            self._necessidade.append(EA.OTIMIZACAO_IDLHC_AMOSTRAS_PDF)
+
+        if EA.PATH_RESULTADO not in self._necessidade:
+            self._necessidade.append(EA.PATH_RESULTADO)
+
+        self._variaveis_nome_niveis = {}
+
         self._tamanho_populacao = None
+
         self._melhores_solucoes = None
+
+        self._solucao_referencia = None
+
         self._solucoes_historico = None
 
+
     def inicializacao(self):
-        super(IDLHC, self).inicializacao()
+        super().inicializacao()
 
-        self._solucao_referencia: Solucao = copy.deepcopy(self._contexto.get_atributo(EnumAtributo.SOLUCAO_BASE))
-        self._tamanho_populacao = self._contexto.get_atributo(EnumAtributo.OTIMIZACAO_IDLHC_AMOSTRAS_ITERACAO)
+        EA = EnumAtributo
 
-        self._solucoes_historico = self._solucoes.conjunto_melhores_solucoes(quantidade=self._tamanho_populacao,
-                                                                             nome_of_mono=self._nome_of_mono)
-        if self._contexto.tem_atributo(EnumAtributo.OTIMIZACAO_IDLHC_SOLUCAO_HISTORICO):
-            if self._contexto.get_atributo(EnumAtributo.OTIMIZACAO_IDLHC_SOLUCAO_HISTORICO) is not None:
-                solucoes_historico = self._contexto.get_atributo(EnumAtributo.OTIMIZACAO_IDLHC_SOLUCAO_HISTORICO)
+        self._solucao_referencia = copy.deepcopy(
+            self._contexto.get_atributo(EA.SOLUCAO_BASE)
+        )
+
+        self._tamanho_populacao = self._contexto.get_atributo(
+            EA.OTIMIZACAO_IDLHC_AMOSTRAS_ITERACAO
+        )
+
+        self._solucoes_historico = self._solucoes.conjunto_melhores_solucoes(
+              quantidade=self._tamanho_populacao
+            , nome_of_mono=self._nome_of_mono
+        )
+
+        if self._contexto.tem_atributo(EA.OTIMIZACAO_IDLHC_SOLUCAO_HISTORICO):
+            solucoes_historico = self._contexto.get_atributo(
+                EA.OTIMIZACAO_IDLHC_SOLUCAO_HISTORICO
+            )
+            if solucoes_historico:
                 if self._iteracao == max(solucoes_historico):
                     self._solucoes_historico = solucoes_historico
 
-        self._nome_variaveis = self._solucao_base.variaveis.get_variaveis_by_tipo(EnumTipoVariaveis.VARIAVEL)
+        self._nome_variaveis = self._solucao_base.variaveis.get_variaveis_by_tipo(
+            EnumTipoVariaveis.VARIAVEL
+        )
+
         for nome_variavel in self._nome_variaveis:
-            variavel: Variavel = self._solucao_base.variaveis.get_variavel_by_nome(nome_variavel)
-            niveis: list = variavel.dominio.niveis
-            self._variavies_nome_niveis[nome_variavel] = niveis
+            variavel = self._nome_variaveis[nome_variavel]
+            niveis = variavel.dominio.niveis
+            self._variaveis_nome_niveis[nome_variavel] = niveis
+
 
     def run(self):
         """
-        Executa a otimizacao usando o método IDLHC.
-
-        :param Contexto contexto: contexto com todas as informações necessárias
+        Executa otimização usando método IDLHC.
         """
-        super(IDLHC, self).run()
+        self.log(texto=f"Executando {self._name}.")
 
-        avaliacao = self._contexto.get_modulo(EnumModulo.AVALIACAO)
-        criterio = self._contexto.get_modulo(EnumModulo.CRITERIOPARADA)
-        modulo_sorteio: Sorteio = self._contexto.get_modulo(EnumModulo.SORTEIO)
-        modulo_sorteio.sorteio.tamanho_populacao = self._tamanho_populacao
-        primeira_iteracao_idlhc = True
+        EM = EnumModulo
+        EA = EnumAtributo
+
+        sorteio = self._contexto.get_modulo(EM.SORTEIO)
+
+        criterio = self._contexto.get_modulo(EM.CRITERIOPARADA)
+
+        avaliacao = self._contexto.get_modulo(EM.AVALIACAO)
+
+        primeira_iteracao = True
 
         while not criterio.run(self._contexto):
-            self.log(texto=f"Nova iteracao do método")
-            self._atualiza_probabilidades(primeira_iteracao_idlhc)
-            primeira_iteracao_idlhc = False
+            self.log(texto="Iteração {}.".format(self._iteracao + 1))
+
+            if not primeira_iteracao:
+                self._atualiza_probabilidades()
 
             self._iteracao += 1
 
-            modulo_sorteio.sorteio.iteracao = self._iteracao
-            modulo_sorteio.sorteio.ultimo_id = self._id
-            modulo_sorteio.sorteio.solucao_referencia = self._solucao_referencia
-            modulo_sorteio.sorteio.contexto = self._contexto
+            sorteio.sorteio.tamanho_populacao = self._tamanho_populacao
+            sorteio.sorteio.iteracao = self._iteracao
+            sorteio.sorteio.ultimo_id = self._id
+            sorteio.sorteio.solucao_referencia = self._solucao_referencia
+            sorteio.sorteio.contexto = self._contexto
+
             try:
-                modulo_sorteio.sorteio.run()
-            except:
+                sorteio.sorteio.run()
+
+            except Exception:
                 traceback.print_exc()
-            self._id = modulo_sorteio.sorteio.ultimo_id
-            solucoes_novas: Solucoes.solucoes = modulo_sorteio.sorteio.solucoes.solucoes
 
-            qtd_solucoes_sorteio = 0
+            self._id = sorteio.sorteio.ultimo_id
 
-            for iteracao in solucoes_novas:
-                for id in solucoes_novas[iteracao]:
-                    qtd_solucoes_sorteio += 1
-                    solucoes_novas[iteracao][id].geral += "[IDHLC] "
-                    self._solucoes.add_in_solucoes(solucoes_novas[iteracao][id])
+            solucoes = sorteio.sorteio.solucoes  # novas soluções
 
-            """avaliamos se pelo menos uma das solucoes sorteadas se tratam de solucao nova e se a quantidade de amostras geradas no sorteio
-                        e maior que o numero de amostras utilziadas para atualizacao da PDF"""
-            if qtd_solucoes_sorteio < self._contexto.get_atributo(EnumAtributo.OTIMIZACAO_IDLHC_AMOSTRAS_PDF):
-                self.log(texto=f'Convergencia foi atingida por perda de variabilidade da amostra.')
+            qtd_solucoes = 0
+           
+            for iteracao in solucoes.solucoes:
+                for index in solucoes.solucoes[iteracao]:
+                    qtd_solucoes += 1
+                    solucoes.solucoes[iteracao][index].geral += "[IDHLC] "
+                    self._solucoes.add_in_solucoes(solucoes.solucoes[iteracao][index])
+
+            # Avaliamos se pelo menos uma das soluções sorteadas se trata
+            # de solução nova e se a quantidade de amostras geradas no sorteio
+            # é maior que o numero de amostras utilizadas para atualização da PDF
+            if qtd_solucoes < self._contexto.get_atributo(
+                EA.OTIMIZACAO_IDLHC_AMOSTRAS_PDF
+            ):
+                self.log(texto='Convergencia foi atingida por perda de variabilidade ' +
+                               'das amostras.')
                 break
 
-            self._contexto.set_atributo(EnumAtributo.SORTEIO_SOLUCOES_NOVAS, self._solucoes, True)
-            self._contexto.set_atributo(EnumAtributo.AVALIACAO_ITERACAO_AVALIAR, [self._iteracao], True)
+            self._contexto.set_atributo(EA.SORTEIO_SOLUCOES_NOVAS, self._solucoes, True)
+            self._contexto.set_atributo(EA.AVALIACAO_ITERACAO_AVALIAR, [self._iteracao], True)
             self._contexto = avaliacao.run(self._contexto)
 
             for id in self._solucoes.solucoes[self._iteracao]:
@@ -123,61 +158,77 @@ class IDLHC(OtimizadorPadrao):
 
             self._para_resume()
             Exportacao().csv(self._contexto)
-            Exportacao().obejto(self._contexto)
+            Exportacao().objeto(self._contexto)
             LogarMemoria(self._contexto)
 
-        self.log(texto=f'Fim da execução do {self._name}')
+            primeira_iteracao = False
 
-    def _atualiza_probabilidades(self, primeira_iteracao_idlhc):
 
-        if self._iteracao != 0:
-            self.log(texto="Atualizando as Probabilidades")
+        self.log(texto=f'Fim da execução do {self._name}.')
 
-            qtd_solucoes_atualizar = self._contexto.get_atributo(EnumAtributo.OTIMIZACAO_IDLHC_AMOSTRAS_PDF)
 
-            id_melhores_solucoes = []
-            if primeira_iteracao_idlhc:
-                solucoes_melhores = self._solucoes_historico.conjunto_melhores_solucoes(
-                    quantidade=qtd_solucoes_atualizar, nome_of_mono=self._nome_of_mono).solucoes
-            else:
-                solucoes_melhores = self._solucoes_historico.conjunto_melhores_solucoes(
-                    quantidade=qtd_solucoes_atualizar, nome_of_mono=self._nome_of_mono,
-                    iteracao=self._iteracao).solucoes
-            for iteracao in solucoes_melhores:
-                for id in solucoes_melhores[iteracao]:
-                    id_melhores_solucoes.append(id)
+    def _atualiza_probabilidades(self):
+        self.log(texto="Atualiza probabilidades.")
 
-            contador_valores: dict = {}
-            for nome_variavel in self._nome_variaveis:
-                contador_valores[nome_variavel] = []
-                for iteracao in self._solucoes_historico.solucoes:
-                    for _id in id_melhores_solucoes:
-                        if _id in self._solucoes_historico.solucoes[iteracao]:
-                            contador_valores[nome_variavel].append(
-                                self._solucoes_historico.solucoes[iteracao][_id].variaveis.get_variavel_by_nome(
-                                    nome_variavel).valor)
+        qtd_solucoes_atualizar = self._contexto.get_atributo(EnumAtributo.OTIMIZACAO_IDLHC_AMOSTRAS_PDF)
 
-            novas_probabilidades = {}
-            for nome_variavel in self._variavies_nome_niveis:
-                novas_probabilidades[nome_variavel] = []
-                for candidato in self._variavies_nome_niveis[nome_variavel]:
-                    frequencia_valor_normalizada = round(
-                        contador_valores[nome_variavel].count(candidato) / qtd_solucoes_atualizar, 2)
-                    novas_probabilidades[nome_variavel].append(frequencia_valor_normalizada)
+        id_melhores_solucoes = []
 
-                if self._contexto.tem_atributo(EnumAtributo.OTIMIZACAO_IDLHC_CORTE_PDF):
-                    novas_probabilidades[nome_variavel] = self._ajusta_corte_pdf(novas_probabilidades[nome_variavel])
+        #if primeira_iteracao_idlhc:
+        #    dict_solucoes_melhores = self._solucoes_historico.conjunto_melhores_solucoes(
+        #        quantidade=qtd_solucoes_atualizar,
+        #        nome_of_mono=self._nome_of_mono
+        #    )._solucoes
 
-            for variavel in novas_probabilidades:
-                restante = round(1 - sum(novas_probabilidades[variavel]), 2)
-                for i in range(len((novas_probabilidades)[variavel])):
-                    if novas_probabilidades[variavel][i] + restante >= 0:
-                        novas_probabilidades[variavel][i] = round(restante + novas_probabilidades[variavel][i], 2)
-                        break
+        #else:
+        #    dict_solucoes_melhores = self._solucoes_historico.conjunto_melhores_solucoes(
+        #        quantidade=qtd_solucoes_atualizar
+        #        , nome_of_mono=self._nome_of_mono
+        #        , iteracao=self._iteracao
+        #    )._solucoes
 
-            for variavel in self._nome_variaveis:
-                self._solucao_referencia.variaveis.get_variavel_by_nome(variavel).dominio.probabilidade = \
-                novas_probabilidades[variavel]
+        dict_solucoes_melhores = self._solucoes_historico.conjunto_melhores_solucoes(
+            quantidade=qtd_solucoes_atualizar
+            , nome_of_mono=self._nome_of_mono
+            , iteracao=self._iteracao
+        ).solucoes
+
+        for iteracao in dict_solucoes_melhores:
+            for id in dict_solucoes_melhores[iteracao]:
+                id_melhores_solucoes.append(id)
+
+        contador_valores = {}
+        for nome_variavel in self._nome_variaveis:
+            contador_valores[nome_variavel] = []
+            for iteracao in self._solucoes_historico.solucoes:
+                for _id in id_melhores_solucoes:
+                    if _id in self._solucoes_historico.solucoes[iteracao]:
+                        contador_valores[nome_variavel].append(
+                            self._solucoes_historico.solucoes[iteracao][_id].variaveis.get_variavel_by_nome(
+                                nome_variavel).valor)
+
+        novas_probabilidades = {}
+        for nome_variavel in self._variaveis_nome_niveis:
+            novas_probabilidades[nome_variavel] = []
+            for candidato in self._variaveis_nome_niveis[nome_variavel]:
+                frequencia_valor_normalizada = round(
+                    contador_valores[nome_variavel].count(candidato) / qtd_solucoes_atualizar, 2)
+                novas_probabilidades[nome_variavel].append(frequencia_valor_normalizada)
+
+            if self._contexto.tem_atributo(EnumAtributo.OTIMIZACAO_IDLHC_CORTE_PDF):
+                novas_probabilidades[nome_variavel] = self._ajusta_corte_pdf(novas_probabilidades[nome_variavel])
+
+        for variavel in novas_probabilidades:
+            restante = round(1 - sum(novas_probabilidades[variavel]), 2)
+            for i in range(len((novas_probabilidades)[variavel])):
+                if novas_probabilidades[variavel][i] + restante >= 0:
+                    novas_probabilidades[variavel][i] = round(restante + novas_probabilidades[variavel][i], 2)
+                    break
+
+        for variavel in self._nome_variaveis:
+            self._solucao_referencia.variaveis.get_variavel_by_nome(variavel).dominio.probabilidade = \
+                    novas_probabilidades[variavel]
+
 
     def _ajusta_corte_pdf(self, lista_probabilidades):
         """
@@ -203,6 +254,7 @@ class IDLHC(OtimizadorPadrao):
                 lista_probabilidades_atualizada = [float(prob) for prob in list(np_probabilidades)]
 
         return lista_probabilidades_atualizada
+
 
     def _para_resume(self):
         self.log(texto="Salvando atributos para resume.")

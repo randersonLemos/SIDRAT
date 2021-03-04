@@ -2,9 +2,10 @@
 :author: Rafael
 :data: 10/12/2019
 """
-from copy import deepcopy
 
 import pandas as pd
+
+from copy import deepcopy
 
 from src.contexto.EnumAtributo import EnumValues
 from src.loggin.Enum import EnumLogStatus
@@ -18,22 +19,29 @@ class Of:
     def __init__(self, nome, valor=None, direcao=EnumValues.MAX.name):
         if valor is None:
             self._valor = Solucao.of_padrao(direcao)
+
         else:
             self._valor = valor
+
         self._nome = nome
+
         self._direcao = direcao
+
 
     @property
     def nome(self):
         return self._nome
 
-    @property
-    def valor(self):
-        return self._valor
 
     @property
     def direcao(self):
         return self._direcao
+
+
+    @property
+    def valor(self):
+        return self._valor
+
 
     @valor.setter
     def valor(self, valor):
@@ -41,102 +49,101 @@ class Of:
 
 
 class Solucao(Loggin):
-    def __init__(self, id: int, iteracao: int, solucao=None):
-
+    @staticmethod
+    def of_padrao(direcao=EnumValues.MAX.name):
         """
-        Construtor da solucao
+        Determina qual o valor padrão para a of.
+
+        :return: retorna o valor padrão para of.
+        """
+        if direcao in EnumValues.MIN.name:
+            return float("inf")
+        return float('-inf')
+
+
+    @staticmethod
+    def validar_of(of) -> bool:
+        """
+        Faz a checagem correta para verificar se a of tem um valor válido
+
+        :return: True se for valida, e False se for inválida
+        """
+        if str(of) != str(float('-inf')) and str(of) != str(float('inf')) and of is not None:
+            return True
+        return False
+
+
+    def __init__(self, id, iteracao, solucao=None):
+        """
+        Construtor de objectos solucao.
 
         :param int id: número único que identifica a estratégia, frente todas as estratégias
         :param int iteracao: qual o passo do otimizador
         """
         super().__init__()
 
-        self._of = {}
-        """
-        Destinado a armazerar varisas ofs, a estrutura de armazenamento é uma classe ofs
-        """
+        self._name = __name__  # Nome do arquivo
 
-        if solucao is not None:
+        self._has_erro = None  # Informa a ocorrencia de erros
+
+        self._economico = None  # Armazena os dados economicos (vem de ferramentas externas)
+
+        self._id = id  # identifica solução
+
+        self._avaliada = False  # Verifica se solução foi avaliada
+
+        self._iteracao = iteracao  # Iteração é um conjunto de estratégias (uma passo da otimização)
+
+        self._geral = ""
+
+        self._variaveis = Variaveis()
+
+        self._of = {}  # Destinado a armazenas varias ofs
+
+        if solucao:
             self._variaveis = deepcopy(solucao.variaveis)
             for nome_of in solucao.of:
                 self.of = Of(nome_of, direcao=solucao.of[nome_of].direcao)
-
-        else:
-            self._variaveis = Variaveis()
-            """
-            Conjunto de todas as variáveis
-            """
-
-        self._name = __name__
-        """
-        Variavel com o nome do arquivo
-        """
-
-        self._id = id
-        """
-        Identificardo da solucao
-        """
-
-        self._iteracao = iteracao
-        """
-        Iteração é um conjunto de estratégias, em otimizador seria o passo
-        """
-
-        self._has_erro = None
-        """
-        Informa se houve algum erro em alguma parte do processo.
-        """
-
-        self._economico = None
-        """
-        Armazena os dados economicos, dados obtidos por uma ferramenta externa.
-        """
-
-        self._avaliada = False
-        """
-        Avisa se a solucao foi avaliada
-        """
-
-        self._geral = ""
 
     @property
     def geral(self) -> str:
         """
         Campo destinado a colocar qualquer informação de interece
+
         :return: Retorna o que estiver gravado em geral, preferencialmente str
-        :rtype: str
         """
         return self._geral
 
+
     @property
     def id(self) -> int:
-
         """
         Retorna o id da solucao
+
         :return: Retorna o id
-        :rtype: int
         """
         return self._id
 
+
     @property
     def iteracao(self) -> int:
-
         """
         Retorna a intereacao da solucao
+
         :return: Retorna a solucao
-        :rtype: int
         """
         return self._iteracao
 
+
     @property
     def has_erro(self) -> str:
-
         """
         Informa o erro da solucao
+
         :return: Retorna o erro na solucao
-        :rtype: str
         """
         return self._has_erro
+
 
     @has_erro.setter
     def has_erro(self, erro: str = None):
@@ -152,19 +159,19 @@ class Solucao(Loggin):
             else:
                 self._has_erro = f'{self._has_erro}>[{erro}]'
 
+
     @property
     def economico(self) -> pd.DataFrame:
-
         """
         Retorna os dados economicos obtidos.
+
         :return: dados economico
-        :rtype: pd.DataFrame
         """
         return self._economico
 
+
     @property
     def variaveis(self) -> Variaveis:
-
         """
         Retorna o objeto com todas as variaveis
         :return: retorna todas as variaveis
@@ -172,32 +179,34 @@ class Solucao(Loggin):
         """
         return self._variaveis
 
+
     @property
     def avaliada(self) -> bool:
         """
         Retorna um bool informando se a solução é repetida
+
         :return: retorna True se é repetida, False se é unica
         :rtype: bool
         """
         return self._avaliada
+
 
     @property
     def of(self) -> dict:
         """
         Retorna o dicionario de ofs
         :return: Retorna um dicionario de of
-        :rtype: dict
         """
         if self._of is None:
             self._of = {}
         return self._of
 
+
     @of.setter
-    def of(self, of):
+    def of(self, of) -> None:
         """
         Inclui a of no dicionario de ofs.
         :param of: Objeto da classe of
-        :type of: Of
         """
         try:
             self._check_tudo()
@@ -226,6 +235,7 @@ class Solucao(Loggin):
         except Exception as ex:
             self.log(tipo=EnumLogStatus.ERRO_FATAL, texto="Erro ao setar of", info_ex=str(ex))
 
+
     @geral.setter
     def geral(self, geral):
         try:
@@ -233,22 +243,21 @@ class Solucao(Loggin):
         except Exception as ex:
             self.log(texto='Não é possivel gravar o tipo [{type(geral}] no campo geral, será atribuido vazio ao campo.', info_ex=str(ex), tipo=EnumLogStatus.ERRO)
 
+
     @economico.setter
     def economico(self, economico: pd.DataFrame):
-
         """
         Seta os dados economicos obtidos.
+
         :param pd.DataFrame economico: Dados economicos
         """
         self._economico = economico
 
-    @property
-    def avaliada(self):
-        return self._avaliada
 
     def set_avaliada(self):
         """
         Seta se a solução foi avaliada. Para ser TRUE todas as ofs tem de ser TRUE.
+
         :param avaliada: True se for repetida, e False se for unica
         """
         avaliada = []
@@ -261,22 +270,21 @@ class Solucao(Loggin):
         else:
             self._avaliada = True
 
-    def add_in_variaveis(self, variaveis):
 
+    def add_in_variaveis(self, variaveis):
         """
         Adicionar uma variavel um lista de variaveis em variaveis
+
         :param list variaveis: Uma ou uma lista de variaveis
         """
-        if type(variaveis) is type([]):
-            for ii in range(len(variaveis)):
-                variavel: Variavel = variaveis[ii]
-                self._variaveis.add_in_variaveis(variavel)
-        else:
-            variavel: Variavel = variaveis
+        if not isinstance(variaveis, list):
+            variaveis = [variaveis]
+
+        for variavel in variaveis:
             self._variaveis.add_in_variaveis(variavel)
 
-    def get_variavies_by_tipo(self, tipo=EnumTipoVariaveis.VARIAVEL) -> dict:
 
+    def get_variavies_by_tipo(self, tipo=EnumTipoVariaveis.VARIAVEL) -> dict:
         """
         Retorna as variaveis
 
@@ -285,6 +293,7 @@ class Solucao(Loggin):
         :rtype: Variaveis
         """
         return self._variaveis.get_variaveis_by_tipo(tipo)
+
 
     def get_variaveis_nome_valor(self):
         """
@@ -321,6 +330,7 @@ class Solucao(Loggin):
 
         return variaveis
 
+
     def data_frame(self):
         df = pd.DataFrame({'id': [self._id],
                            'iteracao': [self._iteracao],
@@ -336,10 +346,11 @@ class Solucao(Loggin):
 
         return df
 
-    def to_string(self) -> str:
 
+    def to_string(self) -> str:
         """
         Converte o objeto em string
+
         :return: o objeto convertido em string
         :rtype: str
         """
@@ -347,30 +358,33 @@ class Solucao(Loggin):
         est = f"'iteracao': {self._iteracao}, 'id': {self._id}, 'has_erro': {has_erro}"
         for of_nome in self._of:
             est = est + f"of[{self._of[of_nome].direcao}_{of_nome}]: {self._of[of_nome].valor}, "
-        est = est + f"{'geral': self._geral},"
-
+        est = est + f"'geral': {self._geral},"
         est = est + self._variaveis.to_string()
         return str(est)
 
-    def serializacao(self) -> str:
 
+    def serializacao(self) -> str:
         """
         Serializa o objecto
+
         :return: objeto serializado
-        :rtype: str
         """
 
         string = f"{self._variaveis.serializacao()}"
         return string
 
+
     def to_save(self) -> list:
         """
         Retorna um lista de dicionarios com a ordenação para salvar, e no dicionario com o nome da coluna e valor.
         As colunas são id, iteracao, has_erro_of + as variaveis
+
         :return: uma lista de dicionarios.
-        :rtype: list
         """
-        has_erro = "" if self._has_erro is None else self._has_erro
+        has_erro = self._has_erro
+        if self._has_erro is None:
+            has_erro = ''
+
         est = [{'iteracao': self._iteracao}, {'id': self._id}, {'has_erro': has_erro}]
         for of_nome in self._of:
             est = est + [{f'of[{self._of[of_nome].direcao}_{of_nome}]': self._of[of_nome].valor}]
@@ -379,11 +393,13 @@ class Solucao(Loggin):
         est = est + self._variaveis.to_save()
         return est
 
+
     def copy(self, iteracao, id):
         solucao = deepcopy(self)
         solucao._id = id
         solucao._iteracao = iteracao
         return deepcopy(solucao)
+
 
     def of_valida(self):
         """
@@ -399,26 +415,6 @@ class Solucao(Loggin):
         else:
             return False
 
-    @staticmethod
-    def validar_of(of):
-        """
-        Faz a checagem correta para verificar se a of tem um valor válido
-        :return: True se for valida, e False se for inválida
-        :rtype: bool
-        """
-        if str(of) != str(float('-inf')) and str(of) != str(float('inf')) and of is not None:
-            return True
-        return False
-
-    @staticmethod
-    def of_padrao(direcao=EnumValues.MAX.name):
-        """
-        Determina qual o valor padrão para a of.
-        :return: retorna o valor padrão para of.
-        """
-        if direcao in EnumValues.MIN.name:
-            return float("inf")
-        return float('-inf')
 
     def _check_tudo(self):
         if self._of is None:
