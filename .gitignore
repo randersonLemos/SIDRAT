@@ -1,4 +1,7 @@
 __pycache__/
 *.py[cod]
 *.pyc
+*.swp
+*.out
+*.csv
 *$py.class
