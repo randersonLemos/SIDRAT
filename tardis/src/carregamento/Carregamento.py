@@ -98,6 +98,14 @@ class Carregamento(Loggin):
         except Exception as ex:
             self.log(tipo=EnumLogStatus.ERRO_FATAL, texto=f"Erro ao carregar arquivos. Linha [{linha}]", info_ex=f'ex[{str(ex)}]')
 
+    
+    def get_context(self):
+        return self._contexto
+
+    
+    def set_context(self, obj):
+        self._context = obj
+
 
     def run(self) -> Contexto:
         self.log(texto=f'Executando o {self._name}')
