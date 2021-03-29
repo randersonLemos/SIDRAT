@@ -3,6 +3,7 @@
 :data: 01/01/2021
 """
 
+import os
 import numpy as np
 import pandas as pd
 
@@ -80,6 +81,8 @@ class BinaryClassifier(FofePadrao):
 
 
     def _run(self, iteracao_corrente, solucoes, threshold, nclass1, nmodels, npopulation, nvariables):
+        EA = EnumAtributo
+        cga = self._contexto.get_atributo
 
         index, X, y = self._para_dataframe(solucoes)
 
@@ -110,12 +113,39 @@ class BinaryClassifier(FofePadrao):
         probabilities /= nmodels
 
         cl = Data.ClassifiedData(ted, probabilities, threshold)
+        cl.y = cl.y.sort_values('PROBS', ascending=False)
 
+        min_samples = cga(EA.OTIMIZACAO_IDLHC_AMOSTRAS_PDF)
+        count = 0
+        for ite, ide in cl.y.index:
+            if count < min_samples:
+                if cl.y.loc[(ite, ide), 'CLASS'] == 0:
+                    cl.y.loc[(ite, ide), 'CLASS'] = 2
+            else:
+                break
+            count += 1
+            
         index = cl.y[cl.y['CLASS'] == 0].index
 
+        path_prj = cga(EA.PATH_PROJETO)
+        path_res = '/'.join(cga(EA.PATH_RESULTADO).split('/')[:-1])
+        path = path_prj + '/' + path_res + '/' + 'fofe.csv'
+        if os.path.exists(path):
+            cl.y[['PROBS', 'CLASS']].to_csv(path, mode='a', header=False)
+        else:
+            cl.y[['PROBS', 'CLASS']].to_csv(path, header=True)
+
+
+        #import IPython; IPython.embed()
+        #print("\nTRAIN DATA\n", file=open(path, "a"))
+        #print(trd.Xy().to_string(), file=open(path, "a"))
+        #print("\nTEST DATA\n", file=open(path, "a"))
+        #print(ted.Xy().to_string(), file=open(path, "a"))
+        #print(cl.y[['PROBS', 'CLASS']].to_string() + '\n', file=open(path, "a"))
         for ite, ide in index:
             del solucoes.solucoes[ite][ide]
  
+
         return solucoes
 
 

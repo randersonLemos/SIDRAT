@@ -42,6 +42,10 @@ class TrainData(Aux):
             self.Xos = pd.DataFrame(self.Xos, index=self.Xo.index, columns=self.Xo.columns)
 
 
+    def Xy(self):
+        return pd.concat([self.X, self.y], axis=1)
+
+
     def save(self, path):
         pd.concat([self.X, self.y], axis=1).to_csv(path)
 
@@ -55,6 +59,7 @@ class TestData(Aux):
 
         self._processing()
 
+
     def _processing(self):
         col = self.y.columns[0]
 
@@ -66,6 +71,11 @@ class TestData(Aux):
         if self.scaler:
             self.Xs = self.scaler.transform(self.Xs)
             self.Xs = pd.DataFrame(self.Xs, index=self.X.index, columns=self.X.columns)
+
+
+    def Xy(self):
+        return pd.concat([self.X, self.y], axis=1)
+
 
     def save(self, path):
         pd.concat([self.X, self.y], axis=1).to_csv(path)
