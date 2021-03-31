@@ -419,3 +419,6 @@ class Solucao(Loggin):
     def _check_tudo(self):
         if self._of is None:
             self._of = {}
+
+#    def __repr__(self):
+#        return self.to_save()

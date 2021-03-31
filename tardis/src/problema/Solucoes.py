@@ -356,3 +356,11 @@ class Solucoes(Loggin):
                 new_solucao.economico = solucao.economico
                 self.add_in_solucoes(new_solucao)
             self.remove_iteracao(it)
+
+    #def __repr__(self):
+    #    stg = ''
+    #    for ite in self._solucoes:
+    #        stg += '{}\n'.format(ite)
+    #        for idd in self._solucoes[ite]:
+    #            stg += '{} : {}\n'.format(idd, self._solucoes[ite][idd])
+    #    return stg

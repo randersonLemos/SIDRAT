@@ -107,6 +107,8 @@ class IDLHC(OtimizadorPadrao):
 
         primeira_iteracao = True
 
+        sorteio.sorteio.tamanho_populacao = self._tamanho_populacao
+
         while not criterio.run(self._contexto):
             self.log(texto="Iteração {}.".format(self._iteracao + 1))
 
@@ -114,9 +116,8 @@ class IDLHC(OtimizadorPadrao):
                 self._atualiza_probabilidades()
 
             self._iteracao += 1
-
-            sorteio.sorteio.tamanho_populacao = self._tamanho_populacao
             sorteio.sorteio.iteracao = self._iteracao
+
             sorteio.sorteio.ultimo_id = self._id
             sorteio.sorteio.solucao_referencia = self._solucao_referencia
             sorteio.sorteio.contexto = self._contexto
@@ -134,10 +135,11 @@ class IDLHC(OtimizadorPadrao):
             qtd_solucoes = 0
            
             for iteracao in solucoes.solucoes:
-                for index in solucoes.solucoes[iteracao]:
+                for idd in solucoes.solucoes[iteracao]:
                     qtd_solucoes += 1
-                    solucoes.solucoes[iteracao][index].geral += "[IDHLC] "
-                    self._solucoes.add_in_solucoes(solucoes.solucoes[iteracao][index])
+                    solucoes.solucoes[iteracao][idd].geral += "[IDHLC] "
+                    self._solucoes.add_in_solucoes(solucoes.solucoes[iteracao][idd])
+
 
             # Avaliamos se pelo menos uma das soluções sorteadas se trata
             # de solução nova e se a quantidade de amostras geradas no sorteio

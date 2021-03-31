@@ -63,13 +63,12 @@ def configure_context(context, context_variables):
 
 IDLHC_NUMBER_SAMPLES_ITERATION = [50, 100, 150]
 IDLHC_NUMBER_SAMPLES_PDF = [10, 20, 30]
-#FOFE_NNBC_NUM_CLASS1 = [10, 20, 30]
-#FOFE_NNBC_NUM_THRESHOLD = [0.1, 0.3, 0.5, 0.7, 0.9]
+FOFE_NNBC_NUM_CLASS1 = [10, 20, 30]
+FOFE_NNBC_NUM_THRESHOLD = [0.1, 0.3, 0.5, 0.7, 0.9]
 TIMES = [1, 2, 3, 4, 5]
 
-FOFE_NNBC_NUM_CLASS1 = [99]
-FOFE_NNBC_NUM_THRESHOLD = [0.99]
-
+#FOFE_NNBC_NUM_CLASS1 = [99]
+#FOFE_NNBC_NUM_THRESHOLD = [0.99]
 
 
 import os
@@ -85,7 +84,7 @@ for a, b, c, d, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
 
     cv = Context_Variables()
 
-    dirr = 'RES/IDLHC_NSI{}_NSP{}_NNBC_NCT{}_ECC{}_{}'.format(a, b, c, int(100 * d), e)
+    dirr = 'RES/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_ECC{:03d}_{}'.format(a, b, c, int(100 * d), e)
 
     if os.path.isdir(dirr):
         print('Experiment {} alread done'.format(dirr))
@@ -99,12 +98,11 @@ for a, b, c, d, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
             cv.idlhc_number_samples_iteration(a)
             cv.idlhc_number_samples_pdf(b)
             cv.stop_critiria('ITERACOES_MAX')
-            cv.stop_critiria_iterations(20)
-            #cv.fofe('NN_BINARY_CLASSIFIER')
-            #cv.fofe_nnbc_num_models(10)
-            #cv.fofe_nnbc_num_class1(c)
-            #cv.fofe_nnbc_threshold(d)
-
+            cv.stop_critiria_iterations(30)
+            cv.fofe('NN_BINARY_CLASSIFIER')
+            cv.fofe_nnbc_num_models(10)
+            cv.fofe_nnbc_num_class1(c)
+            cv.fofe_nnbc_threshold(d)
 
             carregamento = Carregamento(PATH_PRJ, PATH_CFG, MODULES)
             context = carregamento.get_context()

@@ -1,4 +1,4 @@
-PATH_PRJ = '/tmp/SIDRAT/tardis'
+PATH_PRJ = '/media/beldroega/DATA/SIDRAT/tardis'
 
 PATH_CFG = '/base/configuracao.config'
 
@@ -66,12 +66,11 @@ cv.path_result('RES/it_{}')
 cv.idlhc_number_samples_pdf(20)
 cv.idlhc_number_samples_iteration(100)
 cv.stop_critiria('ITERACOES_MAX')
-cv.stop_critiria_iterations(20)
+cv.stop_critiria_iterations(10)
 cv.fofe('NN_BINARY_CLASSIFIER')
-cv.fofe_nnbc_num_models(10)
+cv.fofe_nnbc_num_models(1)
 cv.fofe_nnbc_num_class1(10)
-cv.fofe_nnbc_threshold(0.1)
-
+cv.fofe_nnbc_threshold(0.8)
 
 carregamento = Carregamento(PATH_PRJ, PATH_CFG, MODULES)
 context = carregamento.get_context()

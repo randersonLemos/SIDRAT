@@ -37,7 +37,6 @@ class TrainData(Aux):
 
         self.Xos = copy.deepcopy(self.Xo)
         if self.scaler:
-            print('Hello')
             self.Xos = self.scaler.fit_transform(self.Xos)
             self.Xos = pd.DataFrame(self.Xos, index=self.Xo.index, columns=self.Xo.columns)
 

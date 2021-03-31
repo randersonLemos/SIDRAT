@@ -54,7 +54,6 @@ class BinaryClassifier(FofePadrao):
         iteracao_corrente = cga(EA.AVALIACAO_ITERACAO_AVALIAR)
 
         if self._aplicar_fofe(iteracao_corrente):
-
             solucoes = cga(EA.SOLUCOES)
             nclass1 = cga(EA.NN_BINARY_CLASSIFIER_NCLASS1)
             nmodels = cga(EA.NN_BINARY_CLASSIFIER_NMODELS)
@@ -86,6 +85,7 @@ class BinaryClassifier(FofePadrao):
 
         index, X, y = self._para_dataframe(solucoes)
 
+
         IS = pd.IndexSlice
 
         trd = Data.TrainData(X.loc[IS[:iteracao_corrente - 1, :] , :], y.loc[IS[:iteracao_corrente - 1, :], :]
@@ -99,21 +99,33 @@ class BinaryClassifier(FofePadrao):
 
         probabilities = np.zeros((npopulation, 1), dtype='float32')
 
+        import time
+        start_time = time.time()
+
         for j in range(nmodels):
-            stg  = '\n\n\n'
-            stg += 'Model {}'.format(j)
-            stg += '\n\n\n'
+            stg  = '---\n'
+            stg += '---\n'
+            stg += '---\n'
+            stg += 'Iteração {}\n'.format(iteracao_corrente)
+            stg += 'Model {}\n'.format(j)
+            stg  = '---\n'
+            stg += '---\n'
+            stg += '---'
             print(stg)
 
-            mo = Models.Neural_Network(input_shape=(nvariables, 1), epochs=15)
-            mo.train(trd.Xos, trd.yo)
+            mo = Models.Neural_Network(input_shape=(nvariables, 1), epochs=20)
+            index = trd.Xo.sample(frac=1).index  # Shuffling data
+            mo.train(trd.Xos.loc[index, :], trd.yo.loc[index])
             probs = mo.classify(ted.Xs)
             probabilities += probs
+
+        final_time = time.time() - start_time
 
         probabilities /= nmodels
 
         cl = Data.ClassifiedData(ted, probabilities, threshold)
         cl.y = cl.y.sort_values('PROBS', ascending=False)
+
 
         min_samples = cga(EA.OTIMIZACAO_IDLHC_AMOSTRAS_PDF)
         count = 0
@@ -124,27 +136,35 @@ class BinaryClassifier(FofePadrao):
             else:
                 break
             count += 1
-            
+
+
         index = cl.y[cl.y['CLASS'] == 0].index
-
-        path_prj = cga(EA.PATH_PROJETO)
-        path_res = '/'.join(cga(EA.PATH_RESULTADO).split('/')[:-1])
-        path = path_prj + '/' + path_res + '/' + 'fofe.csv'
-        if os.path.exists(path):
-            cl.y[['PROBS', 'CLASS']].to_csv(path, mode='a', header=False)
-        else:
-            cl.y[['PROBS', 'CLASS']].to_csv(path, header=True)
-
-
-        #import IPython; IPython.embed()
-        #print("\nTRAIN DATA\n", file=open(path, "a"))
-        #print(trd.Xy().to_string(), file=open(path, "a"))
-        #print("\nTEST DATA\n", file=open(path, "a"))
-        #print(ted.Xy().to_string(), file=open(path, "a"))
-        #print(cl.y[['PROBS', 'CLASS']].to_string() + '\n', file=open(path, "a"))
         for ite, ide in index:
             del solucoes.solucoes[ite][ide]
  
+
+        ### CODE ADDED JUST FOR SAVE ALL SAMPLES ###
+        path_prj = cga(EA.PATH_PROJETO)
+        path_res = '/'.join(cga(EA.PATH_RESULTADO).split('/')[:-1])
+
+
+        path = path_prj + '/' + path_res + '/' + 'ztraining_time.txt'
+        if iteracao_corrente == 2:
+            print('{}'.format(final_time), file=open(path, mode='w'))
+        else:
+            print('{}'.format(final_time), file=open(path, mode='a'))
+ 
+
+        Xy = ted.X.copy()
+        Xy[cl.y.columns] = cl.y.copy()
+
+        path = path_prj + '/' + path_res + '/' + 'zall_samples.csv'
+        if iteracao_corrente == 2:
+            Xy.to_csv(path, header=True)
+        else:
+            Xy.to_csv(path, mode='a', header=False)
+        ###
+
 
         return solucoes
 

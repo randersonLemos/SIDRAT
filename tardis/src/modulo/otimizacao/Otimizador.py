@@ -17,7 +17,7 @@ from src.modulo.otimizacao.acoplado.Acoplado import Acoplado
 
 class Otimizador(ModuloPadrao):
     """
-    Classe destinada para a efetuar a otimizacao
+    Classe destinada para efetuar a otimizacao
     """
     def __init__(self):
         super().__init__()
@@ -49,7 +49,7 @@ class Otimizador(ModuloPadrao):
         """
         self.log(texto=f"Carregando o {self._name}")
 
-        self.atualiza_contexto(contexto)
+        self._contexto = contexto
 
         EA = EnumAtributo
         EV = EnumValues
@@ -113,9 +113,9 @@ class Otimizador(ModuloPadrao):
         """
         self.log(texto=f'Executando o {self._name}')
 
-        self.atualiza_contexto(contexto)
+        self._contexto = contexto
 
-        self._otimizador.atualiza_contexto(contexto)
+        self._otimizador._contexto = contexto
 
         self._otimizador.inicializacao()
 
@@ -126,7 +126,3 @@ class Otimizador(ModuloPadrao):
         self._otimizador.after()
 
         return self._otimizador.contexto
-
-
-    def atualiza_contexto(self, contexto):
-        self._contexto = contexto
