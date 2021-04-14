@@ -118,4 +118,10 @@ class Avaliador(ModuloPadrao):
         self._avaliador.run()
         self._avaliador.after()
 
+
+        #EA = EnumAtributo
+        #cga = self._contexto.get_atributo
+        #solucoes = cga(EA.SOLUCOES)
+
+
         return self._avaliador.contexto

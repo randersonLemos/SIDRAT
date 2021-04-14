@@ -145,8 +145,7 @@ class IDLHC(OtimizadorPadrao):
             # de solução nova e se a quantidade de amostras geradas no sorteio
             # é maior que o numero de amostras utilizadas para atualização da PDF
             if qtd_solucoes < self._contexto.get_atributo(
-                EA.OTIMIZACAO_IDLHC_AMOSTRAS_PDF
-            ):
+                EA.OTIMIZACAO_IDLHC_AMOSTRAS_PDF):
                 self.log(texto='Convergencia foi atingida por perda de variabilidade ' +
                                'das amostras.')
                 break
@@ -155,12 +154,17 @@ class IDLHC(OtimizadorPadrao):
             self._contexto.set_atributo(EA.AVALIACAO_ITERACAO_AVALIAR, [self._iteracao], True)
             self._contexto = avaliacao.run(self._contexto)
 
+            EA = EnumAtributo
+            cga = self._contexto.get_atributo
+            solucoes = cga(EA.SOLUCOES)
+            self._solucoes = solucoes
+
             for id in self._solucoes.solucoes[self._iteracao]:
                 self._solucoes_historico.add_in_solucoes(self._solucoes.solucoes[self._iteracao][id])
 
             self._para_resume()
             Exportacao().csv(self._contexto)
-            Exportacao().objeto(self._contexto)
+            #Exportacao().objeto(self._contexto)
             LogarMemoria(self._contexto)
 
             primeira_iteracao = False
