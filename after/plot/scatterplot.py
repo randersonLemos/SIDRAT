@@ -2,6 +2,7 @@ import warnings
 
 import pathlib
 
+import copy
 import numpy as np
 import seaborn as sb
 import matplotlib.pyplot as plt
@@ -19,21 +20,18 @@ def make_patch_spines_invisible(ax):
        sp.set_visible(False)
 
 
-class ScatterPlot:
-    def __init__(self, data, x, y):
-        self.data = data
-        self.x = x
-        self.y = y
+class ScatterPlotConfig:
+    def __init__(self):
+        self.hue   = None
+        self.sty   = None
+        self.tlt   = None
+        self.siz   = None
+        self.sizs  = None
+        self.s     = 250
+        self.alpha = 0.9
 
-        self.hue = None
-        self.stl = None
-
-        self.tlt = None
-
-        self.ax = None
-        self.fig = None
-
-        self.show = plt.show
+        self.markers = True
+        self.palette = None
 
         self.xmax = None
         self.xmin = None
@@ -41,18 +39,48 @@ class ScatterPlot:
         self.ymin = None
 
 
-    def set_hue(self, lst):
-        self.hue = lst
+    def set_hue(self, col_name):
+        self.hue = col_name
         return self
 
 
-    def set_stl(self, lst):
-        self.stl = lst
+    def set_sty(self, col_name):
+        self.sty = col_name
         return self
 
 
-    def set_tlt(self, tlt):
-        self.tlt = tlt
+    def set_siz(self, col_name):
+        self.siz = col_name
+        return self
+
+
+    def set_sizs(self, tup):
+        self.sizs = tup
+        return self
+
+
+    def set_s(self, vl):
+        self.s = vl
+        return self
+
+    
+    def set_alpha(self, vl):
+        self.alpha = vl
+        return self
+
+    
+    def set_markers(self, collection):
+        self.markers = collection
+        return self
+
+
+    def set_palette(self, collection):
+        self.palette = collection
+        return self
+
+
+    def set_tlt(self, title):
+        self.tlt = title
         return self
 
 
@@ -76,16 +104,26 @@ class ScatterPlot:
         return self
 
 
-    def plot_1(self):
+class ScatterPlot:
+    def __init__(self, data, x, y):
+        self.data = data
+        self.x = x
+        self.y = y
+
+        self.ax  = None
+        self.fig = None
+
+
+    def plot(self, tlt, spc_obj):
         self.fig, self.ax = plt.subplots(figsize=(11, 8))
         fig = self.fig
 
-        ax_ = self.ax
-        axy = ax_.twinx()
-        axx = ax_.twiny()
+        ax  = self.ax
+        axy = ax.twinx()
+        axx = ax.twiny()
 
-        ax_.spines["bottom"].set_position(("axes", -0.1))
-        ax_.spines["left"].set_position(("axes", -0.1))
+        ax.spines["left"].set_position(  ("axes", -0.1))
+        ax.spines["bottom"].set_position(("axes", -0.1))
 
         axx.xaxis.set_label_position('bottom')
         axx.xaxis.set_ticks_position('bottom')
@@ -99,36 +137,38 @@ class ScatterPlot:
         make_patch_spines_invisible(axy)
         axy.spines["left"].set_visible(True)
 
-        ax_.grid(True)
-        #axx.grid(True)
-        #axy.grid(True)
+        ax.grid(True)
 
         set_position = [0.20, 0.15, 0.625, 0.70]
-        ax_.set_position(set_position) # set a new position
-        axy.set_position(set_position) # set a new position
-        axx.set_position(set_position) # set a new position
+        ax.set_position( set_position)  # set a new position
+        axy.set_position(set_position)  # set a new position
+        axx.set_position(set_position)  # set a new position
 
-        ### ### ###
+        # ### ### ###
+        data = copy.deepcopy(self.data)
         x = self.x
         y = self.y
-        hue = self.hue
-        stl = self.stl
-        tlt = self.tlt
-        s = 300
-        alpha = 0.90
-  
-
-        ### ### ###
-        data = self.data.copy()
-
+        hue = spc_obj.hue
+        sty = spc_obj.sty
+        siz = spc_obj.siz
+        sizs = spc_obj.sizs
+        s = spc_obj.s
+        alpha = spc_obj.alpha
+        markers = spc_obj.markers
+        palette = spc_obj.palette
+        print(palette)
         sb.scatterplot(  data=data
                        , x=x
                        , y=y
                        , hue=hue
-                       , style=stl
+                       , style=sty
+                       , size=siz
+                       , sizes=sizs
                        , s=s
                        , alpha=alpha
-                       , ax=ax_
+                       , markers=markers
+                       , palette=palette
+                       , ax=ax
                        )
 
         xlen = data[x].max() - data[x].min()
@@ -141,32 +181,34 @@ class ScatterPlot:
         ylim_min = data[y].min() - ypad
         ylim_max = data[y].max() + ypad
 
-        ax_.set_xlim(xlim_min, xlim_max)
-        ax_.set_ylim(ylim_min, ylim_max)
+        ax.set_xlim(xlim_min, xlim_max)
+        ax.set_ylim(ylim_min, ylim_max)
 
-        ax_.set_xticks(np.round(np.linspace(xlim_min + xpad, xlim_max - xpad, 11), 0))
-        ax_.set_yticks(np.round(np.linspace(ylim_min + ypad, ylim_max - ypad, 11), 0))
+        ax.set_xticks(np.round(np.linspace(xlim_min + xpad, xlim_max - xpad, 11), 0))
+        ax.set_yticks(np.round(np.linspace(ylim_min + ypad, ylim_max - ypad, 11), 0))
 
-        ax_.tick_params(axis='both', labelsize=14)
+        ax.tick_params(axis='both', labelsize=14)
 
         #ax.set_title(tlt, fontsize=17, pad=15.0, ha='left', loc='left', bbox_trnasform=fig.transFigure)
         fig.suptitle(tlt, fontsize=20, x=0.02, ha='left')
 
-        ax_.set_xlabel('Number of run', fontsize=16)
-        ax_.set_ylabel('Max. value of obj. fun.', fontsize=16)
+        #ax.set_xlabel('Number of run', fontsize=16)
+        #ax.set_ylabel('Max. value of obj. fun.', fontsize=16)
 
-        #ax.legend(loc='center left', ncol=1, frameon=False, bbox_to_anchor=(0.75, 0.5), bbox_transform=fig.transFigure)
-        ax_.legend(loc='center left', ncol=1, frameon=False, bbox_to_anchor=(1.00, 0.50), fontsize=12)
+        ##ax.legend(loc='center left', ncol=1, frameon=False, bbox_to_anchor=(0.75, 0.5), bbox_transform=fig.transFigure)
+        ax.legend(loc='center left', ncol=1, frameon=False, bbox_to_anchor=(1.00, 0.50), fontsize=12)
 
 
-        ### ### ###
-        data = self.data.copy()
+        # ### ### ###
+        data = copy.deepcopy(self.data)
 
         xmin = data[x].min()
         xmax = data[x].max()
 
-        if not isinstance(self.xmin, type(None)) : xmin = self.xmin
-        if not isinstance(self.xmax, type(None)) : xmax = self.xmax
+        if not isinstance(spc_obj.xmin, type(None)):
+            xmin = spc_obj.xmin
+        if not isinstance(spc_obj.xmax, type(None)):
+            xmax = spc_obj.xmax
 
         data[x] = (data[x] - xmin) / (xmax - xmin)
 
@@ -174,9 +216,13 @@ class ScatterPlot:
                        , x=x
                        , y=y
                        , hue=hue
-                       , style=stl
+                       , style=sty
+                       , size=siz
+                       , sizes=sizs
                        , s=s
                        , alpha=alpha
+                       , markers=markers
+                       , palette=palette
                        , legend=False
                        , ax=axx
                        )
@@ -185,8 +231,7 @@ class ScatterPlot:
         xpad = xlen * 0.05
         xlim_min = data[x].min() - xpad
         xlim_max = data[x].max() + xpad
-
-
+        
         axx.set_xlim(xlim_min, xlim_max)
 
         axx.set_xticks(np.round(np.linspace(xlim_min + xpad, xlim_max - xpad, 11), 10))
@@ -194,25 +239,30 @@ class ScatterPlot:
 
         axx.set_xlabel('')
 
-
-        ### ### ###
-        data = self.data.copy()
+        # ### ### ###
+        data = copy.deepcopy(self.data)
 
         ymin = data[y].min()
         ymax = data[y].max()
 
-        if not isinstance(self.ymin, type(None)) : ymin = self.ymin
-        if not isinstance(self.ymax, type(None)) : ymax = self.ymax
+        if not isinstance(spc_obj.ymin, type(None)):
+            ymin = spc_obj.ymin
+        if not isinstance(spc_obj.ymax, type(None)):
+            ymax = spc_obj.ymax
  
         data[y] = (data[y] - ymin) / (ymax - ymin)
-
+     
         sb.scatterplot(  data=data
                        , x=x
                        , y=y
                        , hue=hue
-                       , style=stl
+                       , style=sty
+                       , size=siz
+                       , sizes=sizs
                        , s=s
                        , alpha=alpha
+                       , markers=markers
+                       , palette=palette
                        , legend=False
                        , ax=axy
                        )
