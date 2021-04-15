@@ -70,17 +70,25 @@ from scatterplot import ScatterPlot
 from scatterplot import ScatterPlotConfig
 
 spc = ScatterPlotConfig()
-spc.set_hue(colsObj.nsi_nsp) 
-spc.set_sty(colsObj.nnbc) 
-spc.set_siz(colsObj.nnbc) 
-spc.set_sizs((150, 450, )) 
-spc.set_markers({'On': 'o', 'Off': 'v'}) 
-spc.set_palette(['light:blue', 'yellow', 'black', 'brown', 'green', 'green', 'green', 'green', 'green'])
-spc.set_xmin(0) 
+spc.set_hue(colsObj.nsi_nsp)
+spc.set_sty(colsObj.nnbc)
+spc.set_siz(colsObj.nnbc)
+spc.set_sizs((300, 600, ))
+spc.set_linewidth(1)
+spc.set_markers({'On': '^', 'Off': 'v'})
+spc.set_palette(['aqua', 'royalblue', 'midnightblue', 'lightgreen', 'olivedrab', 'darkgreen', 'rosybrown', 'tomato', 'darkred'])
+spc.set_xmin(0)
 spc.set_ymax(0)
+
+spcC = spc.copy()
+spcC.set_hue(colsObj.nct_tcc)
+spcC.set_palette(None)
 
 sp = ScatterPlot(data=pv, x=colsObj.n_sample, y=colsObj.value)
 sp.plot('Title 1', spc)
+
+sp.plot('Title 1', spcC)
+plt.show()
 
 #sc.set_xmin(0).set_xmax(None).set_ymin(None).set_ymax(0)
 #

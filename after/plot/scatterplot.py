@@ -29,9 +29,11 @@ class ScatterPlotConfig:
         self.sizs  = None
         self.s     = 250
         self.alpha = 0.9
+        self.linewidth = 2.0
 
         self.markers = True
         self.palette = None
+        self.edgecolors = 'black'
 
         self.xmax = None
         self.xmin = None
@@ -68,6 +70,11 @@ class ScatterPlotConfig:
         self.alpha = vl
         return self
 
+
+    def set_linewidth(self, vl):
+        self.linewidth = vl
+        return self
+
     
     def set_markers(self, collection):
         self.markers = collection
@@ -102,6 +109,10 @@ class ScatterPlotConfig:
     def set_ymin(self, vl):
         self.ymin = vl
         return self
+
+
+    def copy(self):
+        return copy.deepcopy(self)
 
 
 class ScatterPlot:
@@ -156,7 +167,9 @@ class ScatterPlot:
         alpha = spc_obj.alpha
         markers = spc_obj.markers
         palette = spc_obj.palette
-        print(palette)
+        #facecolors = spc_obj.facecolors
+        edgecolors = spc_obj.edgecolors
+        linewidth = spc_obj.linewidth
         sb.scatterplot(  data=data
                        , x=x
                        , y=y
@@ -168,6 +181,9 @@ class ScatterPlot:
                        , alpha=alpha
                        , markers=markers
                        , palette=palette
+                       #, fc=facecolors
+                       , ec=edgecolors
+                       , linewidth=linewidth
                        , ax=ax
                        )
 
@@ -196,7 +212,13 @@ class ScatterPlot:
         #ax.set_ylabel('Max. value of obj. fun.', fontsize=16)
 
         ##ax.legend(loc='center left', ncol=1, frameon=False, bbox_to_anchor=(0.75, 0.5), bbox_transform=fig.transFigure)
-        ax.legend(loc='center left', ncol=1, frameon=False, bbox_to_anchor=(1.00, 0.50), fontsize=12)
+        ax.legend(loc='center left'
+                  , ncol=1
+                  , frameon=False
+                  , bbox_to_anchor=(1.00, 0.50)
+                  , fontsize=12
+                  , markerscale=0.75
+                 )
 
 
         # ### ### ###
@@ -223,6 +245,9 @@ class ScatterPlot:
                        , alpha=alpha
                        , markers=markers
                        , palette=palette
+                       #, fc=facecolors
+                       , ec=edgecolors
+                       , linewidth=linewidth
                        , legend=False
                        , ax=axx
                        )
@@ -263,6 +288,9 @@ class ScatterPlot:
                        , alpha=alpha
                        , markers=markers
                        , palette=palette
+                       #, fc=facecolors
+                       , ec=edgecolors
+                       , linewidth=linewidth
                        , legend=False
                        , ax=axy
                        )
