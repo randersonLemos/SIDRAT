@@ -28,8 +28,10 @@ class ScatterPlotConfig:
         self.siz   = None
         self.sizs  = None
         self.s     = 250
-        self.alpha = 0.9
+        self.alpha = 0.7
         self.linewidth = 2.0
+
+        self.sty_order = None
 
         self.markers = True
         self.palette = None
@@ -73,6 +75,11 @@ class ScatterPlotConfig:
 
     def set_linewidth(self, vl):
         self.linewidth = vl
+        return self
+
+
+    def set_sty_order(self, lst):
+        self.sty_order = lst
         return self
 
     
@@ -133,8 +140,8 @@ class ScatterPlot:
         axy = ax.twinx()
         axx = ax.twiny()
 
-        ax.spines["left"].set_position(  ("axes", -0.1))
-        ax.spines["bottom"].set_position(("axes", -0.1))
+        ax.spines["left"].set_position(  ("axes", -0.100))
+        ax.spines["bottom"].set_position(("axes", -0.095))
 
         axx.xaxis.set_label_position('bottom')
         axx.xaxis.set_ticks_position('bottom')
@@ -165,9 +172,9 @@ class ScatterPlot:
         sizs = spc_obj.sizs
         s = spc_obj.s
         alpha = spc_obj.alpha
+        style_order = spc_obj.sty_order
         markers = spc_obj.markers
         palette = spc_obj.palette
-        #facecolors = spc_obj.facecolors
         edgecolors = spc_obj.edgecolors
         linewidth = spc_obj.linewidth
         sb.scatterplot(  data=data
@@ -179,9 +186,9 @@ class ScatterPlot:
                        , sizes=sizs
                        , s=s
                        , alpha=alpha
+                       , style_order=style_order
                        , markers=markers
                        , palette=palette
-                       #, fc=facecolors
                        , ec=edgecolors
                        , linewidth=linewidth
                        , ax=ax
@@ -200,16 +207,18 @@ class ScatterPlot:
         ax.set_xlim(xlim_min, xlim_max)
         ax.set_ylim(ylim_min, ylim_max)
 
-        ax.set_xticks(np.round(np.linspace(xlim_min + xpad, xlim_max - xpad, 11), 0))
-        ax.set_yticks(np.round(np.linspace(ylim_min + ypad, ylim_max - ypad, 11), 0))
+        ax.set_xticks(np.round(np.linspace(xlim_min + xpad, xlim_max - xpad, 11), 1))
+        ax.set_yticks(np.round(np.linspace(ylim_min + ypad, ylim_max - ypad, 11), 1))
+        ax.xaxis.set_major_formatter(StrMethodFormatter("{x:.0f}"))
+        ax.yaxis.set_major_formatter(StrMethodFormatter("{x:.0f}"))
 
         ax.tick_params(axis='both', labelsize=14)
 
         #ax.set_title(tlt, fontsize=17, pad=15.0, ha='left', loc='left', bbox_trnasform=fig.transFigure)
-        fig.suptitle(tlt, fontsize=20, x=0.02, ha='left')
+        fig.suptitle(tlt, fontsize=20, x=0.05, ha='left')
 
-        #ax.set_xlabel('Number of run', fontsize=16)
-        #ax.set_ylabel('Max. value of obj. fun.', fontsize=16)
+        ax.set_xlabel(x, fontsize=16)
+        ax.set_ylabel(y, fontsize=16)
 
         ##ax.legend(loc='center left', ncol=1, frameon=False, bbox_to_anchor=(0.75, 0.5), bbox_transform=fig.transFigure)
         ax.legend(loc='center left'
@@ -217,7 +226,7 @@ class ScatterPlot:
                   , frameon=False
                   , bbox_to_anchor=(1.00, 0.50)
                   , fontsize=12
-                  , markerscale=0.75
+                  , markerscale=1.5
                  )
 
 
@@ -245,7 +254,6 @@ class ScatterPlot:
                        , alpha=alpha
                        , markers=markers
                        , palette=palette
-                       #, fc=facecolors
                        , ec=edgecolors
                        , linewidth=linewidth
                        , legend=False
@@ -288,7 +296,6 @@ class ScatterPlot:
                        , alpha=alpha
                        , markers=markers
                        , palette=palette
-                       #, fc=facecolors
                        , ec=edgecolors
                        , linewidth=linewidth
                        , legend=False
