@@ -9,18 +9,17 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 from matplotlib.ticker import StrMethodFormatter
 
-
 plt.style.use('seaborn-talk')
 
 
 def make_patch_spines_invisible(ax):
-   ax.set_frame_on(True)
-   ax.patch.set_visible(False)
-   for sp in ax.spines.values():
-       sp.set_visible(False)
+    ax.set_frame_on(True)
+    ax.patch.set_visible(False)
+    for sp in ax.spines.values():
+        sp.set_visible(False)
 
 
-class ScatterPlot:
+class LinePlot:
     def __init__(self, data, x, y):
         self.data = data
         self.x = x
@@ -68,32 +67,35 @@ class ScatterPlot:
         sty = cp_obj.sty
         siz = cp_obj.siz
         sizs = cp_obj.sizs
-        s = cp_obj.s
         alpha = cp_obj.alpha
         style_order = cp_obj.sty_order
         markers = cp_obj.markers
+        dashes  = cp_obj.dashes
         palette = cp_obj.palette
         edgecolors = cp_obj.edgecolors
         linewidth = cp_obj.linewidth
+        markersize = cp_obj.markersize
         title = cp_obj.title
         xlabel = cp_obj.xlabel
         ylabel = cp_obj.ylabel
-        sb.scatterplot(  data=data
-                       , x=x
-                       , y=y
-                       , hue=hue
-                       , style=sty
-                       , size=siz
-                       , sizes=sizs
-                       , s=s
-                       , alpha=alpha
-                       , style_order=style_order
-                       , markers=markers
-                       , palette=palette
-                       , ec=edgecolors
-                       , linewidth=linewidth
-                       , ax=ax
-                       )
+        sb.lineplot(  data=data
+                     , x=x
+                     , y=y
+                     , hue=hue
+                     , style=sty
+                     , size=siz
+                     , sizes=sizs
+                     , alpha=alpha
+                     , style_order=style_order
+                     , markers=markers
+                     , dashes=dashes
+                     , palette=palette
+                     , mec=edgecolors
+                     , mew=linewidth
+                     , linewidth=linewidth
+                     , markersize=markersize
+                     , ax=ax
+                     )
 
         xlen = data[x].max() - data[x].min()
         xpad = xlen * 0.05
@@ -107,7 +109,6 @@ class ScatterPlot:
 
         ax.set_xlim(xlim_min, xlim_max)
         ax.set_ylim(ylim_min, ylim_max)
-        
 
         ax.set_xticks(np.round(np.linspace(xlim_min + xpad, xlim_max - xpad, 11), 1))
         ax.set_yticks(np.round(np.linspace(ylim_min + ypad, ylim_max - ypad, 11), 1))
@@ -127,7 +128,7 @@ class ScatterPlot:
                   , frameon=False
                   , bbox_to_anchor=(1.00, 0.50)
                   , fontsize=12
-                  , markerscale=1.33
+                  , markerscale=1.5
                  )
 
 
@@ -144,23 +145,27 @@ class ScatterPlot:
 
         data[x] = (data[x] - xmin) / (xmax - xmin)
 
-        sb.scatterplot(  data=data
-                       , x=x
-                       , y=y
-                       , hue=hue
-                       , style=sty
-                       , size=siz
-                       , sizes=sizs
-                       , s=s
-                       , alpha=alpha
-                       , markers=markers
-                       , palette=palette
-                       , ec=edgecolors
-                       , linewidth=linewidth
-                       , legend=False
-                       , ax=axx
-                       )
 
+        sb.lineplot(   data=data
+                     , x=x
+                     , y=y
+                     , hue=hue
+                     , style=sty
+                     , size=siz
+                     , sizes=sizs
+                     , alpha=alpha
+                     , style_order=style_order
+                     , markers=markers
+                     , dashes=dashes
+                     , palette=palette
+                     , mec=edgecolors
+                     , mew=linewidth
+                     , linewidth=linewidth
+                     , markersize=markersize
+                     , legend=False
+                     , ax=axx
+                     )
+ 
         xlen = data[x].max() - data[x].min()
         xpad = xlen * 0.05
         xlim_min = data[x].min() - xpad
@@ -183,26 +188,29 @@ class ScatterPlot:
             ymin = cp_obj.ymin
         if not isinstance(cp_obj.ymax, type(None)):
             ymax = cp_obj.ymax
- 
-        data[y] = (data[y] - ymin) / (ymax - ymin)
-     
-        sb.scatterplot(  data=data
-                       , x=x
-                       , y=y
-                       , hue=hue
-                       , style=sty
-                       , size=siz
-                       , sizes=sizs
-                       , s=s
-                       , alpha=alpha
-                       , markers=markers
-                       , palette=palette
-                       , ec=edgecolors
-                       , linewidth=linewidth
-                       , legend=False
-                       , ax=axy
-                       )
 
+        data[y] = (data[y] - ymin) / (ymax - ymin)
+
+        sb.lineplot(   data=data
+                     , x=x
+                     , y=y
+                     , hue=hue
+                     , style=sty
+                     , size=siz
+                     , sizes=sizs
+                     , alpha=alpha
+                     , style_order=style_order
+                     , markers=markers
+                     , dashes=dashes
+                     , palette=palette
+                     , mec=edgecolors
+                     , mew=linewidth
+                     , linewidth=linewidth
+                     , markersize=markersize
+                     , legend=False
+                     , ax=axy
+                     )
+ 
         ylen = data[y].max() - data[y].min()
         ypad = ylen * 0.05
         ylim_min = data[y].min() - ypad

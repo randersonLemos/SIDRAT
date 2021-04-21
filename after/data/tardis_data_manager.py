@@ -1,5 +1,6 @@
 import re
 import pathlib
+import numpy as np
 import pandas as pd
 
 
@@ -39,7 +40,13 @@ class TardisDataManager:
 
             lst.append(df)
             
-        return pd.concat(lst).reset_index(drop=True)
+        df = pd.concat(lst).reset_index(drop=True)
+
+        df = df.replace([np.inf, -np.inf], np.nan)
+
+        df = df.dropna(how="any")
+
+        return df
 
    
     def mean_compact(self):
@@ -60,6 +67,29 @@ class TardisDataManager:
         #pt.columns.name = 'value'
         
         gb = pt.groupby(['mt', 'of', 'it']).mean().astype('int').reset_index()
+
+
+        # ### Applying convergence criterion ###
+        gb = gb.set_index('mt')
+        lst = []
+        for idx in gb.index.unique():
+            aux = gb.loc[idx]
+            aux = aux.reset_index().set_index('it')
+            pvl = vl = 0
+            count = 0
+            for jdx in aux.index.unique():
+                vl = aux.loc[jdx]['value']
+                if vl == pvl:
+                    count += 1
+                    if count == 3 - 1:
+                        break
+                else:
+                    count = 0
+                pvl = vl
+            lst.append(aux.loc[:jdx].reset_index()[['mt', 'of', 'it', 'n_sample', 'value']])
+
+        gb = pd.concat(lst).reset_index(drop=True)
+
 
         Gb = pt.groupby(['mt', 'it']).mean().astype('int').reset_index()
 

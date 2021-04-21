@@ -6,6 +6,8 @@ from tardis_files_manager import TardisFilesManager
 import shutil
 
 tfm = TardisFilesManager(['DONE/RES_REF', 'DONE/RES_SPHERE'], '/media/beldroega/DATA/SIDRAT/tardis')
+#tfm = TardisFilesManager(['DONE/RES_REF'], '/media/beldroega/DATA/SIDRAT/tardis')
+#tfm = TardisFilesManager(['_RES_SPH_REF'], '/media/beldroega/DATA/SIDRAT/tardis')
 
 tfm.clean(r'it_(\d+)')
 
@@ -28,12 +30,5 @@ for key in dic:
     dic[key][['nct_tcc']] = df['nct'] + ', ' + df['tcc']
     dic[key][['nnnt']] = df['nsi'] + ', ' + df['nsp'] + ', '  + df['nct'] + ', ' + df['tcc']
     dic[key]['nnbc'] = np.where(df['nct'] == '000', 'Off', 'On')
-
-#tdm.mco[['nsi', 'nsp', 'nct', 'tcc']] = tdm.mco['mt'].str.split('_\D\D\D', expand=True)[[1,2,4,5]]
-#tdm.Mco[['nsi', 'nsp', 'nct', 'tcc']] = tdm.Mco['mt'].str.split('_\D\D\D', expand=True)[[1,2,4,5]]
-#                                                                                              
-#tdm.mex[['nsi', 'nsp', 'nct', 'tcc']] = tdm.mex['mt'].str.split('_\D\D\D', expand=True)[[1,2,4,5]]
-#tdm.Mex[['nsi', 'nsp', 'nct', 'tcc']] = tdm.Mex['mt'].str.split('_\D\D\D', expand=True)[[1,2,4,5]]
-###
 
 tdm.save('/media/beldroega/DATA/SHARED/SIDRAT/DATA')
