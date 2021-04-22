@@ -24,34 +24,56 @@ class TardisDataManager:
             if df.shape[1] == 1:
                 df = pd.read_csv(file, sep=",")
     
-            df = df.iloc[1:, [0, 1, 3]]
+            
+            sucess, df = self._try_add_probabilities(df, file.parent / 'zall_samples.csv')
+
+            if sucess:
+                df = df.fillna(1)
+                df = df.iloc[1:, [0, 1, 3, -2, -1]]
+            else:
+                df = df.iloc[1:, [0, 1, 3]]
 
             df['of'] = df.columns[2][7:-1]
             df['_type'] = df.columns[2][3:6]
             df = df.rename(columns={  'iteracao': 'it'
                                     , df.columns[2]: 'value'
                                     , 'id': '_id'
+                                    , 'probs': 'prob'
                                    })
             df['id'] = df.index
             df['mt'] = file.parent.name[:-2]
             df['ru'] = file.parent.name[-1]
 
-            df = df[['mt', 'of', 'ru', 'it', 'id', 'value', '_type', '_id']]
-
+            if sucess:
+                df = df[['mt', 'of', 'ru', 'it', 'id', 'value', 'prob', 'class', '_type', '_id']]
+            else:
+                df = df[['mt', 'of', 'ru', 'it', 'id', 'value', '_type', '_id']]
+                
+            df = df.replace([np.inf, -np.inf], np.nan)
+            df = df.dropna(how='any')
             lst.append(df)
             
         df = pd.concat(lst).reset_index(drop=True)
 
-        df = df.replace([np.inf, -np.inf], np.nan)
-
-        df = df.dropna(how="any")
-
         return df
+
+
+    def _try_add_probabilities(self, df, file):
+        try:
+            dff = pd.read_csv(file, sep=";")
+            if dff.shape[1] == 1:
+                dff = pd.read_csv(file, sep=",")
+            
+            df = df[(df['iteracao'] == 0) |(df['iteracao'] == 1)]
+
+            df = pd.concat([df, dff], ignore_index=True)
+
+            return  True, df
+        except FileNotFoundError:
+            return False, df
 
    
     def mean_compact(self):
-
-
         pt = pd.pivot_table(self.df
                            , index=['mt', 'of', 'ru', 'it']
                            , values=['value']
@@ -89,7 +111,6 @@ class TardisDataManager:
             lst.append(aux.loc[:jdx].reset_index()[['mt', 'of', 'it', 'n_sample', 'value']])
 
         gb = pd.concat(lst).reset_index(drop=True)
-
 
         Gb = pt.groupby(['mt', 'it']).mean().astype('int').reset_index()
 
