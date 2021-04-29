@@ -19,10 +19,10 @@ with open(PATH_PRJ + PATH_CFG_TEM, 'r') as fh:
     for line in fh:
         line = line.strip()
         if '__AVALIACAO_TYPE__' in line:
-            line = line.replace('__AVALIACAO_TYPE__', 'RASTRIGIN')
+            line = line.replace('__AVALIACAO_TYPE__', 'SPHERE')
             print(line)
         if '__AVALIACAO_DIRECAO_OF__' in line:
-            line = line.replace('__AVALIACAO_DIRECAO_OF__', 'MAX RASTRIGIN')
+            line = line.replace('__AVALIACAO_DIRECAO_OF__', 'MAX SPHERE')
             print(line)
         lines.append(line)
 
@@ -83,9 +83,9 @@ def configure_context(context, context_variables):
 
 IDLHC_NUMBER_SAMPLES_ITERATION = [50, 100, 150]
 IDLHC_NUMBER_SAMPLES_PDF = [10, 20, 30]
-FOFE_NNBC_NUM_CLASS1 = [10, 20, 30]
-FOFE_NNBC_NUM_THRESHOLD = [0.1, 0.3, 0.5]
-TIMES = [1, 2, 3, 4, 5]
+FOFE_NNBC_NUM_CLASS1 = [0]
+FOFE_NNBC_NUM_THRESHOLD = [0]
+TIMES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 
 import os
@@ -101,7 +101,7 @@ for a, b, c, d, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
 
     cv = Context_Variables()
 
-    dirr = '_RES_RST/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_ECC{:03d}_{}'.format(a, b, c, int(100 * d), e)
+    dirr = '_RES_SPH_REF/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_TCC{:03d}_{:02d}'.format(a, b, c, int(100 * d), e)
 
     if os.path.isdir(dirr):
         print('Experiment {} alread done'.format(dirr))
@@ -116,10 +116,10 @@ for a, b, c, d, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
             cv.idlhc_number_samples_pdf(b)
             cv.stop_critiria('ITERACOES_MAX')
             cv.stop_critiria_iterations(30)
-            cv.fofe('NN_BINARY_CLASSIFIER')
-            cv.fofe_nnbc_num_models(10)
-            cv.fofe_nnbc_num_class1(c)
-            cv.fofe_nnbc_threshold(d)
+            #cv.fofe('NN_BINARY_CLASSIFIER')
+            #cv.fofe_nnbc_num_models(10)
+            #cv.fofe_nnbc_num_class1(c)
+            #cv.fofe_nnbc_threshold(d)
 
             carregamento = Carregamento(PATH_PRJ, PATH_CFG, MODULES)
             context = carregamento.get_context()

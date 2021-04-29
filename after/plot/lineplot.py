@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 from matplotlib.ticker import StrMethodFormatter
 
+
 plt.style.use('seaborn-talk')
 
 

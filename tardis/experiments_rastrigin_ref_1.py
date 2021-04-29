@@ -19,10 +19,10 @@ with open(PATH_PRJ + PATH_CFG_TEM, 'r') as fh:
     for line in fh:
         line = line.strip()
         if '__AVALIACAO_TYPE__' in line:
-            line = line.replace('__AVALIACAO_TYPE__', 'SPHERE')
+            line = line.replace('__AVALIACAO_TYPE__', 'RASTRIGIN')
             print(line)
         if '__AVALIACAO_DIRECAO_OF__' in line:
-            line = line.replace('__AVALIACAO_DIRECAO_OF__', 'MAX SPHERE')
+            line = line.replace('__AVALIACAO_DIRECAO_OF__', 'MAX RASTRIGIN')
             print(line)
         lines.append(line)
 
@@ -101,7 +101,7 @@ for a, b, c, d, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
 
     cv = Context_Variables()
 
-    dirr = '_RES_SPH_REF/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_ECC{:03d}_{}'.format(a, b, c, int(100 * d), e)
+    dirr = 'RES_RST_REF/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_ECC{:03d}_{}'.format(a, b, c, int(100 * d), e)
 
     if os.path.isdir(dirr):
         print('Experiment {} alread done'.format(dirr))
@@ -115,7 +115,7 @@ for a, b, c, d, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
             cv.idlhc_number_samples_iteration(a)
             cv.idlhc_number_samples_pdf(b)
             cv.stop_critiria('ITERACOES_MAX')
-            cv.stop_critiria_iterations(100)
+            cv.stop_critiria_iterations(30)
             #cv.fofe('NN_BINARY_CLASSIFIER')
             #cv.fofe_nnbc_num_models(10)
             #cv.fofe_nnbc_num_class1(c)

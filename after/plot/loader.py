@@ -1,12 +1,12 @@
 import pandas as pd
 
+path = '/media/beldroega/DATA/SHARED/csv/'
 
-mean_compact = pd.read_csv('/media/beldroega/DATA/SHARED/SIDRAT/mean_compact.csv')
-Mean_compact = pd.read_csv('/media/beldroega/DATA/SHARED/SIDRAT/Mean_compact.csv')
-
-mean_expand = pd.read_csv('/media/beldroega/DATA/SHARED/SIDRAT/mean_expand.csv')
-Mean_expand = pd.read_csv('/media/beldroega/DATA/SHARED/SIDRAT/Mean_expand.csv')
-
+mean_compact = pd.read_csv(path + 'mean_compact.csv')
+Mean_compact = pd.read_csv(path + 'Mean_compact.csv')
+mean_expand  = pd.read_csv(path + 'mean_expand.csv')
+Mean_expand  = pd.read_csv(path + 'Mean_expand.csv')
+all_data  = pd.read_csv(path + 'all_data.csv')
 
 dic = {}
 dic['mt'] = 'mt'
@@ -52,8 +52,7 @@ class Columns:
         self._update_vars()
 
         return data
-    
-    
+ 
     def __call__(self):
         return self.dic
 
@@ -66,6 +65,7 @@ class Columns:
 
 colsObj = Columns(dic)
 
+all_data     = colsObj.apply_rename(all_data)
 
 mean_compact = colsObj.apply_rename(mean_compact)
 Mean_compact = colsObj.apply_rename(Mean_compact)
@@ -73,13 +73,19 @@ Mean_compact = colsObj.apply_rename(Mean_compact)
 mean_expand = colsObj.apply_rename(mean_expand)
 Mean_expand = colsObj.apply_rename(Mean_expand)
 
+
 for var in ['nsi', 'nsp', 'nct', 'tcc']:
+
+    all_data[dic[var]] = all_data[dic[var]].astype('str')
+
     mean_compact[dic[var]] = mean_compact[dic[var]].astype('str')
     Mean_compact[dic[var]] = Mean_compact[dic[var]].astype('str')
 
     mean_expand[dic[var]] = mean_expand[dic[var]].astype('str')
     Mean_expand[dic[var]] = Mean_expand[dic[var]].astype('str')
 
+
+all_data = all_data[all_data[colsObj.tcc] != '70']
 
 mean_compact = mean_compact[mean_compact[colsObj.tcc] != '70']
 Mean_compact = Mean_compact[Mean_compact[colsObj.tcc] != '70']

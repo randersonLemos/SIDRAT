@@ -98,7 +98,7 @@ cp.set_ymin(mean_expand[colsObj.value].min()).set_ymax(mean_expand[colsObj.value
 cp.set_xmin(1).set_xmax(aux[colsObj.id].max())
 
 sp = ScatterPlot(data=aux[aux[colsObj.nnbc] == 'Off'], x=colsObj.id, y=colsObj.value)
-sp.plot(cp).save("./fig/sphere_scatterplot_0.png")
+sp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_scatterplot_0.png")
 
 cp.set_sty_order([
       '000, 000'
@@ -115,7 +115,7 @@ cp.set_sty_order([
 )
 
 sp = ScatterPlot(data=aux, x=colsObj.id, y=colsObj.value)
-sp.plot(cp).save("./fig/sphere_scatterplot_1.png")
+sp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_scatterplot_1.png")
 
 msk =     (aux[colsObj.nsi_nsp] == "100, 020") \
         | (aux[colsObj.nsi_nsp] == "100, 030") \
@@ -130,7 +130,7 @@ aux = aux[msk]
 cp.set_xmin(1).set_xmax(aux[colsObj.id].max())
 
 sp = ScatterPlot(data=aux, x=colsObj.id, y=colsObj.value)
-sp.plot(cp).save("./fig/sphere_scatterplot_2.png")
+sp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_scatterplot_2.png")
 
 cp.set_sty_order([
       '000, 000'
@@ -155,4 +155,4 @@ msk =     (aux[colsObj.nct_tcc] != "010, 050") \
 aux = aux[msk]
 
 sp = ScatterPlot(data=aux, x=colsObj.id, y=colsObj.value)
-sp.plot(cp).save("./fig/sphere_scatterplot_3.png")
+sp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_scatterplot_3.png")

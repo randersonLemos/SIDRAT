@@ -5,20 +5,25 @@ from tardis_files_manager import TardisFilesManager
 
 import shutil
 
+lst = []
 
-tfm = TardisFilesManager(['DONE/RES_REF', 'DONE/RES_SPHERE'], '/media/beldroega/DATA/SIDRAT/tardis')
-#tfm = TardisFilesManager(['DONE/RES_REF'], '/media/beldroega/DATA/SIDRAT/tardis')
-#tfm = TardisFilesManager(['DONE/RES_SPHERE'], '/media/beldroega/DATA/SIDRAT/tardis')
+lst.append('DONE/RES_SPH_REF')
+lst.append('DONE/RES_SPH')
+#lst.append('DONE/RES_RST_REF')
+#lst.append('DONE/RES_RSB_REF')
 
+tfm = TardisFilesManager(lst, '/media/beldroega/DATA/SIDRAT/tardis')
 tfm.clean(r'it_(\d+)')
 
 files = tfm.files('.*/it_ultima.csv')
+#files = tfm.files('./IDLHC_NSI100_NSP020_NNBC_NCT020.*/it_ultima.csv')
 
-tdm = TardisDataManager(files)
+tdm = TardisDataManager(files, probabilities=True, convergence=True)
 
 # ### SOME TWEAKING ###
 dic = {}
 dic['df']  = tdm.df
+dic['dfp'] = tdm.dfp
 dic['mco'] = tdm.mco
 dic['Mco'] = tdm.Mco
 dic['mex'] = tdm.mex
@@ -32,4 +37,4 @@ for key in dic:
     dic[key][['nnnt']] = df['nsi'] + ', ' + df['nsp'] + ', '  + df['nct'] + ', ' + df['tcc']
     dic[key]['nnbc'] = np.where(df['nct'] == '000', 'Off', 'On')
 
-tdm.save('/media/beldroega/DATA/SHARED/SIDRAT')
+tdm.save('/media/beldroega/DATA/SHARED/csv')

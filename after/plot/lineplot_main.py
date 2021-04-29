@@ -84,7 +84,7 @@ cp.set_ymin(aux[colsObj.value].min()).set_ymax(aux[colsObj.value].max())
 cp.set_xmin(1).set_xmax(aux[colsObj.id].max())
 
 lp = LinePlot(aux[aux[colsObj.nnbc] == 'Off'], x=colsObj.id, y=colsObj.value)
-lp.plot(cp).save("./fig/sphere_lineplot_0.png")
+lp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_lineplot_0.png")
 
 cp.set_sty_order([
       '000, 000'
@@ -103,7 +103,7 @@ cp.set_sty_order([
 
 
 lp = LinePlot(aux, x=colsObj.id, y=colsObj.value)
-lp.plot(cp).save("./fig/sphere_lineplot_1.png")
+lp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_lineplot_1.png")
 
 msk =     (aux[colsObj.nsi_nsp] == "100, 020") \
         | (aux[colsObj.nsi_nsp] == "100, 030") \
@@ -118,7 +118,7 @@ aux = aux[msk]
 cp.set_xmin(1).set_xmax(aux[colsObj.id].max())
 
 lp = LinePlot(data=aux, x=colsObj.id, y=colsObj.value)
-lp.plot(cp).save("./fig/sphere_lineplot_2.png")
+lp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_lineplot_2.png")
 
 cp.set_sty_order([
       '000, 000'
@@ -143,7 +143,7 @@ msk =     (aux[colsObj.nct_tcc] != "010, 050") \
 aux = aux[msk]
 
 lp = LinePlot(data=aux, x=colsObj.id, y=colsObj.value)
-lp.plot(cp).save("./fig/sphere_lineplot_3.png")
+lp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_lineplot_3.png")
 #
 #
 ##vl = aux[aux[colsObj.nnnt] == '050, 010, 000, 000'][colsObj.value].max()
