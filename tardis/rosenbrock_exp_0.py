@@ -2,6 +2,8 @@ PATH_PRJ = '/media/beldroega/DATA/SIDRAT/tardis'
 
 PATH_CFG = '/base/configuracao.config'
 
+PATH_CFG_TEM = '/base/configuracao_template.config'
+
 MODULES = [ 'OTIMIZACAO'
           , 'INICIALIZACAO'
           , 'AVALIACAO'
@@ -10,6 +12,24 @@ MODULES = [ 'OTIMIZACAO'
           , 'PROBLEMA_FECHADO'
           , 'FOFE'
          ]
+
+
+with open(PATH_PRJ + PATH_CFG_TEM, 'r') as fh:
+    lines = []
+    for line in fh:
+        line = line.strip()
+        if '__AVALIACAO_TYPE__' in line:
+            line = line.replace('__AVALIACAO_TYPE__', 'ROSENBROCK')
+            print(line)
+        if '__AVALIACAO_DIRECAO_OF__' in line:
+            line = line.replace('__AVALIACAO_DIRECAO_OF__', 'MAX ROSENBROCK')
+            print(line)
+        lines.append(line)
+
+
+with open(PATH_PRJ + PATH_CFG, 'w') as fh:
+    txt = '\n'.join(lines)
+    fh.write(txt)
 
 
 from src.carregamento.Carregamento import Carregamento
@@ -63,8 +83,8 @@ def configure_context(context, context_variables):
 
 IDLHC_NUMBER_SAMPLES_ITERATION = [50, 100, 150]
 IDLHC_NUMBER_SAMPLES_PDF = [10, 20, 30]
-FOFE_NNBC_NUM_CLASS1 = [10, 20, 30]
-FOFE_NNBC_NUM_THRESHOLD = [0.1, 0.3, 0.5, 0.7]
+FOFE_NNBC_NUM_CLASS1 = [0]
+FOFE_NNBC_NUM_THRESHOLD = [0]
 TIMES = [1, 2, 3, 4, 5]
 
 
@@ -81,7 +101,7 @@ for a, b, c, d, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
 
     cv = Context_Variables()
 
-    dirr = 'RES/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_ECC{:03d}_{}'.format(a, b, c, int(100 * d), e)
+    dirr = 'RES_RSB_REF/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_TCC{:03d}_{:02d}'.format(a, b, c, int(100 * d), e)
 
     if os.path.isdir(dirr):
         print('Experiment {} alread done'.format(dirr))
@@ -96,10 +116,10 @@ for a, b, c, d, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
             cv.idlhc_number_samples_pdf(b)
             cv.stop_critiria('ITERACOES_MAX')
             cv.stop_critiria_iterations(30)
-            cv.fofe('NN_BINARY_CLASSIFIER')
-            cv.fofe_nnbc_num_models(10)
-            cv.fofe_nnbc_num_class1(c)
-            cv.fofe_nnbc_threshold(d)
+            #cv.fofe('NN_BINARY_CLASSIFIER')
+            #cv.fofe_nnbc_num_models(10)
+            #cv.fofe_nnbc_num_class1(c)
+            #cv.fofe_nnbc_threshold(d)
 
             carregamento = Carregamento(PATH_PRJ, PATH_CFG, MODULES)
             context = carregamento.get_context()

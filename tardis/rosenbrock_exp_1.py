@@ -19,10 +19,10 @@ with open(PATH_PRJ + PATH_CFG_TEM, 'r') as fh:
     for line in fh:
         line = line.strip()
         if '__AVALIACAO_TYPE__' in line:
-            line = line.replace('__AVALIACAO_TYPE__', 'RASTRIGIN')
+            line = line.replace('__AVALIACAO_TYPE__', 'ROSENBROCK')
             print(line)
         if '__AVALIACAO_DIRECAO_OF__' in line:
-            line = line.replace('__AVALIACAO_DIRECAO_OF__', 'MAX RASTRIGIN')
+            line = line.replace('__AVALIACAO_DIRECAO_OF__', 'MAX ROSENBROCK')
             print(line)
         lines.append(line)
 
@@ -101,7 +101,7 @@ for a, b, c, d, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
 
     cv = Context_Variables()
 
-    dirr = '_RES_RST/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_ECC{:03d}_{}'.format(a, b, c, int(100 * d), e)
+    dirr = '_RES_RSB/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_TCC{:03d}_{:02d}'.format(a, b, c, int(100 * d), e)
 
     if os.path.isdir(dirr):
         print('Experiment {} alread done'.format(dirr))
