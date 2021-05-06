@@ -5,47 +5,65 @@ import pandas as pd
 
 
 class TardisDataManager:
-    def __init__(self, files, probabilities=False, convergence=False):
+    def __init__(self, files, add_probs=False, n_iter_convergence_criterio=0, fix_shape=True):
         self.files = files
 
-        self.df = self.load(convergence)
 
-        self.mco, self.Mco = self.mean_compact()
-
-        self.mex, self.Mex = self.mean_expand()
-
-        if probabilities:
-            self.dfp = self.loadp(convergence)
-
-        self.df  = self.fix_shape(self.df,  self.mco)
-        self.dfp = self.fix_shape(self.dfp, self.mco)
+        self.ori = self.load()
+        if add_probs:
+            self.pori = self.pload()
 
 
-    def fix_shape(self, df, pt):
-        df = df.set_index(['mt', 'of'])
-        pt = pt.set_index(['mt', 'of'])
-        lst = []
-        for idx in df.index.unique():
-            aux = df.loc[idx]
-            auz = pt.loc[idx]
-            mit = auz['it'].max()
-            msk = aux['it'] <= mit
-            lst.append(aux[msk].reset_index())
-
-        df = pd.concat(lst)
-
-        return df
+        if n_iter_convergence_criterio:
+            self.cov = self.apply_n_iter_convergence_criterio(self.ori, n_iter_convergence_criterio)
+            if add_probs:
+                self.pcov = self.apply_n_iter_convergence_criterio(self.pori, n_iter_convergence_criterio)
+        else:
+            self.cov = self.ori
+            if add_probs:
+                self.pcov = self.cov
 
 
-    def load(self, convergence):
+        if fix_shape:
+            if add_probs:
+                self.ori = self.fix_shape(self.pori, self.ori)
+                self.cov = self.fix_shape(self.pcov, self.cov)
+
+                self.pori = self.fix_shape(self.pori, self.pori)
+                self.pcov = self.fix_shape(self.pcov, self.pcov)
+            else:
+                self.ori = self.fix_shape(self.ori, self.ori)
+                self.cov = self.fix_shape(self.cov, self.cov)
+
+
+        self.mco = self.mean_compact(self.ori)
+        self.mcc = self.mean_compact(self.cov)
+        self.mxo = self.mean_expand(self.mco)
+        self.mxc = self.mean_expand(self.mcc)
+
+
+        self.ori.to_csv('/media/beldroega/DATA/SHARED/ori.csv')
+        self.cov.to_csv('/media/beldroega/DATA/SHARED/cov.csv')
+        self.mco.to_csv('/media/beldroega/DATA/SHARED/mco.csv')
+        self.mcc.to_csv('/media/beldroega/DATA/SHARED/mcc.csv')
+        self.mxo.to_csv('/media/beldroega/DATA/SHARED/mxo.csv')
+        self.mxc.to_csv('/media/beldroega/DATA/SHARED/mxc.csv')
+
+
+        if add_probs:
+            self.pori.to_csv('/media/beldroega/DATA/SHARED/pori.csv')
+            self.pcov.to_csv('/media/beldroega/DATA/SHARED/pcov.csv')
+
+
+    def load(self):
         lst = []
         for file in self.files:
 
             print('Loading: {}'.format(file))
 
-            df = pd.read_csv(file, sep=";")
+            df = pd.read_csv(file, sep=';')
             if df.shape[1] == 1:
-                df = pd.read_csv(file, sep=",")
+                df = pd.read_csv(file, sep=',')
 
             df = df.iloc[1:, [0, 1, 3]]
 
@@ -67,120 +85,63 @@ class TardisDataManager:
         df = df.dropna(how='any')
         df = df.reset_index()
 
-        if convergence:
-            df = df.set_index(['mt', 'of', 'ru'])
-            lst = []
-            for idx in df.index.unique():
-                aux = df.loc[idx]
-                aux = aux.reset_index().set_index(['it'])
-                pvl = vl = 0
-                count = 0
-                for jdx in aux.index.unique():
-                    vl = aux.loc[jdx]['value'].max()
-                    if vl == pvl:
-                        count += 1
-                        if count == 3 - 1:
-                            break
-                    else:
-                        count = 0
-                    pvl = vl
-                lst.append(aux.loc[:jdx].reset_index())
-
-            df = pd.concat(lst).reset_index(drop=True)
-
         df = df[['mt', 'of', 'ru', 'it', 'id', 'value', '_type', '_id']]
 
         return df
 
 
-    def loadp(self, convergence):
+    def apply_n_iter_convergence_criterio(self, df, n_iter_convergence_criterio):
+        
+        columns = df.columns.tolist()
+
+        df = df.set_index(['mt', 'of', 'ru'])
         lst = []
-        for file in self.files:
+        for idx in df.index.unique():
+            aux = df.loc[idx]
+            aux = aux.reset_index().set_index(['it'])
+            pvl = vl = 0
+            count = 0
+            for jdx in aux.index.unique():
+                vl = aux.loc[jdx]['value'].max()
+                if vl == pvl:
+                    count += 1
+                    if count == 3 - 1:
+                        break
+                else:
+                    count = 0
+                pvl = vl
+            lst.append(aux.loc[:jdx].reset_index())
 
-            print('Loading: {}'.format(file))
+        df = pd.concat(lst).reset_index(drop=True)
 
-            df = pd.read_csv(file, sep=";")
-            if df.shape[1] == 1:
-                df = pd.read_csv(file, sep=",")
+        return df[columns]
 
-            sucess, df = self._try_add_probabilities(df, file.parent / 'zall_samples.csv')
 
-            if sucess:
-                df = df.iloc[1:, [0, 1, 3, -2, -1]]
-            else:
-                df = df.iloc[1:, [0, 1, 3]]
+    def fix_shape(self, reference, destiny):
+        ref = reference.copy()
+        des = destiny.copy()
 
-            df['of'] = df.columns[2][7:-1]
-            df['_type'] = df.columns[2][3:6]
-            df = df.rename(columns={  'iteracao': 'it'
-                                    , df.columns[2]: 'value'
-                                    , 'id': '_id'
-                                    , 'probs': 'prob'
-                                   })
-            df['id'] = df.index
-            df['mt'] = file.parent.name[:-2]
-            df['ru'] = file.parent.name[-1]
+        columns = des.columns.tolist()
 
-            if sucess:
-                df = df[['mt', 'of', 'ru', 'it', 'id', 'value', 'prob', 'class', '_type', '_id']]
-            else:
-                df = df[['mt', 'of', 'ru', 'it', 'id', 'value', '_type', '_id']]
+        ref = ref.set_index(['mt', 'of'])
+        des = des.set_index(['mt', 'of'])
+        lst = []
+        for idx in ref.index.unique():
+            rux = ref.loc[idx]
+            pt = rux.pivot_table(index=['mt', 'of', 'ru'], columns='it', values='value')
+            mit = pt.T.dropna().index.max()
 
-            lst.append(df)
+            dux = des.loc[idx]
+            msk = dux['it'] <= mit
+            lst.append(dux[msk].reset_index())
 
-        df = pd.concat(lst)
-        df = df.fillna(1)
-        df = df.replace([np.inf, -np.inf], np.nan)
-        df = df.dropna(how='any')
-        df = df.reset_index()
-
-        if convergence:
-            df = df.set_index(['mt', 'of', 'ru'])
-            lst = []
-            for idx in df.index.unique():
-                aux = df.loc[idx]
-                aux = aux.reset_index().set_index(['it'])
-                pvl = vl = 0
-                count = 0
-                for jdx in aux.index.unique():
-                    vl = aux.loc[jdx]['value'].max()
-                    if vl == pvl:
-                        count += 1
-                        if count == 3 - 1:
-                            break
-                    else:
-                        count = 0
-                    pvl = vl
-                lst.append(aux.loc[:jdx].reset_index())
-
-            df = pd.concat(lst).reset_index(drop=True)
-
-        try:
-            df = df[['mt', 'of', 'ru', 'it', 'id', 'value', 'prob', 'class', '_type', '_id']]
-        except KeyError:
-            df = df[['mt', 'of', 'ru', 'it', 'id', 'value', '_type', '_id']]
+        df = pd.concat(lst)[columns]
 
         return df
 
 
-    def _try_add_probabilities(self, df, file):
-        try:
-            dff = pd.read_csv(file, sep=";")
-            if dff.shape[1] == 1:
-                dff = pd.read_csv(file, sep=",")
-            
-            df = df[(df['iteracao'] == 0) | (df['iteracao'] == 1)]
-
-            df = pd.concat([df, dff], ignore_index=True)
-
-            return  True, df
-
-        except FileNotFoundError:
-            return False, df
-
-   
-    def mean_compact(self):
-        pt = pd.pivot_table(self.df
+    def mean_compact(self, df):
+        pt = pd.pivot_table(df
                            , index=['mt', 'of', 'ru', 'it']
                            , values=['value']
                            , aggfunc=['count', 'max']
@@ -193,91 +154,15 @@ class TardisDataManager:
         pt = pt.rename(columns={'count':'n_sample', 'max':'value'})
 
         pt = pt.reset_index()
-        
-        #pt.columns.name = 'value'
 
-        # ### Teste
-        pt = pt.set_index(['mt', 'of'])
-        lst = []
-        for idx in pt.index.unique():
-            aux = pt.loc[idx].reset_index()
-            #ptt = aux.pivot(index=['mt', 'of', 'ru'], columns=['it'], values=['n_sample', 'value']).T.fillna(method='ffill').T
-            ptt = aux.pivot(index=['mt', 'of', 'ru'], columns=['it'], values=['n_sample', 'value']).T.dropna().T
-            lst.append(ptt.stack().reset_index())
-        
-        pt = pd.concat(lst)
-        ###
-        
+
         gb = pt.groupby(['mt', 'of', 'it']).mean().astype('int').reset_index()
         gb = gb.reset_index()
 
-        #yb = pt.groupby(['mt', 'of', 'it']).sum() / pt['ru'].astype('int').max()
-        #yb = yb.astype('int')
-        #yb = yb.reset_index()
-        #gb['n_sample'] = yb['n_sample']
-
-        # ### Applying convergence criterion ###
-        #gb = gb.set_index(['mt', 'of'])
-        #lst = []
-        #for idx in gb.index.unique():
-        #    aux = gb.loc[idx]
-        #    aux = aux.reset_index().set_index('it')
-        #    pvl = vl = 0
-        #    count = 0
-        #    for jdx in aux.index.unique():
-        #        vl = aux.loc[jdx]['value']
-        #        if vl == pvl:
-        #            count += 1
-        #            if count == 3 - 1:
-        #                break
-        #        else:
-        #            count = 0
-        #        pvl = vl
-        #    lst.append(aux.loc[:jdx].reset_index()[['mt', 'of', 'it', 'n_sample', 'value']])
-        #
-        #gb = pd.concat(lst).reset_index(drop=True)
-        ###
-
-        Gb = pt.groupby(['mt', 'it']).mean().astype('int').reset_index()
-
-        Gb['of'] = ', '.join((gb['of'].unique().tolist()))
-
-        Gb = Gb[['mt', 'of', 'it', 'n_sample', 'value']]
-
-        # ### Applying convergence criterion ###
-        #Gb = Gb.set_index(['mt', 'of'])
-        #lst = []
-        #for idx in Gb.index.unique():
-        #    aux = Gb.loc[idx]
-        #    aux = aux.reset_index().set_index('it')
-        #    pvl = vl = 0
-        #    count = 0
-        #    for jdx in aux.index.unique():
-        #        vl = aux.loc[jdx]['value']
-        #        if vl == pvl:
-        #            count += 1
-        #            if count == 3 - 1:
-        #                break
-        #        else:
-        #            count = 0
-        #        pvl = vl
-        #    lst.append(aux.loc[:jdx].reset_index()[['mt', 'of', 'it', 'n_sample', 'value']])
-        #Gb = pd.concat(lst).reset_index(drop=True)
-        ###
+        return gb
 
 
-        return gb, Gb
-
-
-    def mean_expand(self):
-        mean, Mean = self.mean_compact()
-        mean = self._mean_expand(mean)
-        Mean = self._mean_expand(Mean)
-
-        return mean, Mean
-
-
-    def _mean_expand(self, mc):
+    def mean_expand(self, mc):
         lst = []
         mc = mc.set_index(['mt', 'of'])
         for index in mc.index.unique():
@@ -328,3 +213,70 @@ class TardisDataManager:
         self.mex.to_csv(path / 'mean_expand.csv', index=False)
 
         self.Mex.to_csv(path / 'Mean_expand.csv', index=False)
+
+
+    def pload(self):
+        lst = []
+        for file in self.files:
+
+            print('Loading: {}'.format(file))
+
+            df = pd.read_csv(file, sep=";")
+            if df.shape[1] == 1:
+                df = pd.read_csv(file, sep=",")
+
+            sucess, df = self._try_add_probabilities(df, file.parent / 'zall_samples.csv')
+
+            if sucess:
+                df = df.iloc[1:, [0, 1, 3, -2, -1]]
+            else:
+                df = df.iloc[1:, [0, 1, 3]]
+
+            df['of'] = df.columns[2][7:-1]
+            df['_type'] = df.columns[2][3:6]
+            df = df.rename(columns={  'iteracao': 'it'
+                                    , df.columns[2]: 'value'
+                                    , 'id': '_id'
+                                    , 'probs': 'prob'
+                                   })
+            df['id'] = df.index
+            df['mt'] = file.parent.name[:-2]
+            df['ru'] = file.parent.name[-1]
+
+            if sucess:
+                df = df[['mt', 'of', 'ru', 'it', 'id', 'value', 'prob', 'class', '_type', '_id']]
+            else:
+                df = df[['mt', 'of', 'ru', 'it', 'id', 'value', '_type', '_id']]
+
+            lst.append(df)
+
+        df = pd.concat(lst)
+        df = df.fillna(1)
+        df = df.replace([np.inf, -np.inf], np.nan)
+        df = df.dropna(how='any')
+        df = df.reset_index()
+
+        try:
+            df = df[['mt', 'of', 'ru', 'it', 'id', 'value', 'prob', 'class', '_type', '_id']]
+        except KeyError:
+            df = df[['mt', 'of', 'ru', 'it', 'id', 'value', '_type', '_id']]
+
+        return df
+
+
+    def _try_add_probabilities(self, df, file):
+        try:
+            dff = pd.read_csv(file, sep=";")
+            if dff.shape[1] == 1:
+                dff = pd.read_csv(file, sep=",")
+            
+            df = df[(df['iteracao'] == 0) | (df['iteracao'] == 1)]
+
+            df = pd.concat([df, dff], ignore_index=True)
+
+            return  True, df
+
+        except FileNotFoundError:
+            return False, df
+
+

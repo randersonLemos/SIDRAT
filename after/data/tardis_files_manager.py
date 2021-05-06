@@ -36,6 +36,7 @@ class TardisFilesManager:
             for file in dir.iterdir():
                 if re.search(r_expression, str(file)):
                     lst.append(file)
+
         return sorted(lst)
 
 
@@ -43,6 +44,8 @@ class TardisFilesManager:
         for file in self.files():
             if re.search(r_expression, str(file)):
                 file.unlink()
+
+        return self
 
 
     def __repr__(self):
@@ -62,5 +65,3 @@ class TardisFilesManager:
         stg += dirs[-2] + '\n'
         stg += dirs[-1] + '\n'
         return stg
-
-
