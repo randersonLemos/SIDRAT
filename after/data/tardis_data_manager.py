@@ -7,25 +7,26 @@ import pandas as pd
 class TardisDataManager:
     def __init__(self, files, add_probs=False, n_iter_convergence_criterio=0, fix_shape=True):
         self.files = files
+        self.add_probs = add_probs
 
 
         self.ori = self.load()
-        if add_probs:
+        if self.add_probs:
             self.pori = self.pload()
 
 
         if n_iter_convergence_criterio:
             self.cov = self.apply_n_iter_convergence_criterio(self.ori, n_iter_convergence_criterio)
-            if add_probs:
+            if self.add_probs:
                 self.pcov = self.apply_n_iter_convergence_criterio(self.pori, n_iter_convergence_criterio)
         else:
             self.cov = self.ori
-            if add_probs:
+            if self.add_probs:
                 self.pcov = self.cov
 
 
         if fix_shape:
-            if add_probs:
+            if self.add_probs:
                 self.ori = self.fix_shape(self.pori, self.ori)
                 self.cov = self.fix_shape(self.pcov, self.cov)
 
@@ -42,17 +43,17 @@ class TardisDataManager:
         self.mxc = self.mean_expand(self.mcc)
 
 
-        self.ori.to_csv('/media/beldroega/DATA/SHARED/ori.csv')
-        self.cov.to_csv('/media/beldroega/DATA/SHARED/cov.csv')
-        self.mco.to_csv('/media/beldroega/DATA/SHARED/mco.csv')
-        self.mcc.to_csv('/media/beldroega/DATA/SHARED/mcc.csv')
-        self.mxo.to_csv('/media/beldroega/DATA/SHARED/mxo.csv')
-        self.mxc.to_csv('/media/beldroega/DATA/SHARED/mxc.csv')
-
+        self.dic = {}
+        self.dic['ori'] = self.ori
+        self.dic['cov'] = self.cov
+        self.dic['mco'] = self.mco
+        self.dic['mcc'] = self.mcc
+        self.dic['mxo'] = self.mxo
+        self.dic['mxc'] = self.mxc
 
         if add_probs:
-            self.pori.to_csv('/media/beldroega/DATA/SHARED/pori.csv')
-            self.pcov.to_csv('/media/beldroega/DATA/SHARED/pcov.csv')
+            self.dic['pori'] = self.pori
+            self.dic['pcov'] = self.pcov
 
 
     def load(self):
@@ -75,9 +76,9 @@ class TardisDataManager:
                                     , 'probs': 'prob'
                                    })
             df['id'] = df.index
-            df['mt'] = file.parent.name[:-2]
-            df['ru'] = file.parent.name[-1]
-
+            df['mt'] = file.parent.name[:-3]
+            df['ru'] = file.parent.name[-2:]
+            
             lst.append(df)
 
         df = pd.concat(lst)
@@ -91,7 +92,6 @@ class TardisDataManager:
 
 
     def apply_n_iter_convergence_criterio(self, df, n_iter_convergence_criterio):
-        
         columns = df.columns.tolist()
 
         df = df.set_index(['mt', 'of', 'ru'])
@@ -198,23 +198,6 @@ class TardisDataManager:
         return df.reset_index()
 
 
-    def save(self, path):
-        path = pathlib.Path(path)
-        path.mkdir(exist_ok=True)
-
-        self.df.to_csv(path / 'all_data.csv', index=False)
-
-        self.dfp.to_csv(path / 'zall_data.csv', index=False)
-
-        self.mco.to_csv(path / 'mean_compact.csv', index=False)
-
-        self.Mco.to_csv(path / 'Mean_compact.csv', index=False)
-
-        self.mex.to_csv(path / 'mean_expand.csv', index=False)
-
-        self.Mex.to_csv(path / 'Mean_expand.csv', index=False)
-
-
     def pload(self):
         lst = []
         for file in self.files:
@@ -239,10 +222,11 @@ class TardisDataManager:
                                     , 'id': '_id'
                                     , 'probs': 'prob'
                                    })
-            df['id'] = df.index
-            df['mt'] = file.parent.name[:-2]
-            df['ru'] = file.parent.name[-1]
 
+            df['id'] = df.index
+            df['mt'] = file.parent.name[:-3]
+            df['ru'] = file.parent.name[-2:]
+ 
             if sucess:
                 df = df[['mt', 'of', 'ru', 'it', 'id', 'value', 'prob', 'class', '_type', '_id']]
             else:
@@ -264,6 +248,24 @@ class TardisDataManager:
         return df
 
 
+    def save(self, path):
+        path = pathlib.Path(path)
+        path.mkdir(exist_ok=True)
+
+
+        self.ori.to_csv(path / 'ori.csv')
+        self.cov.to_csv(path / 'cov.csv')
+        self.mco.to_csv(path / 'mco.csv')
+        self.mcc.to_csv(path / 'mcc.csv')
+        self.mxo.to_csv(path / 'mxo.csv')
+        self.mxc.to_csv(path / 'mxc.csv')
+
+
+        if self.add_probs:
+            self.pori.to_csv(path / 'pori.csv')
+            self.pcov.to_csv(path / 'pcov.csv')
+
+
     def _try_add_probabilities(self, df, file):
         try:
             dff = pd.read_csv(file, sep=";")
@@ -278,5 +280,3 @@ class TardisDataManager:
 
         except FileNotFoundError:
             return False, df
-
-

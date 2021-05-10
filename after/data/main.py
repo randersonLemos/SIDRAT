@@ -17,21 +17,19 @@ files = tfm.files('./IDLHC_NSI100_NSP030.*TCC(000|010).*/it_ultima.csv')
 
 tdm = TardisDataManager(files, add_probs=True, n_iter_convergence_criterio=3)
 
-## ### SOME TWEAKING ###
-#dic = {}
-#dic['df']  = tdm.df
-#dic['dfp'] = tdm.dfp
-#dic['mco'] = tdm.mco
-#dic['Mco'] = tdm.Mco
-#dic['mex'] = tdm.mex
-#dic['Mex'] = tdm.Mex
-#
-#for key in dic:
-#    df = dic[key]
-#    dic[key][['nsi', 'nsp', 'nct', 'tcc']] = df['mt'].str.split(r'_\D\D\D', expand=True)[[1, 2, 4, 5]]
-#    dic[key][['nsi_nsp']] = df['nsi'] + ', ' + df['nsp']
-#    dic[key][['nct_tcc']] = df['nct'] + ', ' + df['tcc']
-#    dic[key][['nnnt']] = df['nsi'] + ', ' + df['nsp'] + ', '  + df['nct'] + ', ' + df['tcc']
-#    dic[key]['nnbc'] = np.where(df['nct'] == '000', 'Off', 'On')
-#
-#tdm.save('/media/beldroega/DATA/SHARED/csv')
+
+# ### SOME TWEAKING ###
+for key in tdm.dic:
+    df = tdm.dic[key]
+
+    tdm.dic[key][['nsi', 'nsp', 'nct', 'tcc']] = df['mt'].str.split(r'_\D\D\D', expand=True)[[1, 2, 4, 5]]
+
+    tdm.dic[key][['nsi_nsp']] = df['nsi'] + ', ' + df['nsp']
+
+    tdm.dic[key][['nct_tcc']] = df['nct'] + ', ' + df['tcc']
+
+    tdm.dic[key][['nnnt']] = df['nsi'] + ', ' + df['nsp'] + ', '  + df['nct'] + ', ' + df['tcc']
+
+    tdm.dic[key]['nnbc'] = np.where(df['nct'] == '000', 'Off', 'On')
+
+tdm.save('/media/beldroega/DATA/SHARED/csv')
