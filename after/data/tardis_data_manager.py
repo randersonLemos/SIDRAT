@@ -5,8 +5,8 @@ import pandas as pd
 
 
 class TardisDataManager:
-    def __init__(self, files, add_probs=False, n_iter_convergence_criterio=0, fix_shape=True):
-        self.files = files
+    def __init__(self, filepaths, add_probs=False, n_iter_convergence_criterio=0, fix_shape=True):
+        self.filepaths = filepaths
         self.add_probs = add_probs
 
 
@@ -58,13 +58,13 @@ class TardisDataManager:
 
     def load(self):
         lst = []
-        for file in self.files:
+        for filepath in self.filepaths:
 
-            print('Loading: {}'.format(file))
+            print('Loading: {}'.format(filepath))
 
-            df = pd.read_csv(file, sep=';')
+            df = pd.read_csv(filepath, sep=';')
             if df.shape[1] == 1:
-                df = pd.read_csv(file, sep=',')
+                df = pd.read_csv(filepath, sep=',')
 
             df = df.iloc[1:, [0, 1, 3]]
 
@@ -76,8 +76,8 @@ class TardisDataManager:
                                     , 'probs': 'prob'
                                    })
             df['id'] = df.index
-            df['mt'] = file.parent.name[:-3]
-            df['ru'] = file.parent.name[-2:]
+            df['mt'] = filepath.parent.name[:-3]
+            df['ru'] = filepath.parent.name[-2:]
             
             lst.append(df)
 
@@ -200,15 +200,15 @@ class TardisDataManager:
 
     def pload(self):
         lst = []
-        for file in self.files:
+        for filepath in self.filepaths:
 
-            print('Loading: {}'.format(file))
+            print('Loading: {}'.format(filepath))
 
-            df = pd.read_csv(file, sep=";")
+            df = pd.read_csv(filepath, sep=";")
             if df.shape[1] == 1:
-                df = pd.read_csv(file, sep=",")
+                df = pd.read_csv(filepath, sep=",")
 
-            sucess, df = self._try_add_probabilities(df, file.parent / 'zall_samples.csv')
+            sucess, df = self._try_add_probabilities(df, filepath.parent / 'zall_samples.csv')
 
             if sucess:
                 df = df.iloc[1:, [0, 1, 3, -2, -1]]
@@ -224,8 +224,8 @@ class TardisDataManager:
                                    })
 
             df['id'] = df.index
-            df['mt'] = file.parent.name[:-3]
-            df['ru'] = file.parent.name[-2:]
+            df['mt'] = filepath.parent.name[:-3]
+            df['ru'] = filepath.parent.name[-2:]
  
             if sucess:
                 df = df[['mt', 'of', 'ru', 'it', 'id', 'value', 'prob', 'class', '_type', '_id']]
@@ -253,24 +253,24 @@ class TardisDataManager:
         path.mkdir(exist_ok=True)
 
 
-        self.ori.to_csv(path / 'ori.csv')
-        self.cov.to_csv(path / 'cov.csv')
-        self.mco.to_csv(path / 'mco.csv')
-        self.mcc.to_csv(path / 'mcc.csv')
-        self.mxo.to_csv(path / 'mxo.csv')
-        self.mxc.to_csv(path / 'mxc.csv')
+        self.ori.to_csv(path / 'ori.csv', index=False)
+        self.cov.to_csv(path / 'cov.csv', index=False)
+        self.mco.to_csv(path / 'mco.csv', index=False)
+        self.mcc.to_csv(path / 'mcc.csv', index=False)
+        self.mxo.to_csv(path / 'mxo.csv', index=False)
+        self.mxc.to_csv(path / 'mxc.csv', index=False)
 
 
         if self.add_probs:
-            self.pori.to_csv(path / 'pori.csv')
-            self.pcov.to_csv(path / 'pcov.csv')
+            self.pori.to_csv(path / 'pori.csv', index=False)
+            self.pcov.to_csv(path / 'pcov.csv', index=False)
 
 
-    def _try_add_probabilities(self, df, file):
+    def _try_add_probabilities(self, df, filepath):
         try:
-            dff = pd.read_csv(file, sep=";")
+            dff = pd.read_csv(filepath, sep=";")
             if dff.shape[1] == 1:
-                dff = pd.read_csv(file, sep=",")
+                dff = pd.read_csv(filepath, sep=",")
             
             df = df[(df['iteracao'] == 0) | (df['iteracao'] == 1)]
 

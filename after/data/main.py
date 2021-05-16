@@ -6,17 +6,18 @@ import shutil
 
 lst = []
 
-lst.append('DONE/RES_SPH_REF')
-lst.append('DONE/RES_SPH')
+#lst.append('DONE/RES_SPH_REF')
+#lst.append('DONE/RES_SPH')
+lst.append('TESTE')
 
 tfm = TardisFilesManager(lst, '/media/beldroega/DATA/SIDRAT/tardis')
 tfm = tfm.clean(r'it_(\d+)')
 
-#files = tfm.files('.*/it_ultima.csv')
-files = tfm.files('./IDLHC_NSI100_NSP030.*TCC(000|010).*/it_ultima.csv')
+files = tfm.files('.*/it_ultima.csv')
+#files = tfm.files('./IDLHC_NSI100_NSP020.*TCC(000|010).*/it_ultima.csv')
+#files = tfm.files('./IDLHC_NSI100_NSP020.*TCC(000|010|020|030|040|050).*/it_ultima.csv')
 
 tdm = TardisDataManager(files, add_probs=True, n_iter_convergence_criterio=3)
-
 
 # ### SOME TWEAKING ###
 for key in tdm.dic:
@@ -32,4 +33,10 @@ for key in tdm.dic:
 
     tdm.dic[key]['nnbc'] = np.where(df['nct'] == '000', 'Off', 'On')
 
-tdm.save('/media/beldroega/DATA/SHARED/csv')
+dirr = '/media/beldroega/DATA/SHARED/csv'
+tdm.save(dirr)
+
+from nnbc_data_manager import NnbcDataManager
+
+
+ndm = NnbcDataManager(dirr + '/pcov.csv')

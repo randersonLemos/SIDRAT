@@ -1,5 +1,5 @@
 import copy
-import loader
+import header
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -7,38 +7,42 @@ import matplotlib.pyplot as plt
 plt.close()
 
 
-colsObj = loader.colsObj
-mean_expand = loader.mean_expand
+cOb = header.cOb
+mean_expand = header.dfH.mxo
 
+mean_expand = cOb.rename(mean_expand, 'nsi_nsp', 'NSI, NSP')
+mean_expand = cOb.rename(mean_expand, 'nct_tcc', 'NCT, TCC')
 
-pv = pd.pivot_table(mean_expand
-                    , index=[colsObj.mt
-                             , colsObj.of
-                             , colsObj.nsi
-                             , colsObj.nsp
-                             , colsObj.nct
-                             , colsObj.tcc
-                             , colsObj.nsi_nsp
-                             , colsObj.nct_tcc
-                             , colsObj.nnnt
-                             , colsObj.nnbc
+pv = pd.pivot_table(  mean_expand
+                    , index=[  cOb.mt
+                             , cOb.of
+                             , cOb.nsi
+                             , cOb.nsp
+                             , cOb.nct
+                             , cOb.tcc
+                             , cOb.nsi_nsp
+                             , cOb.nct_tcc
+                             , cOb.nnnt
+                             , cOb.nnbc
                             ]
-                    , values=[colsObj.id, colsObj.value]
-                    , aggfunc={colsObj.id : max, colsObj.value : max}
-                   )
+                    , values=[cOb.id, cOb.value]
+                    , aggfunc={cOb.id : max, cOb.value : max}
+                   ).reset_index()
 
-pv = pv.reset_index()
 
 from configplot import ConfigPlot
 from scatterplot import ScatterPlot
 
+
 cp = ConfigPlot()
-cp.set_hue(colsObj.nsi_nsp)
-cp.set_sty(colsObj.nct_tcc)
-cp.set_s(300)
-cp.set_linewidth(2)
+cp.set_hue(cOb.nsi_nsp)
+cp.set_style(cOb.nct_tcc)
+cp.set_s(200)
+cp.set_linewidth(1)
 cp.set_alpha(0.70)
-cp.set_palette({
+
+cp.set_palette(
+    {
       '050, 010': 'aqua'
     , '050, 020': 'royalblue'
     , '050, 030': 'midnightblue'
@@ -51,7 +55,8 @@ cp.set_palette({
     }
 )
 
-cp.set_markers({
+cp.set_markers(
+    {
       '000, 000': 'o'
     , '010, 010': 's'
     , '010, 030': '^'
@@ -65,7 +70,8 @@ cp.set_markers({
     }
 )
 
-cp.set_sty_order([
+cp.set_sty_order(
+    [
       '000, 000'
 #    , '030, 010'
 #    , '030, 030'
@@ -80,27 +86,28 @@ cp.set_sty_order([
 )
 
 tlt  = ''
-tlt  += 'Sphere function optimization using IDLHC with NNBC in different settings\n'
-tlt  += 'Aver. final number of runs versus aver. max. obj. fun. values (5 trials)\n'
-tlt  += 'Stop criterion of 30 iterations' 
+tlt  += 'Optimization experiments of the Sphere function using IDLHC with NNBC\n'
+tlt  += 'Stop criterion of a max. of 30 iterations\n'
+tlt  += 'Experiments repeated 5 times\n'
 
-xlb = 'Final number of runs'
-ylb = 'Max obj. fun. values'
+xlb = 'Avg. final number of runs'
+ylb = 'Avg. max. obj. fun. values'
 
 cp.set_title(tlt)
 cp.set_xlabel(xlb)
 cp.set_ylabel(ylb)
 
 aux = copy.deepcopy(pv)
-aux = aux.sort_values(by=colsObj.nnnt, ascending=False)
+aux = aux.sort_values(by=cOb.nnnt, ascending=False)
 
-cp.set_ymin(mean_expand[colsObj.value].min()).set_ymax(mean_expand[colsObj.value].max())
-cp.set_xmin(1).set_xmax(aux[colsObj.id].max())
+cp.set_ymin(mean_expand[cOb.value].min()).set_ymax(mean_expand[cOb.value].max())
+cp.set_xmin(1).set_xmax(aux[cOb.id].max())
 
-sp = ScatterPlot(data=aux[aux[colsObj.nnbc] == 'Off'], x=colsObj.id, y=colsObj.value)
+sp = ScatterPlot(data=aux[aux[cOb.nnbc] == 'Off'], x=cOb.id, y=cOb.value)
 sp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_scatterplot_0.png")
 
-cp.set_sty_order([
+cp.set_sty_order(
+    [
       '000, 000'
     , '030, 010'
     , '030, 030'
@@ -114,45 +121,45 @@ cp.set_sty_order([
     ]
 )
 
-sp = ScatterPlot(data=aux, x=colsObj.id, y=colsObj.value)
+sp = ScatterPlot(data=aux, x=cOb.id, y=cOb.value)
 sp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_scatterplot_1.png")
 
-msk =     (aux[colsObj.nsi_nsp] == "100, 020") \
-        | (aux[colsObj.nsi_nsp] == "100, 030") \
-        | (aux[colsObj.nsi_nsp] == "050, 010") \
-        | (aux[colsObj.nsi_nsp] == "050, 020")
-aux = aux[msk]
-
-#vl = aux[aux[colsObj.nnnt] == '050, 010, 000, 000'][colsObj.value]
-#msk = aux[colsObj.value] >= int(vl)
+#msk =     (aux[colsObj.nsi_nsp] == "100, 020") \
+#        | (aux[colsObj.nsi_nsp] == "100, 030") \
+#        | (aux[colsObj.nsi_nsp] == "050, 010") \
+#        | (aux[colsObj.nsi_nsp] == "050, 020")
 #aux = aux[msk]
-
-cp.set_xmin(1).set_xmax(aux[colsObj.id].max())
-
-sp = ScatterPlot(data=aux, x=colsObj.id, y=colsObj.value)
-sp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_scatterplot_2.png")
-
-cp.set_sty_order([
-      '000, 000'
-    , '030, 010'
-#    , '030, 030'
-#    , '030, 050'
-    , '020, 010'
-#    , '020, 030'
-#    , '020, 050'
-    , '010, 010'
-#    , '010, 030'
-#    , '010, 050'
-    ]
-)
-
-msk =     (aux[colsObj.nct_tcc] != "010, 050") \
-        & (aux[colsObj.nct_tcc] != "020, 050") \
-        & (aux[colsObj.nct_tcc] != "030, 050") \
-        & (aux[colsObj.nct_tcc] != "010, 030") \
-        & (aux[colsObj.nct_tcc] != "020, 030") \
-        & (aux[colsObj.nct_tcc] != "030, 030")
-aux = aux[msk]
-
-sp = ScatterPlot(data=aux, x=colsObj.id, y=colsObj.value)
-sp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_scatterplot_3.png")
+#
+##vl = aux[aux[colsObj.nnnt] == '050, 010, 000, 000'][colsObj.value]
+##msk = aux[colsObj.value] >= int(vl)
+##aux = aux[msk]
+#
+#cp.set_xmin(1).set_xmax(aux[colsObj.id].max())
+#
+#sp = ScatterPlot(data=aux, x=colsObj.id, y=colsObj.value)
+#sp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_scatterplot_2.png")
+#
+#cp.set_sty_order([
+#      '000, 000'
+#    , '030, 010'
+##    , '030, 030'
+##    , '030, 050'
+#    , '020, 010'
+##    , '020, 030'
+##    , '020, 050'
+#    , '010, 010'
+##    , '010, 030'
+##    , '010, 050'
+#    ]
+#)
+#
+#msk =     (aux[colsObj.nct_tcc] != "010, 050") \
+#        & (aux[colsObj.nct_tcc] != "020, 050") \
+#        & (aux[colsObj.nct_tcc] != "030, 050") \
+#        & (aux[colsObj.nct_tcc] != "010, 030") \
+#        & (aux[colsObj.nct_tcc] != "020, 030") \
+#        & (aux[colsObj.nct_tcc] != "030, 030")
+#aux = aux[msk]
+#
+#sp = ScatterPlot(data=aux, x=colsObj.id, y=colsObj.value)
+#sp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_scatterplot_3.png")

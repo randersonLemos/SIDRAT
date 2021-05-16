@@ -1,9 +1,12 @@
+import copy
+
+
 class ConfigPlot:
     def __init__(self):
         self.hue   = None
-        self.sty   = None
-        self.siz   = None
-        self.sizs  = None
+        self.style   = None
+        self.size   = None
+        self.sizes  = None
         self.s     = 250
         self.alpha = 0.7
         self.linewidth = 2.0
@@ -31,18 +34,18 @@ class ConfigPlot:
         return self
 
 
-    def set_sty(self, col_name):
-        self.sty = col_name
+    def set_style(self, col_name):
+        self.style = col_name
         return self
 
 
-    def set_siz(self, col_name):
-        self.siz = col_name
+    def set_size(self, col_name):
+        self.size = col_name
         return self
 
 
-    def set_sizs(self, tup):
-        self.sizs = tup
+    def set_sizes(self, tup):
+        self.sizes = tup
         return self
 
 
@@ -123,5 +126,3 @@ class ConfigPlot:
 
     def copy(self):
         return copy.deepcopy(self)
-
-

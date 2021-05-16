@@ -38,7 +38,7 @@ class LinePlot:
         axy = ax.twinx()
         axx = ax.twiny()
 
-        ax.spines["left"].set_position(  ("axes", -0.100))
+        ax.spines["left"].set_position(  ("axes", -0.105))
         ax.spines["bottom"].set_position(("axes", -0.095))
 
         axx.xaxis.set_label_position('bottom')
@@ -46,7 +46,7 @@ class LinePlot:
         axx.spines["bottom"].set_position(("axes", 0.0))
         make_patch_spines_invisible(axx)
         axx.spines["bottom"].set_visible(True)
- 
+
         axy.yaxis.set_label_position('left')
         axy.yaxis.set_ticks_position('left')
         axy.spines["left"].set_position(("axes", 0.0))
@@ -55,19 +55,24 @@ class LinePlot:
 
         ax.grid(True)
 
-        set_position = [0.20, 0.15, 0.625, 0.70]
+        set_position = [0.180, 0.15, 0.650, 0.725]
         ax.set_position( set_position)  # set a new position
         axy.set_position(set_position)  # set a new position
         axx.set_position(set_position)  # set a new position
+
+        # ### ### ###
+        tick_params_labelsize = 14
+        legend_fontsize = 14
+        label_fontsize = 18
 
         # ### ### ###
         data = copy.deepcopy(self.data)
         x = self.x
         y = self.y
         hue = cp_obj.hue
-        sty = cp_obj.sty
-        siz = cp_obj.siz
-        sizs = cp_obj.sizs
+        style = cp_obj.style
+        size = cp_obj.size
+        sizes = cp_obj.sizes
         alpha = cp_obj.alpha
         style_order = cp_obj.sty_order
         markers = cp_obj.markers
@@ -83,9 +88,9 @@ class LinePlot:
                      , x=x
                      , y=y
                      , hue=hue
-                     , style=sty
-                     , size=siz
-                     , sizes=sizs
+                     , style=style
+                     , size=size
+                     , sizes=sizes
                      , alpha=alpha
                      , style_order=style_order
                      , markers=markers
@@ -116,19 +121,26 @@ class LinePlot:
         ax.xaxis.set_major_formatter(StrMethodFormatter("{x:.0f}"))
         ax.yaxis.set_major_formatter(StrMethodFormatter("{x:.0f}"))
 
-        ax.tick_params(axis='both', labelsize=14)
+        ax.tick_params(  axis='both'
+                       , labelsize=tick_params_labelsize
+                      )
 
         #ax.set_title(tlt, fontsize=17, pad=15.0, ha='left', loc='left', bbox_trnasform=fig.transFigure)
-        fig.suptitle(title, fontsize=20, x=0.05, ha='left')
+        fig.suptitle(title, fontsize=20, x=0.005, y=0.995, ha='left')
 
-        ax.set_xlabel(xlabel, fontsize=16)
-        ax.set_ylabel(ylabel, fontsize=16)
+        ax.set_xlabel(  xlabel
+                      , fontsize=label_fontsize
+                     )
+
+        ax.set_ylabel(  ylabel
+                      , fontsize=label_fontsize
+                     )
 
         ax.legend(loc='center left'
                   , ncol=1
                   , frameon=False
                   , bbox_to_anchor=(1.00, 0.50)
-                  , fontsize=12
+                  , fontsize=legend_fontsize
                   , markerscale=1.5
                  )
 
@@ -151,9 +163,9 @@ class LinePlot:
                      , x=x
                      , y=y
                      , hue=hue
-                     , style=sty
-                     , size=siz
-                     , sizes=sizs
+                     , style=style
+                     , size=size
+                     , sizes=sizes
                      , alpha=alpha
                      , style_order=style_order
                      , markers=markers
@@ -179,6 +191,11 @@ class LinePlot:
 
         axx.set_xlabel('')
 
+        axx.tick_params(  axis='both'
+                         , labelsize=tick_params_labelsize
+                         )
+
+
         # ### ### ###
         data = copy.deepcopy(self.data)
 
@@ -196,9 +213,9 @@ class LinePlot:
                      , x=x
                      , y=y
                      , hue=hue
-                     , style=sty
-                     , size=siz
-                     , sizes=sizs
+                     , style=style
+                     , size=size
+                     , sizes=sizes
                      , alpha=alpha
                      , style_order=style_order
                      , markers=markers
@@ -211,7 +228,7 @@ class LinePlot:
                      , legend=False
                      , ax=axy
                      )
- 
+
         ylen = data[y].max() - data[y].min()
         ypad = ylen * 0.05
         ylim_min = data[y].min() - ypad
@@ -223,6 +240,10 @@ class LinePlot:
         axy.yaxis.set_major_formatter(StrMethodFormatter("{x:.2f}"))
 
         axy.set_ylabel('')
+
+        axy.tick_params(  axis='both'
+                        , labelsize=tick_params_labelsize
+                        )
 
         return self
 
