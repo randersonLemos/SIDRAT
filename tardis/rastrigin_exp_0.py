@@ -81,11 +81,11 @@ def configure_context(context, context_variables):
     return context
 
 
-IDLHC_NUMBER_SAMPLES_ITERATION = [50, 100, 150]
-IDLHC_NUMBER_SAMPLES_PDF = [10, 20, 30]
+IDLHC_NUMBER_SAMPLES_ITERATION = [100]
+IDLHC_NUMBER_SAMPLES_PDF = [20]
 FOFE_NNBC_NUM_CLASS1 = [0]
 FOFE_NNBC_NUM_THRESHOLD = [0]
-TIMES = [1, 2, 3, 4, 5]
+TIMES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 
 import os
@@ -101,7 +101,7 @@ for a, b, c, d, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
 
     cv = Context_Variables()
 
-    dirr = 'RES_RST_REF/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_TCC{:03d}_{:02d}'.format(a, b, c, int(100 * d), e)
+    dirr = '_RES_RST_REF/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_TCC{:03d}_{:02d}'.format(a, b, c, int(100 * d), e)
 
     if os.path.isdir(dirr):
         print('Experiment {} alread done'.format(dirr))

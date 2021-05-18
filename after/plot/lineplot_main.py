@@ -14,15 +14,14 @@ mean_expand = cOb.rename(mean_expand, 'nsi_nsp', 'NSI, NSP')
 mean_expand = cOb.rename(mean_expand, 'nct_tcc', 'NCT, TCC')
 
 from configplot import ConfigPlot
-from lineplot import LinePlot
-from scatterplot import ScatterPlot
+from lineplot_classes import LinePlotHandle
 
 cp = ConfigPlot()
 cp.set_hue(cOb.nsi_nsp)
 cp.set_style(cOb.nct_tcc)
 cp.set_linewidth(1)
 cp.set_alpha(0.80)
-cp.set_markersize(15)
+cp.set_markersize(10)
 
 cp.set_palette(
    {
@@ -42,14 +41,14 @@ cp.set_markers(
     {
       '000, 000': 'o'
     , '010, 010': 's'
-    , '010, 030': '^'
-    , '010, 050': 'v'
+    , '010, 020': '^'
+    , '010, 030': 'v'
     , '020, 010': 'P'
-    , '020, 030': '*'
-    , '020, 050': 'X'
+    , '020, 020': '*'
+    , '020, 030': 'X'
     , '030, 010': '>'
-    , '030, 030': '<'
-    , '030, 050': 'D'
+    , '030, 020': '<'
+    , '030, 030': 'D'
     }
 )
 
@@ -71,7 +70,7 @@ cp.set_sty_order(
 tlt  = ''
 tlt  += 'Optimization experiments of the Sphere function using IDLHC with NNBC\n'
 tlt  += 'Stop criterion of a max. of 30 iterations\n'
-tlt  += 'Experiments repeated 5 times\n'
+tlt  += 'Experiments repeated 10 times\n'
 
 xlb = 'Avg. Number of runs'
 ylb = 'Avg. obj. fun. values'
@@ -86,25 +85,25 @@ aux = aux.sort_values(by=cOb.nnnt, ascending=False)
 cp.set_ymin(aux[cOb.value].min()).set_ymax(aux[cOb.value].max())
 cp.set_xmin(1).set_xmax(aux[cOb.id].max())
 
-lp = LinePlot(aux[aux[cOb.nnbc] == 'Off'], x=cOb.id, y=cOb.value)
+lp = LinePlotHandle(aux[aux[cOb.nnbc] == 'Off'], x=cOb.id, y=cOb.value)
 lp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_lineplot_0.png")
 
 cp.set_sty_order(
     [
       '000, 000'
     , '030, 010'
+    , '030, 020'
     , '030, 030'
-    , '030, 050'
     , '020, 010'
+    , '020, 020'
     , '020, 030'
-    , '020, 050'
     , '010, 010'
+    , '010, 020'
     , '010, 030'
-    , '010, 050'
    ]
 )
 
-lp = LinePlot(aux, x=cOb.id, y=cOb.value)
+lp = LinePlotHandle(aux, x=cOb.id, y=cOb.value)
 lp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_lineplot_1.png")
 
 #msk =     (aux[colsObj.nsi_nsp] == "100, 020") \

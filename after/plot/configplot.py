@@ -12,6 +12,7 @@ class ConfigPlot:
         self.linewidth = 2.0
         self.markersize = 20
 
+        self.hue_order = None
         self.sty_order = None
 
         self.markers = False
@@ -27,6 +28,11 @@ class ConfigPlot:
         self.xmin = None
         self.ymax = None
         self.ymin = None
+
+        self.figsize = None
+
+        self.jitter = True
+        self.stack = False
 
 
     def set_hue(self, col_name):
@@ -66,6 +72,11 @@ class ConfigPlot:
 
     def set_markersize(self, vl):
         self.markersize = vl
+        return self
+
+    
+    def set_hue_order(self, lst):
+        self.hue_order = lst
         return self
 
 
@@ -123,6 +134,19 @@ class ConfigPlot:
         self.ymin = vl
         return self
 
+
+    def set_figsize(self, tup):
+        self.figsize = tup
+        return self
+
+
+    def set_jitter(self, vl):
+        self.jitter = vl
+        return self
+
+    def set_stack(self, boolean):
+        self.stack = boolean
+        
 
     def copy(self):
         return copy.deepcopy(self)

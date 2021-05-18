@@ -20,7 +20,7 @@ def make_patch_spines_invisible(ax):
         sp.set_visible(False)
 
 
-class LinePlot:
+class LinePlotHandle:
     def __init__(self, data, x, y):
         self.data = data
         self.x = x
@@ -38,7 +38,7 @@ class LinePlot:
         axy = ax.twinx()
         axx = ax.twiny()
 
-        ax.spines["left"].set_position(  ("axes", -0.105))
+        ax.spines["left"].set_position(  ("axes", -0.120))
         ax.spines["bottom"].set_position(("axes", -0.095))
 
         axx.xaxis.set_label_position('bottom')
@@ -187,7 +187,7 @@ class LinePlot:
         axx.set_xlim(xlim_min, xlim_max)
 
         axx.set_xticks(np.round(np.linspace(xlim_min + xpad, xlim_max - xpad, 11), 10))
-        axx.xaxis.set_major_formatter(StrMethodFormatter("{x:.2f}"))
+        axx.xaxis.set_major_formatter(StrMethodFormatter("{x:.3f}"))
 
         axx.set_xlabel('')
 
@@ -237,7 +237,7 @@ class LinePlot:
         axy.set_ylim(ylim_min, ylim_max)
 
         axy.set_yticks(np.round(np.linspace(ylim_min + ypad, ylim_max - ypad, 11), 10))
-        axy.yaxis.set_major_formatter(StrMethodFormatter("{x:.2f}"))
+        axy.yaxis.set_major_formatter(StrMethodFormatter("{x:.3f}"))
 
         axy.set_ylabel('')
 

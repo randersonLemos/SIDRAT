@@ -31,7 +31,7 @@ pv = pd.pivot_table(  mean_expand
 
 
 from configplot import ConfigPlot
-from scatterplot import ScatterPlot
+from scatterplot_classes import ScatterPlotHandle
 
 
 cp = ConfigPlot()
@@ -59,14 +59,14 @@ cp.set_markers(
     {
       '000, 000': 'o'
     , '010, 010': 's'
-    , '010, 030': '^'
-    , '010, 050': 'v'
+    , '010, 020': '^'
+    , '010, 030': 'v'
     , '020, 010': 'P'
-    , '020, 030': '*'
-    , '020, 050': 'X'
+    , '020, 020': '*'
+    , '020, 030': 'X'
     , '030, 010': '>'
-    , '030, 030': '<'
-    , '030, 050': 'D'
+    , '030, 020': '<'
+    , '030, 030': 'D'
     }
 )
 
@@ -88,7 +88,7 @@ cp.set_sty_order(
 tlt  = ''
 tlt  += 'Optimization experiments of the Sphere function using IDLHC with NNBC\n'
 tlt  += 'Stop criterion of a max. of 30 iterations\n'
-tlt  += 'Experiments repeated 5 times\n'
+tlt  += 'Experiments repeated 10 times\n'
 
 xlb = 'Avg. final number of runs'
 ylb = 'Avg. max. obj. fun. values'
@@ -103,25 +103,25 @@ aux = aux.sort_values(by=cOb.nnnt, ascending=False)
 cp.set_ymin(mean_expand[cOb.value].min()).set_ymax(mean_expand[cOb.value].max())
 cp.set_xmin(1).set_xmax(aux[cOb.id].max())
 
-sp = ScatterPlot(data=aux[aux[cOb.nnbc] == 'Off'], x=cOb.id, y=cOb.value)
+sp = ScatterPlotHandle(data=aux[aux[cOb.nnbc] == 'Off'], x=cOb.id, y=cOb.value)
 sp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_scatterplot_0.png")
 
 cp.set_sty_order(
     [
       '000, 000'
     , '030, 010'
+    , '030, 020'
     , '030, 030'
-    , '030, 050'
     , '020, 010'
+    , '020, 020'
     , '020, 030'
-    , '020, 050'
     , '010, 010'
+    , '010, 020'
     , '010, 030'
-    , '010, 050'
     ]
 )
 
-sp = ScatterPlot(data=aux, x=cOb.id, y=cOb.value)
+sp = ScatterPlotHandle(data=aux, x=cOb.id, y=cOb.value)
 sp.plot(cp).save("/media/beldroega/DATA/SHARED/png/sphere_scatterplot_1.png")
 
 #msk =     (aux[colsObj.nsi_nsp] == "100, 020") \
