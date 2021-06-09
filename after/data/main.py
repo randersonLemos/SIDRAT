@@ -6,9 +6,14 @@ import shutil
 
 lst = []
 
-#lst.append('DONE/RES_SPH_REF')
-#lst.append('DONE/RES_SPH')
-lst.append('TESTE')
+lst.append('WORK/SPHERE')
+dirr = '/media/beldroega/DATA/SHARED/csv/SPHERE'
+
+#lst.append('WORK/RASTRIGIN')
+#dirr = '/media/beldroega/DATA/SHARED/csv/RASTRIGIN'
+
+#lst.append('WORK/ROSENBROCK')
+#dirr = '/media/beldroega/DATA/SHARED/csv/ROSENBROCK'
 
 tfm = TardisFilesManager(lst, '/media/beldroega/DATA/SIDRAT/tardis')
 tfm = tfm.clean(r'it_(\d+)')
@@ -33,10 +38,4 @@ for key in tdm.dic:
 
     tdm.dic[key]['nnbc'] = np.where(df['nct'] == '000', 'Off', 'On')
 
-dirr = '/media/beldroega/DATA/SHARED/csv'
 tdm.save(dirr)
-
-from nnbc_data_manager import NnbcDataManager
-
-
-ndm = NnbcDataManager(dirr + '/pcov.csv')

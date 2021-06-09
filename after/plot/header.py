@@ -1,3 +1,4 @@
+import pathlib
 import pandas as pd
 
 
@@ -29,15 +30,16 @@ class Columns:
 
 class DataFramesHolder:
     def __init__(self, path):
-        self.ori = pd.read_csv(path + 'ori.csv')
-        self.mco = pd.read_csv(path + 'mco.csv')
-        self.mxo = pd.read_csv(path + 'mxo.csv')
-        self.por = pd.read_csv(path + 'pori.csv')
+        path = pathlib.Path(path)
+        self.ori = pd.read_csv(path / 'ori.csv')
+        self.mco = pd.read_csv(path / 'mco.csv')
+        self.mxo = pd.read_csv(path / 'mxo.csv')
+        self.por = pd.read_csv(path / 'por.csv')
 
-        self.cov = pd.read_csv(path + 'cov.csv')
-        self.mcc = pd.read_csv(path + 'mcc.csv')
-        self.mxc = pd.read_csv(path + 'mxc.csv')
-        self.pco = pd.read_csv(path + 'pcov.csv')
+        self.cov = pd.read_csv(path / 'cov.csv')
+        self.mcc = pd.read_csv(path / 'mcc.csv')
+        self.mxc = pd.read_csv(path / 'mxc.csv')
+        self.pco = pd.read_csv(path / 'pco.csv')
 
 
     def getDataFrameDic(self):
@@ -48,12 +50,14 @@ class DataFramesHolder:
         self.__dict__[key] = df
 
 
-path = '/media/beldroega/DATA/SHARED/csv/'
-dfH = DataFramesHolder(path)
-cOb = Columns()
+def load(dfRootpath):
+    path = dfRootpath
+    dfH = DataFramesHolder(path)
+    cOb = Columns()
 
-dic = dfH.getDataFrameDic()
-for key, df in dic.items():
-    for col in [cOb.nsi, cOb.nsp, cOb.nct, cOb.tcc]:
-        df[col] = df[col].astype('str')
-        dfH.updateDataFrame(key, df)
+    dic = dfH.getDataFrameDic()
+    for key, df in dic.items():
+        for col in [cOb.nsi, cOb.nsp, cOb.nct, cOb.tcc]:
+            df[col] = df[col].astype('str')
+            dfH.updateDataFrame(key, df)
+    return cOb, dfH

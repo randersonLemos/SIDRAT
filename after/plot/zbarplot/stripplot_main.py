@@ -91,7 +91,7 @@ for en, mt in enumerate(por.mt.unique()[1:]):
     aux.confusion = aux.confusion.str.replace('bd', 'TN')
 
     nux = aux.copy()
-    gb = nux.groupby('it')['value']
+    gb = nux.groupby(['ru', 'it'])['value']
     tr = gb.transform(lambda x: (x - x.min()) / (x.max() - x.min()))
     nux.value = tr
 
@@ -112,7 +112,7 @@ for en, mt in enumerate(por.mt.unique()[1:]):
     sph.plot(cp).save("/media/beldroega/DATA/SHARED/png/{}_STRIPPLOT_V2_{}.png".format(of, mt))
 
     # BAR PLOT
-    cpBar.set_title(mt + ' (10 experiments)')
+    cpBar.set_title(mt + ' (Mean values from 10 experiments)')
 
     cpBar.set_palette(
         {
@@ -136,6 +136,9 @@ for en, mt in enumerate(por.mt.unique()[1:]):
     cpBar.set_stack(True)
 
     piv = aux.pivot_table(index='confusion', columns='it', values='value', aggfunc='count').T
+
+    piv = piv / 10
+
     bph = BarPlotHandle(piv, x='it')
     bph.plot(cpBar).save("/media/beldroega/DATA/SHARED/png/{}_BARPLOT_V1_{}.png".format(of, mt))
 
@@ -159,6 +162,25 @@ for en, mt in enumerate(por.mt.unique()[1:]):
     )
     bph = BarPlotHandle(piv, x='it')
     bph.plot(cpBar).save("/media/beldroega/DATA/SHARED/png/{}_BARPLOT_V2_{}.png".format(of, mt))
+
+    piv['DIFF'] = - (piv['FN/(FN + TP)'] - piv['TN/(TN + FP)'])
+
+    cpBar.set_palette(
+        {
+         'DIFF': 'blue'
+       }
+    )
+
+    cpBar.set_hue_order(
+        [
+            'DIFF'
+        ]
+    )
+    bph = BarPlotHandle(piv, x='it')
+    bph.plot(cpBar).save("/media/beldroega/DATA/SHARED/png/{}_BARPLOT_V3_{}.png".format(of, mt))
+
+
+    break
 
     #zuxs = []
     #nuxs = []

@@ -262,8 +262,11 @@ class TardisDataManager:
 
 
         if self.add_probs:
-            self.pori.to_csv(path / 'pori.csv', index=False)
-            self.pcov.to_csv(path / 'pcov.csv', index=False)
+            self.pori.to_csv(path / 'por.csv', index=False)
+            self.pcov.to_csv(path / 'pco.csv', index=False)
+
+
+        self.ori.mt.drop_duplicates().to_csv(path / 'exp.csv', index=False)
 
 
     def _try_add_probabilities(self, df, filepath):

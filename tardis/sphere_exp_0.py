@@ -81,8 +81,8 @@ def configure_context(context, context_variables):
     return context
 
 
-IDLHC_NUMBER_SAMPLES_ITERATION = [50, 100, 150]
-IDLHC_NUMBER_SAMPLES_PDF = [10, 20, 30]
+IDLHC_NUMBER_SAMPLES_ITERATION = [100]
+IDLHC_NUMBER_SAMPLES_PDF = [20]
 FOFE_NNBC_NUM_CLASS1 = [0]
 FOFE_NNBC_NUM_THRESHOLD = [0]
 TIMES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
