@@ -20,7 +20,7 @@ def make_patch_spines_invisible(ax):
        sp.set_visible(False)
 
 
-class ScatterPlotHandle:
+class ScatterPlot:
     def __init__(self, data, x, y):
         self.data = data
         self.x = x

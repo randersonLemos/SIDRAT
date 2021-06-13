@@ -1,8 +1,8 @@
 import header
 import pathlib
 import numpy as np
-from zbarplot.barPlotConfig import BarPlotConfig
-from zbarplot.barPlotClasses import BarPlotStack
+from zbarplot.barplotconfig import BarPlotConfig
+from zbarplot.barplotclasses import BarPlotStack
 
 
 def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
@@ -11,10 +11,10 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
 
     for experiment in experiments:
         cOb, dfH = header.load(dfRootpath)
-        por = dfH.pco
+        df = dfH.pco
 
-        msk = por.mt == experiment
-        aux = por[msk]
+        msk = df.mt == experiment
+        aux = df[msk]
 
         aux = aux.sort_values(by=['ru', 'it', 'value'], ascending=False)
 
@@ -26,23 +26,23 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
         tr = gb.transform(lambda x: np.where(x == 1, 'c', 'd'))
         aux.confusion += tr
 
-        aaa = 'True Postive (TP)'
-        bbb = 'False Positive (FP)'
-        ccc = 'False Negative (FN)'
-        ddd = 'True Negative (TN)'
-        aux.confusion = aux.confusion.str.replace('ac', aaa)
-        aux.confusion = aux.confusion.str.replace('bc', bbb)
-        aux.confusion = aux.confusion.str.replace('ad', ccc)
-        aux.confusion = aux.confusion.str.replace('bd', ddd)
+        TP = 'True Postive (TP)'
+        FP = 'False Positive (FP)'
+        FN = 'False Negative (FN)'
+        TN = 'True Negative (TN)'
+        aux.confusion = aux.confusion.str.replace('ac', TP)
+        aux.confusion = aux.confusion.str.replace('bc', FP)
+        aux.confusion = aux.confusion.str.replace('ad', FN)
+        aux.confusion = aux.confusion.str.replace('bd', TN)
 
         piv = aux.pivot_table(index='confusion', columns='it', values='value', aggfunc='count').T
         piv = piv / aux.ru.max()
         piv = piv.fillna(0)
 
-        if 'FN' not in piv:
-            piv['FN'] = 0
-        if 'TN' not in piv:
-            piv['TN'] = 0
+        if FN not in piv:
+            piv[FN] = 0
+        if TN not in piv:
+            piv[TN] = 0
 
         of  = aux.of.unique()[0]
         nsi = aux.nsi.unique()[0]
@@ -55,12 +55,11 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
         suptitle += 'Mean values from 10 experiments'
 
         config = BarPlotConfig()
-        config.figsize = (16, 5)
+        config.figsize = (16, 9)
         config.linewidth = 2
         config.hue = 'confusion'
-        #config.hue_order = ['TP', 'FN', 'TN', 'FP']
-        config.hue_order = [aaa, ccc, ddd, bbb]
-        config.palette = {aaa: 'tab:blue', ddd: 'tab:green', bbb: 'tab:orange', ccc: 'tab:red'}
+        config.hue_order = [TP, FN, TN, FP]
+        config.palette = {TP: 'tab:blue', TN: 'tab:green', FP: 'tab:orange', FN: 'tab:red'}
         config.suptitle = suptitle
         config.xlabel = 'Iterations'
         config.ylabel = 'Num. of samples'
@@ -69,4 +68,5 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
         bps = BarPlotStack(piv)
         bps.plot(config)
         rootpath = pathlib.Path(pngRootpath)
-        bps.save(rootpath / '{}barPlotStakCategorize_{}{}.png'.format(prefix, experiment, suffix))
+
+        bps.save(rootpath / "{}{}_{}{}.png".format(prefix, pathlib.Path(__file__).stem, experiment, suffix))

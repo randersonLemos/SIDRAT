@@ -275,7 +275,8 @@ class TardisDataManager:
             if dff.shape[1] == 1:
                 dff = pd.read_csv(filepath, sep=",")
             
-            df = df[(df['iteracao'] == 0) | (df['iteracao'] == 1)]
+            #df = df[(df['iteracao'] == 0) | (df['iteracao'] == 1)]
+            df = df[df.iteracao < dff.iteracao.min()]
 
             df = pd.concat([df, dff], ignore_index=True)
 

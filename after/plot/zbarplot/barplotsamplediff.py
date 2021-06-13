@@ -2,8 +2,8 @@ import header
 import pathlib
 import numpy as np
 import pandas as pd
-from zbarplot.barPlotConfig import BarPlotConfig
-from zbarplot.barPlotClasses import BarPlot
+from zbarplot.barplotconfig import BarPlotConfig
+from zbarplot.barplotclasses import BarPlot
 
 
 def get_aux(experiment, data):
@@ -28,12 +28,12 @@ def get_aux(experiment, data):
     return aux
 
 
-def run(experiments, dfRootpath, pngRootpath=''):
-    cOb, dfH = header.load(dfRootpath)
-    data = dfH.pco
-
+def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
     if not isinstance(experiments, list):
         experiments = [experiments]
+
+    cOb, dfH = header.load(dfRootpath)
+    data = dfH.pco
 
     _aux = []
     for exp in experiments:
@@ -70,18 +70,16 @@ def run(experiments, dfRootpath, pngRootpath=''):
     suptitle += 'Mean values from 10 experiments'
 
     config = BarPlotConfig()
-    config.figsize = (16, 5)
+    config.figsize = (16, 9)
     config.hue = cOb.nct_tcc
     config.linewidth = 2
-    #config.hue_order = ['TNR - FNR']
-    #config.palette = {'TNR - FNR': 'blue'}
     config.suptitle = suptitle
     config.xlabel = 'Iterations'
     config.ylabel = 'Differences'
     config.ymin = -0.25
     config.ymax =  0.25
 
-    ppiv = ppiv[ppiv.index > 1]
+    #ppiv = ppiv[ppiv.index > 1]
 
     bps = BarPlot(ppiv)
     bps.plot(config)
@@ -89,4 +87,4 @@ def run(experiments, dfRootpath, pngRootpath=''):
 
     experiment = experiments[0]
 
-    bps.save(rootpath / 'barPlotDiff_{}.png'.format(experiment))
+    bps.save(rootpath / "{}{}_{}{}.png".format(prefix, pathlib.Path(__file__).stem, experiment, suffix))

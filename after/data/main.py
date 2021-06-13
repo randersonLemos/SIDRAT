@@ -6,8 +6,8 @@ import shutil
 
 lst = []
 
-lst.append('WORK/SPHERE')
-dirr = '/media/beldroega/DATA/SHARED/csv/SPHERE'
+lst.append('WORK/RASTRIGIN_V3')
+dirr = '/media/beldroega/DATA/SHARED/csv/RASTRIGIN_V3'
 
 #lst.append('WORK/RASTRIGIN')
 #dirr = '/media/beldroega/DATA/SHARED/csv/RASTRIGIN'

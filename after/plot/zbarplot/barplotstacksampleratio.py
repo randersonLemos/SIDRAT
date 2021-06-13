@@ -2,8 +2,8 @@ import header
 import pathlib
 import numpy as np
 import pandas as pd
-from zbarplot.barPlotConfig import BarPlotConfig
-from zbarplot.barPlotClasses import BarPlotStackWithoutCumsum
+from zbarplot.barplotconfig import BarPlotConfig
+from zbarplot.barplotclasses import BarPlotStackWithoutCumsum
 
 
 def get_aux(experiment, data):
@@ -69,10 +69,8 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
     suptitle += 'Mean values from 10 experiments'
 
     config = BarPlotConfig()
-    config.figsize = (16, 5)
+    config.figsize = (16, 9)
     config.hue = cOb.nct_tcc
-    #config.hue_order = ['FNR', 'TNR']
-    #config.palette = {'FNR': 'red', 'TNR': 'blue'}
     config.suptitle = suptitle
     config.alpha = 1.0
     config.linewidth = 2
@@ -81,7 +79,7 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
     config.ymin =  0.00
     config.ymax =  0.55
 
-    ppiv = ppiv[ppiv.index > 1]
+    #ppiv = ppiv[ppiv.index > 1]
 
     bps = BarPlotStackWithoutCumsum(ppiv)
     bps.plot(config)
@@ -89,4 +87,4 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
 
     experiment = experiments[0]
 
-    bps.save(rootpath / '{}barPlotStakWCRatio_{}{}.png'.format(prefix, experiment, suffix))
+    bps.save(rootpath / "{}{}_{}{}.png".format(prefix, pathlib.Path(__file__).stem, experiment, suffix))

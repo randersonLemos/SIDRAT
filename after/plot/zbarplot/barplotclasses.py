@@ -69,8 +69,10 @@ class BarPlotStack(_BarPlot):
 
         fi.suptitle(  config.suptitle
                      , fontsize=config.suptitle_fontsize
-                     , x=0.500
-                     , y=0.960
+                     #, x=0.500
+                     , x=config.xsuptitle
+                     #, y=0.960
+                     , y=config.ysuptitle
                      , ha='center'
                     )
 
@@ -85,8 +87,8 @@ class BarPlotStack(_BarPlot):
         ax.legend(loc='lower center'
                   , ncol=6
                   , frameon=False
-                  #, bbox_to_anchor=(0.50, -0.04)
-                  , bbox_to_anchor=(0.525, -0.04)
+                  #, bbox_to_anchor=(0.525, -0.04)
+                  , bbox_to_anchor=(config.xlegend, config.ylegend)
                   , bbox_transform=fi.transFigure
                   , fontsize=config.legend_fontsize
                  )
@@ -180,8 +182,10 @@ class BarPlotStackWithoutCumsum(_BarPlot):
 
         fi.suptitle(  config.suptitle
                      , fontsize=config.suptitle_fontsize
-                     , x=0.500
-                     , y=0.960
+                     #, x=0.500
+                     , x=config.xsuptitle
+                     #, y=0.960
+                     , y=config.ysuptitle
                      , ha='center'
                     )
 
@@ -202,7 +206,7 @@ class BarPlotStackWithoutCumsum(_BarPlot):
                   , ncol=6
                   , frameon=False
                   #, bbox_to_anchor=(0.5, -0.040)
-                  , bbox_to_anchor=(0.525, -0.04)
+                  , bbox_to_anchor=(config.xsuptitle, config.ysuptitle)
                   , bbox_transform=fi.transFigure
                   , fontsize=config.legend_fontsize
                  )
@@ -258,7 +262,7 @@ class  BarPlot(_BarPlot):
         stk = data.stack()
         stk.name = y
         stk = stk.reset_index()
-      
+
         sb.barplot(  x=x
                    , y=y
                    , hue=config.hue
@@ -275,8 +279,10 @@ class  BarPlot(_BarPlot):
 
         fi.suptitle(  config.suptitle
                      , fontsize=config.suptitle_fontsize
-                     , x=0.500
-                     , y=0.960
+                     #, x=0.500
+                     , x=config.xsuptitle
+                     #, y=0.960
+                     , y=config.ysuptitle
                      , ha='center'
                     )
 
@@ -291,7 +297,7 @@ class  BarPlot(_BarPlot):
         ax.legend(  loc='lower center'
                   , ncol=10
                   , frameon=False
-                  , bbox_to_anchor=(0.525, -0.04)
+                  , bbox_to_anchor=(config.xlegend, config.ylegend)
                   , bbox_transform=fi.transFigure
                   , fontsize=config.legend_fontsize
                  )

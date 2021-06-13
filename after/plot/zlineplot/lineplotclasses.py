@@ -1,12 +1,9 @@
-import warnings
-
 import pathlib
 
 import copy
 import numpy as np
 import seaborn as sb
 import matplotlib.pyplot as plt
-import matplotlib.patheffects as pe
 from matplotlib.ticker import FuncFormatter
 from matplotlib.ticker import StrMethodFormatter
 
@@ -81,7 +78,6 @@ class LinePlot(_LinePlot):
                      , alpha=config.alpha
                      , linewidth=config.linewidth
                      , ax=ax
-                     #, path_effects=[pe.Stroke(linewidth=config.linewidth*1.10, foreground='k'), pe.Normal()]
                      )
 
         xlen = data[x].max() - data[x].min()
@@ -152,7 +148,6 @@ class LinePlot(_LinePlot):
                      , linewidth=config.linewidth
                      , legend=False
                      , ax=axx
-                     #, path_effects=[pe.Stroke(linewidth=config.linewidth*1.10, foreground='k'), pe.Normal()]
                      )
 
         xlen = data[x].max() - data[x].min()
@@ -192,7 +187,6 @@ class LinePlot(_LinePlot):
                      , linewidth=config.linewidth
                      , legend=False
                      , ax=axy
-                     #, path_effects=[pe.Stroke(linewidth=config.linewidth*1.10, foreground='k'), pe.Normal()]
                      )
 
         ylen = data[y].max() - data[y].min()

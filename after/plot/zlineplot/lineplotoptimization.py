@@ -1,15 +1,22 @@
-import copy
 import header
 import pathlib
 import pandas as pd
-from zlineplott.linePlotConfig import LinePlotConfig
-from zlineplott.linePlotClasses import LinePlot
+from zlineplot.lineplotconfig import LinePlotConfig
+from zlineplot.lineplotclasses import LinePlot
 
 
 def get_aux(experiment, data):
     msk = data.mt == experiment
     aux = data[msk]
+    return aux
 
+
+def Get_aux(experiments, data):
+    _aux = []
+    for exp in experiments:
+        _aux.append(get_aux(exp, data))
+
+    aux = pd.concat(_aux)
     return aux
 
 
@@ -23,11 +30,7 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
     if not isinstance(experiments, list):
         experiments = [experiments]
 
-    _aux = []
-    for exp in experiments:
-        _aux.append(get_aux(exp, data))
-
-    aux = pd.concat(_aux)
+    aux = Get_aux(experiments, data)
 
     of  = aux.of.unique()[0]
     nsi = aux.nsi.unique()[0]
@@ -36,7 +39,6 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
     tcc = aux.tcc.unique()[0]
 
     config = LinePlotConfig()
-    config.figsize = (16, 9)
     config.hue = cOb.nct_tcc
     config.linewidth = 4
     config.alpha = 1.0
@@ -62,4 +64,4 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
     rootpath = pathlib.Path(pngRootpath)
 
     experiment = experiments[0]
-    lp.save(rootpath / "{}linePlotOptimizationEvolution_{}{}.png".format(prefix, experiment, suffix))
+    lp.save(rootpath / "{}{}_{}{}.png".format(prefix, pathlib.Path(__file__).stem, experiment, suffix))
