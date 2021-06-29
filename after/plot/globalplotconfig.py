@@ -14,7 +14,7 @@ class GlobalPlotConfig:
         if self.figsize == (16, 9):
             self.xsuptitle = 0.50
             self.ysuptitle = 0.98
-            self.xlegend = 0.525
+            self.xlegend = 0.520
             self.ylegend = 0.0
 
 

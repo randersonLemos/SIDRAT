@@ -75,6 +75,7 @@ class LinePlot(_LinePlot):
                      , x=x
                      , y=y
                      , hue=config.hue
+                     , style=config.style
                      , alpha=config.alpha
                      , linewidth=config.linewidth
                      , ax=ax
@@ -104,8 +105,10 @@ class LinePlot(_LinePlot):
 
         fi.suptitle(   config.suptitle
                      , fontsize=config.suptitle_fontsize
-                     , x=0.500
-                     , y=0.995
+                     , x=config.xsuptitle
+                     , y=config.ysuptitle
+                     #, x=0.500
+                     #, y=0.995
                      , ha='center'
                     )
 
@@ -116,16 +119,21 @@ class LinePlot(_LinePlot):
         ax.set_ylabel(  config.ylabel
                       , fontsize=config.label_fontsize
                      )
-        leg = ax.legend(loc='center left'
+        leg = ax.legend(
+                    loc='center left'
+                    #loc='lower center'
                   , ncol=1
                   , frameon=False
-                  , bbox_to_anchor=(1.00, 0.50)
+                  #, bbox_transform=fi.transFigure
+                  #, bbox_to_anchor=(config.xlegend, config.ylegend-0.0225)
+                  , bbox_to_anchor=(1.0, 0.5)
                   , fontsize=config.legend_fontsize
-                  , title=config.hue
+                  #, title=config.hue
                   , title_fontsize=config.legend_fontsize
                  )
+
         for line in leg.get_lines():
-            line.set_linewidth(config.linewidth)
+            line.set_linewidth(config.linewidth*0.75)
 
         # ### ### ###
         data = copy.deepcopy(self.data)
@@ -144,6 +152,7 @@ class LinePlot(_LinePlot):
                      , x=x
                      , y=y
                      , hue=config.hue
+                     , style=config.style
                      , alpha=config.alpha
                      , linewidth=config.linewidth
                      , legend=False
@@ -183,6 +192,7 @@ class LinePlot(_LinePlot):
                      , x=x
                      , y=y
                      , hue=config.hue
+                     , style=config.style
                      , alpha=config.alpha
                      , linewidth=config.linewidth
                      , legend=False

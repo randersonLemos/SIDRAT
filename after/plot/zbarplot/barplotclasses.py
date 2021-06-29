@@ -198,18 +198,23 @@ class BarPlotStackWithoutCumsum(_BarPlot):
                       )
 
         handles, labels = ax.get_legend_handles_labels()
-
         _idx = int(len(handles) / 3)
-        ax.legend(  handles[:-_idx]
-                  , labels[:-_idx]
+        handles = handles[:-_idx]
+        labels = labels[:-_idx]
+        labels[0] = 'False Negative Ratio (FNR)'
+        labels[1] = 'True Negative Ratio (TNR)'
+
+        ax.legend(  handles
+                  , labels
                   , loc='lower center'
                   , ncol=6
                   , frameon=False
                   #, bbox_to_anchor=(0.5, -0.040)
-                  , bbox_to_anchor=(config.xsuptitle, config.ysuptitle)
+                  , bbox_to_anchor=(config.xlegend, config.ylegend)
                   , bbox_transform=fi.transFigure
                   , fontsize=config.legend_fontsize
                  )
+
 
         ymin = data.min().min()
         if not isinstance(config.ymin, type(None)):

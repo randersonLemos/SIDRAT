@@ -526,6 +526,21 @@ class EnumAtributo(Enum):
     da classe 1
     """
 
+    NN_BINARY_CLASSIFIER_START_FROM_ITERATION = 350
+    """
+    Quando a NNBC começa a funcionar
+    """
+
+    NN_BINARY_CLASSIFIER_NNEURONS = 360
+    """
+    Número de modelos para formação no conjunto de NNs
+    """
+
+    NN_BINARY_CLASSIFIER_BATCHSIZE = 370
+    """
+    Número de modelos para formação no conjunto de NNs
+    """
+
 
 class EnumValues(Enum):
     DEFAULT = 1

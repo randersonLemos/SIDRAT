@@ -26,36 +26,37 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
 
     data = cOb.rename(data, 'nsi_nsp', 'NSI, NSP')
     data = cOb.rename(data, 'nct_tcc', 'NCT, TCC')
+    data = cOb.rename(data, 'nne_sba', 'NNE, SBA')
 
     if not isinstance(experiments, list):
         experiments = [experiments]
 
     aux = Get_aux(experiments, data)
-    
-    of  = aux.of.unique() [-1]
-    nsi = aux.nsi.unique()[-1]
-    nsp = aux.nsp.unique()[-1]
-    nct = aux.nct.unique()[-1]
-    tcc = aux.tcc.unique()[-1]
-    nne = aux.nne.unique()[-1]
-    sba = aux.sba.unique()[-1]
+
+    of  = aux.of.unique()[0]
+    nsi = aux.nsi.unique()[0]
+    nsp = aux.nsp.unique()[0]
+    nct = aux.nct.unique()[0]
+    tcc = aux.tcc.unique()[0]
 
     config = LinePlotConfig()
-    config.hue = cOb.nct_tcc
-    config.style = cOb.nsi_nsp
+    config.figsize = (16, 9)
+    config.hue = cOb.nne_sba
+    config.style = cOb.nct_tcc
     config.linewidth = 4
     config.alpha = 1.0
 
     suptitle = ''
     suptitle += 'Evolution of IDLHC with NNBC optimization on {} function\n'.format(of)
-    #suptitle += 'NSI = {}, NSP = {}\n'.format(nsi, nsp)
-    suptitle += 'NNE = {}, SBA = {}\n'.format(nne, sba)
+    #suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}\n'.format(nsi, nsp, nct, tcc)
+    suptitle += 'NSI = {}, NSP = {}\n'.format(nsi, nsp, nct, tcc)
     suptitle += 'Mean values from 10 experiments'
 
     config.suptitle = suptitle
     config.xlabel = 'Num. of runs'
     config.ylabel = 'Obj. fun. values'
 
+    #aux = aux.sort_values(by=cOb.nnnt, ascending=True)
 
     config.ymin = aux[cOb.value].min()
     config.ymax = aux[cOb.value].max()

@@ -49,6 +49,8 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
         nsp = aux.nsp.unique()[0]
         nct = aux.nct.unique()[0]
         tcc = aux.tcc.unique()[0]
+        nne = aux.nne.unique()[0]
+        sba = aux.sba.unique()[0]
 
         config = StripPlotConfig()
         config.figsize = (16, 9)
@@ -72,7 +74,8 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
         nux.value = tr
 
         suptitle  = 'TP, FN, TN, FP of the samples from IDLHC with NNBC optimization on {} function\n'.format(of)
-        suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}\n'.format(nsi, nsp, nct, tcc)
+        #suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}\n'.format(nsi, nsp, nct, tcc)
+        suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}, NNE = {}, SBA = {}\n'.format(nsi, nsp, nct, tcc, nne, sba)
         suptitle += 'Samples from 5 experiments'
         config.suptitle = suptitle
         spd = StripPlotDefault(data=aux, x=cOb.it, y=cOb.value)
@@ -81,7 +84,8 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
         spd.save(rootpath / "{}{}_{}{}.png".format(prefix, pathlib.Path(__file__).stem, experiment, suffix))
 
         suptitle  = 'TP, FN, TN, FP of the samples from IDLHC with NNBC optimization on {} function\n'.format(of)
-        suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}\n'.format(nsi, nsp, nct, tcc)
+        #suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}\n'.format(nsi, nsp, nct, tcc)
+        suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}, NNE = {}, SBA = {}\n'.format(nsi, nsp, nct, tcc, nne, sba)
         suptitle += 'Samples from 5 experiments normalized'
         config.suptitle = suptitle
         spd = StripPlotDefault(data=nux, x=cOb.it, y=cOb.value)

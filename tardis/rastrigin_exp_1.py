@@ -70,6 +70,9 @@ class Context_Variables:
     def fofe_nnbc_threshold(self, value):
         self.dict[self.EA.NN_BINARY_CLASSIFIER_THRESHOLD] = value
 
+    def fofe_nnbc_start_from_it(self, value):
+        self.dict[self.EA.NN_BINARY_CLASSIFIER_START_FROM_ITERATION] = value
+
 
 def configure_context(context, context_variables):
     cv = context_variables
@@ -81,10 +84,12 @@ def configure_context(context, context_variables):
     return context
 
 
-IDLHC_NUMBER_SAMPLES_ITERATION = [50, 100, 150]
-IDLHC_NUMBER_SAMPLES_PDF = [10, 20, 30]
-FOFE_NNBC_NUM_CLASS1 = [10, 20, 30]
+#IDLHC_NUMBER_SAMPLES_ITERATION = [50, 100, 150]
+IDLHC_NUMBER_SAMPLES_ITERATION = [100]
+#IDLHC_NUMBER_SAMPLES_PDF = [10, 20, 30]
+IDLHC_NUMBER_SAMPLES_PDF = [20]
 FOFE_NNBC_NUM_THRESHOLD = [0.1, 0.2, 0.3]
+FOFE_NNBC_NUM_CLASS1 = [10, 20, 30]
 TIMES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 
@@ -92,16 +97,16 @@ import os
 import itertools
 
 
-for a, b, c, d, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
+for a, b, d, c, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
                                       , IDLHC_NUMBER_SAMPLES_PDF
-                                      , FOFE_NNBC_NUM_CLASS1
                                       , FOFE_NNBC_NUM_THRESHOLD
+                                      , FOFE_NNBC_NUM_CLASS1
                                       , TIMES
                                       ):
 
     cv = Context_Variables()
 
-    dirr = '_RES_RST/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_TCC{:03d}_{:02d}'.format(a, b, c, int(100 * d), e)
+    dirr = '_RES_RST_V5/IDLHC_NSI{:03d}_NSP{:03d}_NNBC_NCT{:03d}_TCC{:03d}_{:02d}'.format(a, b, c, int(100 * d), e)
 
     if os.path.isdir(dirr):
         print('Experiment {} alread done'.format(dirr))
@@ -116,26 +121,29 @@ for a, b, c, d, e in itertools.product( IDLHC_NUMBER_SAMPLES_ITERATION
             cv.idlhc_number_samples_pdf(b)
             cv.stop_critiria('ITERACOES_MAX')
             cv.stop_critiria_iterations(30)
+            #cv.stop_critiria_iterations(6)
             cv.fofe('NN_BINARY_CLASSIFIER')
             cv.fofe_nnbc_num_models(10)
+            #cv.fofe_nnbc_num_models(3)
             cv.fofe_nnbc_num_class1(c)
             cv.fofe_nnbc_threshold(d)
+            cv.fofe_nnbc_start_from_it(2)
 
             carregamento = Carregamento(PATH_PRJ, PATH_CFG, MODULES)
             context = carregamento.get_context()
             context = configure_context(context, cv)
             carregamento.set_context(context)
             carregamento.run()
-            
+
             problema_fechado = context.get_modulo(EnumModulo.PROBLEMA_FECHADO)
             context = problema_fechado.run(context)
-            
+
             inicializacao = context.get_modulo(EnumModulo.INICIALIZACAO)
             context = inicializacao.run(context)
-            
+
             otimizador = context.get_modulo(EnumModulo.OTIMIZACAO)
             context = otimizador.run(context)
-            
+
             carregamento = None
             problema_fechado = None
             inicializacao = None

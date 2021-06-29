@@ -15,11 +15,9 @@ from src.modulo.fofe.FofePadrao import FofePadrao
 import src.modulo.fofe.binary_classifier.Data as Data
 
 
-from src.modulo.problemas_fechados.funcoes_teste.base.clustering import clustering
-from src.modulo.problemas_fechados.funcoes_teste.base.knapsack import knapsack
+from src.modulo.problemas_fechados.funcoes_teste.base.sphere import sphere
 from src.modulo.problemas_fechados.funcoes_teste.base.rastrigin import rastrigin
 from src.modulo.problemas_fechados.funcoes_teste.base.rosenbrock import rosenbrock
-from src.modulo.problemas_fechados.funcoes_teste.base.sphere import sphere
 
 
 from sklearn import preprocessing
@@ -27,6 +25,7 @@ from imblearn.over_sampling import SMOTE, SVMSMOTE, BorderlineSMOTE, ADASYN
 
 Data.Aux.oversampler = BorderlineSMOTE()
 Data.Aux.scaler = preprocessing.MinMaxScaler()
+
 
 import src.modulo.fofe.binary_classifier.Models as Models
 
@@ -49,8 +48,17 @@ class BinaryClassifier(FofePadrao):
         if EA.NN_BINARY_CLASSIFIER_NMODELS not in self._necessidade:
             self._necessidade.append(EA.NN_BINARY_CLASSIFIER_NMODELS)
 
+        if EA.NN_BINARY_CLASSIFIER_NNEURONS not in self._necessidade:
+            self._necessidade.append(EA.NN_BINARY_CLASSIFIER_NNEURONS)
+
+        if EA.NN_BINARY_CLASSIFIER_BATCHSIZE not in self._necessidade:
+            self._necessidade.append(EA.NN_BINARY_CLASSIFIER_BATCHSIZE)
+
         if EA.NN_BINARY_CLASSIFIER_THRESHOLD not in self._necessidade:
             self._necessidade.append(EA.NN_BINARY_CLASSIFIER_THRESHOLD)
+
+        if EA.NN_BINARY_CLASSIFIER_START_FROM_ITERATION not in self._necessidade:
+            self._necessidade.append(EA.NN_BINARY_CLASSIFIER_START_FROM_ITERATION)
 
 
     def run(self, contexto):
@@ -67,17 +75,21 @@ class BinaryClassifier(FofePadrao):
             solucoes = copy.deepcopy(cga(EA.SOLUCOES))
             nclass1 = cga(EA.NN_BINARY_CLASSIFIER_NCLASS1)
             nmodels = cga(EA.NN_BINARY_CLASSIFIER_NMODELS)
+            nneurons = cga(EA.NN_BINARY_CLASSIFIER_NNEURONS)
+            batchsize = cga(EA.NN_BINARY_CLASSIFIER_BATCHSIZE)
             threshold = cga(EA.NN_BINARY_CLASSIFIER_THRESHOLD)
             npopulation = len(solucoes.solucoes[iteracao_corrente])
 
             key = list(solucoes.solucoes[iteracao_corrente])[0]
             nvariables = len(solucoes.solucoes[iteracao_corrente][key].variaveis._variaveis['VARIAVEL'])
 
-            solucoes = self._run(iteracao_corrente
+            solucoes = self._run(  iteracao_corrente
                                  , solucoes
                                  , threshold
                                  , nclass1
                                  , nmodels
+                                 , nneurons
+                                 , batchsize
                                  , npopulation
                                  , nvariables
                                 )
@@ -88,24 +100,30 @@ class BinaryClassifier(FofePadrao):
 
 
     def _aplicar_fofe(self, iteracao_corrente):
-        return iteracao_corrente > 1
+        EA = EnumAtributo
+        cga = self._contexto.get_atributo
+        start_from_it = cga(EA.NN_BINARY_CLASSIFIER_START_FROM_ITERATION)
+        return iteracao_corrente >= start_from_it
 
 
-    def _run(self, iteracao_corrente, solucoes, threshold, nclass1, nmodels, npopulation, nvariables):
+    def _run(self, iteracao_corrente, solucoes, threshold, nclass1, nmodels, nneurons, batchsize, npopulation, nvariables):
         EA = EnumAtributo
         cga = self._contexto.get_atributo
 
         index, X, y = self._para_dataframe(solucoes)
 
-
         IS = pd.IndexSlice
 
-        trd = Data.TrainData(X.loc[IS[:iteracao_corrente - 1, :] , :], y.loc[IS[:iteracao_corrente - 1, :], :]
+        trd = Data.TrainData(
+                  X.loc[IS[:iteracao_corrente - 1, :] , :]
+                , y.loc[IS[:iteracao_corrente - 1, :], :]
                 , iteracao_corrente - 1
                 , nclass1
                 )
 
-        ted = Data.TestData( X.loc[IS[iteracao_corrente, :], :], y.loc[IS[iteracao_corrente, :], :]
+        ted = Data.TestData(
+                  X.loc[IS[iteracao_corrente, :], :]
+                , y.loc[IS[iteracao_corrente, :], :]
                 , iteracao_corrente
                 )
 
@@ -125,7 +143,7 @@ class BinaryClassifier(FofePadrao):
             stg += '---'
             print(stg)
 
-            mo = Models.Neural_Network(input_shape=(nvariables, 1), epochs=15)
+            mo = Models.Neural_Network(input_shape=(nvariables, 1), nneurons=nneurons, batchsize=batchsize, epochs=15)
             index = trd.Xo.sample(frac=1).index  # Shuffling data
             mo.train(trd.Xos.loc[index, :], trd.yo.loc[index])
             probs = mo.classify(ted.Xs)
@@ -157,7 +175,7 @@ class BinaryClassifier(FofePadrao):
 
         path_prj = cga(EA.PATH_PROJETO)
         path_res = '/'.join(cga(EA.PATH_RESULTADO).split('/')[:-1])
- 
+
 
         ### JUST TO SAVE ALL SAMPLES ###
         solucoes_corrente = copy.deepcopy(solucoes)
@@ -166,14 +184,16 @@ class BinaryClassifier(FofePadrao):
 
         conteudo = self._gerar_conteudo_solucoes_csv(solucoes_corrente, cl)
 
+        start_from_it = cga(EA.NN_BINARY_CLASSIFIER_START_FROM_ITERATION)
         path = path_prj + '/' + path_res + '/' + 'zall_samples.csv'
-        if iteracao_corrente == 2:
+        if iteracao_corrente == start_from_it:
             print('{}'.format(conteudo), file=open(path, mode='w'))
         else:
             conteudo = '\n'.join(conteudo.split('\n')[1:])
             print('{}'.format(conteudo), file=open(path, mode='a'))
         ###
-         
+
+
         ### SAVE TIME FOFE TIME EXECUTION ###
         path = path_prj + '/' + path_res + '/' + 'ztraining_time.txt'
         if iteracao_corrente == 2:
@@ -181,14 +201,14 @@ class BinaryClassifier(FofePadrao):
         else:
             print('{}'.format(final_time), file=open(path, mode='a'))
         ###
- 
+
 
         index = cl.y[cl.y['CLASS'] == 0].index
 
 
         for ite, ide in index:
             del solucoes.solucoes[ite][ide]
- 
+
 
         return solucoes
 
@@ -254,8 +274,8 @@ class BinaryClassifier(FofePadrao):
         lista_cabecalho.append('probs')
         lista_cabecalho.append('class')
 
-        conteudo += ';'.join(lista_cabecalho) + '\n'
 
+        conteudo += ';'.join(lista_cabecalho) + '\n'
 
         for ite in solucoes:
             for ide in solucoes[ite]:
@@ -275,7 +295,6 @@ class BinaryClassifier(FofePadrao):
                             break
                     conteudo += aux_conteudo + ';'
                 conteudo = conteudo[:-1] + '\n'
-
 
         return conteudo[:-1]
 

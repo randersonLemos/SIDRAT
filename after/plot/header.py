@@ -15,11 +15,15 @@ class Columns:
         self.nsp = 'nsp'
         self.nct = 'nct'
         self.tcc = 'tcc'
+        self.nne = 'nne'
+        self.sba = 'sba'
+        self.cls = 'class'
+
         self.nsi_nsp = 'nsi_nsp'
         self.nct_tcc = 'nct_tcc'
-        self.nnnt = 'nnnt'
-        self.nnbc = 'nnbc'
-        self.cls = 'class'
+        self.nne_sba = 'nne_sba'
+
+
 
     def rename(self, df, att, name):
         dic = {self.__dict__[att] : name}
@@ -57,7 +61,16 @@ def load(dfRootpath):
 
     dic = dfH.getDataFrameDic()
     for key, df in dic.items():
-        for col in [cOb.nsi, cOb.nsp, cOb.nct, cOb.tcc]:
-            df[col] = df[col].astype('str')
-            dfH.updateDataFrame(key, df)
+        df[cOb.nsi_nsp] = ''
+        df[cOb.nct_tcc] = ''
+        df[cOb.nne_sba] = ''
+
+        for col in [cOb.nsi, cOb.nsp, cOb.nct, cOb.tcc, cOb.nne, cOb.sba]:
+            df[col] = df[col].apply(lambda x: '{:02d}'.format(x)).astype('str')
+
+        df[cOb.nsi_nsp] = df[cOb.nsi] + ', ' + df[cOb.nsp]
+        df[cOb.nct_tcc] = df[cOb.nct] + ', ' + df[cOb.tcc]
+        df[cOb.nne_sba] = df[cOb.nne] + ', ' + df[cOb.sba]
+
+        dfH.updateDataFrame(key, df)
     return cOb, dfH

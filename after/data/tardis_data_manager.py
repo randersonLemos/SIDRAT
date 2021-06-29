@@ -78,7 +78,7 @@ class TardisDataManager:
             df['id'] = df.index
             df['mt'] = filepath.parent.name[:-3]
             df['ru'] = filepath.parent.name[-2:]
-            
+
             lst.append(df)
 
         df = pd.concat(lst)
@@ -106,6 +106,7 @@ class TardisDataManager:
                 if vl == pvl:
                     count += 1
                     if count == 3 - 1:
+                    #if count == 2 - 1:
                         break
                 else:
                     count = 0
@@ -150,11 +151,9 @@ class TardisDataManager:
 
         pt.columns = pt.columns.droplevel(1)
 
-
         pt = pt.rename(columns={'count':'n_sample', 'max':'value'})
 
         pt = pt.reset_index()
-
 
         gb = pt.groupby(['mt', 'of', 'it']).mean().astype('int').reset_index()
         gb = gb.reset_index()
@@ -171,7 +170,7 @@ class TardisDataManager:
             df['mt'] = index[0]
             df['of'] = index[1]
             df['it'] = -1
- 
+
             bng = 0
             end = 0
             for indexx in se.index:
@@ -226,7 +225,7 @@ class TardisDataManager:
             df['id'] = df.index
             df['mt'] = filepath.parent.name[:-3]
             df['ru'] = filepath.parent.name[-2:]
- 
+
             if sucess:
                 df = df[['mt', 'of', 'ru', 'it', 'id', 'value', 'prob', 'class', '_type', '_id']]
             else:
@@ -274,8 +273,7 @@ class TardisDataManager:
             dff = pd.read_csv(filepath, sep=";")
             if dff.shape[1] == 1:
                 dff = pd.read_csv(filepath, sep=",")
-            
-            #df = df[(df['iteracao'] == 0) | (df['iteracao'] == 1)]
+
             df = df[df.iteracao < dff.iteracao.min()]
 
             df = pd.concat([df, dff], ignore_index=True)

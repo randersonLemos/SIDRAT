@@ -49,9 +49,12 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
         nsp = aux.nsp.unique()[0]
         nct = aux.nct.unique()[0]
         tcc = aux.tcc.unique()[0]
+        nne = aux.nne.unique()[0]
+        sba = aux.sba.unique()[0]
 
         suptitle  = 'TP, FN, TN, FP of the samples from IDLHC with NNBC optimization on {} function\n'.format(of)
-        suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}\n'.format(nsi, nsp, nct, tcc)
+        #suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}\n'.format(nsi, nsp, nct, tcc)
+        suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}, NNE = {}, SBA = {}\n'.format(nsi, nsp, nct, tcc, nne, sba)
         suptitle += 'Mean values from 10 experiments'
 
         config = BarPlotConfig()

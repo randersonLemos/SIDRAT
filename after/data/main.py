@@ -6,16 +6,17 @@ import shutil
 
 lst = []
 
-lst.append('WORK/RASTRIGIN_V3')
-dirr = '/media/beldroega/DATA/SHARED/csv/RASTRIGIN_V3'
+#lst.append('WORK/RASTRIGIN_NNE032_SBA008')
+#dirr = '/media/beldroega/DATA/SHARED/csv/RASTRIGIN_NNE032_SBA008'
 
-#lst.append('WORK/RASTRIGIN')
-#dirr = '/media/beldroega/DATA/SHARED/csv/RASTRIGIN'
+lst.append('WORK/RASTRIGIN_NNE032_SBA004')
+dirr = '/media/beldroega/DATA/SHARED/csv/RASTRIGIN_NNE032_SBA004'
 
-#lst.append('WORK/ROSENBROCK')
-#dirr = '/media/beldroega/DATA/SHARED/csv/ROSENBROCK'
+#lst.append('WORK/ROSEMBROCK_NNE032_SBA008')
+#dirr = '/media/beldroega/DATA/SHARED/csv/ROSEMBROCK_NNE032_SBA008'
 
 tfm = TardisFilesManager(lst, '/media/beldroega/DATA/SIDRAT/tardis')
+
 tfm = tfm.clean(r'it_(\d+)')
 
 files = tfm.files('.*/it_ultima.csv')
@@ -25,17 +26,32 @@ files = tfm.files('.*/it_ultima.csv')
 tdm = TardisDataManager(files, add_probs=True, n_iter_convergence_criterio=3)
 
 # ### SOME TWEAKING ###
+
+columns = []
+columns.append('NSI')
+columns.append('NSP')
+columns.append('NCT')
+columns.append('TCC')
+columns.append('NNE')
+columns.append('SBA')
+
 for key in tdm.dic:
+
     df = tdm.dic[key]
 
-    tdm.dic[key][['nsi', 'nsp', 'nct', 'tcc']] = df['mt'].str.split(r'_\D\D\D', expand=True)[[1, 2, 4, 5]]
+    for col in columns:
+        df[col] = ''
+        for mt in df.mt.unique():
+            idx = mt.find(col)
+            if idx != -1:
+                vl = mt[idx + 3 : idx + 6]
+                df.loc[df.mt == mt, col] = vl
+            else:
+                df.loc[df.mt == mt, col] = '0'
 
-    tdm.dic[key][['nsi_nsp']] = df['nsi'] + ', ' + df['nsp']
+    df.columns = df.columns.str.lower()
+    tdm.dic[key] = df
 
-    tdm.dic[key][['nct_tcc']] = df['nct'] + ', ' + df['tcc']
-
-    tdm.dic[key][['nnnt']] = df['nsi'] + ', ' + df['nsp'] + ', '  + df['nct'] + ', ' + df['tcc']
-
-    tdm.dic[key]['nnbc'] = np.where(df['nct'] == '000', 'Off', 'On')
+    #tdm.dic[key]['nnbc'] = np.where(df['nct'] == '000', 'Off', 'On')
 
 tdm.save(dirr)

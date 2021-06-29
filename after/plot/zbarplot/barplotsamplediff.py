@@ -59,14 +59,17 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
     ppiv = piv.pivot_table(index=cOb.it, columns=cOb.nct_tcc, values='TNR - FNR')
     ppiv = ppiv.dropna()
 
-    of  = aux.of.unique()[0]
-    nsi = aux.nsi.unique()[0]
-    nsp = aux.nsp.unique()[0]
-    nct = aux.nct.unique()[0]
-    tcc = aux.tcc.unique()[0]
+    of  = aux.of.unique() [-1]
+    nsi = aux.nsi.unique()[-1]
+    nsp = aux.nsp.unique()[-1]
+    nct = aux.nct.unique()[-1]
+    tcc = aux.tcc.unique()[-1]
+    nne = aux.nne.unique()[-1]
+    sba = aux.sba.unique()[-1]
 
     suptitle  = 'TNR minus FNR of the samples from IDLHC with NNBC optimization on {} function\n'.format(of)
-    suptitle += 'NSI = {}, NSP = {}\n'.format(nsi, nsp)
+    #suptitle += 'NSI = {}, NSP = {}\n'.format(nsi, nsp)
+    suptitle += 'NSI = {}, NSP = {}, NNE = {}, SBA = {}\n'.format(nsi, nsp, nne, sba)
     suptitle += 'Mean values from 10 experiments'
 
     config = BarPlotConfig()

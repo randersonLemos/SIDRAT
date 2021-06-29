@@ -41,7 +41,8 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
 
     aux = pd.concat(_aux)
 
-    piv = aux.pivot_table(index=[cOb.nct_tcc, cOb.it], columns='confusion', values='value', aggfunc='count')
+    #piv = aux.pivot_table(index=[cOb.nct_tcc, cOb.it], columns='confusion', values='value', aggfunc='count')
+    piv = aux.pivot_table(index=[cOb.nct_tcc, cOb.nne_sba, cOb.it], columns='confusion', values='value', aggfunc='count')
     piv = piv / aux.ru.max()
     piv = piv.fillna(0)
 
@@ -53,10 +54,11 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
     piv['TNR'] = piv.TN / (piv.TN + piv.FP)
     #piv['FNR'] = -(piv.FN / (piv.FN + piv.TP))
     piv['FNR'] = piv.FN / (piv.FN + piv.TP)
+    
 
-    ppiv = piv.pivot_table(index=cOb.it, columns=cOb.nct_tcc, values=['TNR', 'FNR'])
+    ppiv = piv.pivot_table(index=cOb.it, columns=[cOb.nne_sba], values=['TNR', 'FNR'])
     ppiv = ppiv.dropna()
- 
+
     of  = aux.of.unique()[0]
     nsi = aux.nsi.unique()[0]
     nsp = aux.nsp.unique()[0]
@@ -64,17 +66,17 @@ def run(experiments, dfRootpath, pngRootpath='', prefix='', suffix=''):
     tcc = aux.tcc.unique()[0]
     nne = aux.nne.unique()[0]
     sba = aux.sba.unique()[0]
- 
 
-    suptitle  = 'TNR and FNR of the samples from IDLHC with NNBC optimization on {} function\n'.format(of)
+    suptitle  = 'FNR and TNR of the samples from IDLHC with NNBC optimization on {} function\n'.format(of)
+    suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}, NNE = {}, SBA = {}\n'.format(nsi, nsp, nct, tcc, nne, sba)
     #suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}\n'.format(nsi, nsp, nct, tcc)
     #suptitle += 'NSI = {}, NSP = {}\n'.format(nsi, nsp)
-    suptitle += 'NSI = {}, NSP = {}, NCT = {}, TCC = {}, NNE = {}, SBA = {}\n'.format(nsi, nsp, nct, tcc, nne, sba)
     suptitle += 'Mean values from 10 experiments'
 
     config = BarPlotConfig()
     config.figsize = (16, 9)
-    config.hue = cOb.nct_tcc
+    #config.hue = cOb.nct_tcc
+    config.hue = cOb.nne_sba
     config.suptitle = suptitle
     config.alpha = 1.0
     config.linewidth = 2
